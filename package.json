@@ -1,0 +1,22 @@
+{
+  "name": "bhrl-prototype",
+  "version": "1.0.0",
+  "description": "Prototype for Bullet Hell Roguelike 7DRL",
+  "main": "index.js",
+  "author": "Paul Davies <lagdotcom@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "esbuild src/index.ts --watch --bundle --sourcemap --outfile=docs/bundle.js",
+    "serve": "http-server docs"
+  },
+  "dependencies": {
+    "detect-collisions": "^6.7.2",
+    "wglt": "^0.5.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.4",
+    "http-server": "^14.1.1",
+    "typescript": "^4.9.4"
+  }
+}
