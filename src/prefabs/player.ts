@@ -4,7 +4,7 @@ import { Colors } from "wglt";
 import Engine from "../Engine";
 import Entity from "../Entity";
 
-export default function getPlayer(g: Engine) {
+export function player(g: Engine) {
   return new Entity(g, "Player")
     .setPlayer(true)
     .setAppearance(

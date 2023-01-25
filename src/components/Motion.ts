@@ -1,7 +1,11 @@
 export default class Motion {
-  constructor(public x: number, public y: number) {}
+  constructor(public angle: number, public vel: number) {}
 
-  static fromAngleAndVelocity(angle: number, vel: number) {
-    return new Motion(Math.cos(angle) * vel, Math.sin(angle) * vel);
+  get x() {
+    return Math.cos(this.angle) * this.vel;
+  }
+
+  get y() {
+    return Math.sin(this.angle) * this.vel;
   }
 }

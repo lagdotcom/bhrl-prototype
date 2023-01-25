@@ -1,8 +1,11 @@
 import Appearance from "./components/Appearance";
 import Attachment from "./components/Attachment";
 import Engine from "./Engine";
+import Homing from "./components/Homing";
+import Lifetime from "./components/Lifetime";
 import Motion from "./components/Motion";
 import Position from "./components/Position";
+import Trail from "./components/Trail";
 import Turret from "./components/Turret";
 
 export default class Entity {
@@ -10,11 +13,14 @@ export default class Entity {
   id: number;
   Appearance?: Appearance;
   Attachment?: Attachment;
+  Homing?: Homing;
+  Lifetime?: Lifetime;
   Motion?: Motion;
   Player: boolean;
   Projectile: boolean;
   Position?: Position;
   Solid: boolean;
+  Trail?: Trail;
   Turret?: Turret;
 
   constructor(public g: Engine, public name?: string) {
@@ -23,6 +29,8 @@ export default class Entity {
     this.Player = false;
     this.Projectile = false;
     this.Solid = false;
+
+    g.add(this);
   }
 
   get [Symbol.toStringTag]() {
@@ -51,6 +59,16 @@ export default class Entity {
     return this;
   }
 
+  setHoming(c?: Homing): this {
+    this.Homing = c;
+    return this;
+  }
+
+  setLifetime(c?: Lifetime): this {
+    this.Lifetime = c;
+    return this;
+  }
+
   setMotion(c?: Motion): this {
     this.Motion = c;
     return this;
@@ -59,6 +77,11 @@ export default class Entity {
   setPosition(c?: Position): this {
     this.g.dirty = true;
     this.Position = c;
+    return this;
+  }
+
+  setTrail(c?: Trail): this {
+    this.Trail = c;
     return this;
   }
 

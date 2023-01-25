@@ -1,5 +1,8 @@
+import { PrefabName } from "../prefabs";
+
 export default class Turret {
   constructor(
+    public bulletPrefab: PrefabName,
     public bulletVelocity: number,
     public salvoCount: number,
     public timeBetweenShots: number,

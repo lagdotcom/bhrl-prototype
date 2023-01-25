@@ -1,13 +1,12 @@
 import { Colors, Console, Terminal } from "wglt";
 import Entity, { compareEntities } from "./Entity";
+import instantiate, { PrefabName } from "./prefabs";
 
 import Motion from "./components/Motion";
 import Position from "./components/Position";
 import SortedSet from "./SortedSet";
 import { System } from "detect-collisions";
-import getBattleship from "./prefabs/Battleship";
-import getBullet from "./prefabs/Bullet";
-import getPlayer from "./prefabs/Player";
+import anglediff from "./tools/anglediff";
 import int from "./tools/int";
 import { turretReducer } from "./components/Turret";
 
@@ -27,7 +26,6 @@ export default class Engine {
   fovRecompute: boolean;
   map: Console;
   entities: SortedSet<Entity>;
-  player!: Entity;
 
   constructor(public term: Terminal) {
     term.update = this.update.bind(this);
@@ -39,10 +37,19 @@ export default class Engine {
     this.entities = new SortedSet(compareEntities);
   }
 
+  get player() {
+    const player = this.entities.get().find((e) => e.Player);
+    if (!player) throw new Error("Could not find a player!");
+    return player;
+  }
+
+  spawn(name: PrefabName) {
+    return instantiate(this, name);
+  }
+
   add(e: Entity) {
     this.dirty = true;
     this.entities.add(e);
-    if (e.Player) this.player = e;
   }
 
   addMany(es: Entity[]) {
@@ -55,12 +62,8 @@ export default class Engine {
 
     this.map.clear();
     this.room(1, 1, 40, 30);
-    this.add(getPlayer(this).setPosition(new Position(5, 25)));
-
-    const { ship, parts } = getBattleship(this);
-    this.add(ship);
-    this.addMany(parts);
-    ship.move(8, 5);
+    this.spawn("player").setPosition(new Position(5, 25));
+    this.spawn("battleship").move(8, 5);
   }
 
   room(sx: number, sy: number, w: number, h: number) {
@@ -126,6 +129,52 @@ export default class Engine {
     this.dirty = false;
   }
 
+  lifetimes() {
+    for (const e of this.entities.get()) {
+      const { Lifetime } = e;
+
+      if (Lifetime) {
+        if (--Lifetime.duration <= 0) {
+          e.kill();
+          this.entities.delete(e);
+        }
+      }
+    }
+  }
+
+  trails() {
+    for (const e of this.entities.get()) {
+      const { Position, Trail } = e;
+
+      if (Position && Trail) {
+        this.spawn(Trail.effectPrefab).setPosition(Position);
+        if (--Trail.duration <= 0) e.setTrail();
+      }
+    }
+  }
+
+  homing() {
+    const playerPos = this.player.Position!;
+
+    for (const e of this.entities.get()) {
+      const { Homing, Motion, Position } = e;
+
+      if (Homing && Motion && Position) {
+        const desired = Math.atan2(
+          playerPos.y - Position.y,
+          playerPos.x - Position.x
+        );
+        const diff = anglediff(Motion.angle, desired);
+
+        if (Math.abs(diff) <= Homing.strength) Motion.angle = desired;
+        else if (diff < 0) Motion.angle -= Homing.strength;
+        else Motion.angle += Homing.strength;
+
+        if (--Homing.duration <= 0) e.setHoming();
+      }
+    }
+  }
+
   turrets() {
     const { entities } = this;
     const playerPos = this.player.Position!;
@@ -135,15 +184,14 @@ export default class Engine {
       if (Position && Turret) {
         turretReducer(Turret);
         if (Turret.mode === "fire") {
-          const bullet = getBullet(this)
+          this.spawn(Turret.bulletPrefab)
             .setPosition({ x: Position.x + 0.5, y: Position.y + 0.5 })
             .setMotion(
-              Motion.fromAngleAndVelocity(
+              new Motion(
                 Math.atan2(playerPos.y - Position.y, playerPos.x - Position.x),
                 Turret.bulletVelocity
               )
             );
-          entities.add(bullet);
         }
       }
     }
@@ -246,6 +294,9 @@ export default class Engine {
   }
 
   tick() {
+    this.lifetimes();
+    this.trails();
+    this.homing();
     this.turrets();
     this.motion();
   }

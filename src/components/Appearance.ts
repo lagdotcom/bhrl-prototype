@@ -1,4 +1,5 @@
 export enum Layer {
+  Effect,
   Ship,
   Bullet,
   Player,
