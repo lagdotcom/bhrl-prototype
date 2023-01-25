@@ -1,10 +1,10 @@
 import { Colors, Console, Terminal } from "wglt";
 import Entity, { compareEntities } from "./Entity";
-import { Line, System } from "detect-collisions";
 
 import Motion from "./components/Motion";
 import Position from "./components/Position";
 import SortedSet from "./SortedSet";
+import { System } from "detect-collisions";
 import getBattleship from "./prefabs/Battleship";
 import getBullet from "./prefabs/Bullet";
 import getPlayer from "./prefabs/Player";
@@ -14,9 +14,16 @@ import { turretReducer } from "./components/Turret";
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
 
+type BodyTag = { type: "wall" | "ship" | "bullet" | "player"; e?: Entity };
+function tag<T>(body: T, tag: BodyTag) {
+  (body as any).tag = tag;
+  return body;
+}
+
 export default class Engine {
   lastEntityId: number;
 
+  dirty: boolean;
   fovRecompute: boolean;
   map: Console;
   entities: SortedSet<Entity>;
@@ -25,6 +32,7 @@ export default class Engine {
   constructor(public term: Terminal) {
     term.update = this.update.bind(this);
 
+    this.dirty = true;
     this.fovRecompute = true;
     this.map = new Console(MAP_WIDTH, MAP_HEIGHT, () => true);
     this.lastEntityId = 0;
@@ -32,11 +40,13 @@ export default class Engine {
   }
 
   add(e: Entity) {
+    this.dirty = true;
     this.entities.add(e);
     if (e.Player) this.player = e;
   }
 
   addMany(es: Entity[]) {
+    this.dirty = true;
     for (const e of es) this.add(e);
   }
 
@@ -112,6 +122,8 @@ export default class Engine {
           Appearance.bg
         );
     }
+
+    this.dirty = false;
   }
 
   turrets() {
@@ -153,20 +165,14 @@ export default class Engine {
 
     const { entities, map, player } = this;
     const physics = new System();
-    const bits = new Map<
-      string,
-      | { type: "wall" }
-      | { type: "ship"; e: Entity }
-      | { type: "bullet"; e: Entity }
-      | { type: "player" }
-    >();
 
     // insert walls
     for (let y = 0; y < map.height; y++) {
       for (let x = 0; x < map.width; x++) {
         if (map.isBlocked(x, y)) {
-          const wall = physics.createBox({ x, y }, 1, 1, { isStatic: true });
-          bits.set(wall.uid, { type: "wall" });
+          tag(physics.createBox({ x, y }, 1, 1, { isStatic: true }), {
+            type: "wall",
+          });
         }
       }
     }
@@ -180,22 +186,24 @@ export default class Engine {
 
         if (Solid) {
           // insert ships
-          const ship = physics.createBox({ x, y }, 1, 1);
-          bits.set(ship.uid, { type: "ship", e });
+          tag(physics.createBox({ x, y }, 1, 1), { type: "ship", e });
         } else if (Projectile && Motion) {
           // insert bullets
           const newPos = { x: x + Motion.x, y: y + Motion.y };
 
-          const old = physics.createBox({ x: x - 0.25, y: y - 0.25 }, 0.5, 0.5);
-          bits.set(old.uid, { type: "bullet", e });
-          const nu = physics.createBox(
-            { x: newPos.x - 0.5, y: newPos.y - 0.25 },
-            0.5,
-            0.5
+          tag(physics.createBox({ x: x - 0.25, y: y - 0.25 }, 0.5, 0.5), {
+            type: "bullet",
+            e,
+          });
+          tag(
+            physics.createBox(
+              { x: newPos.x - 0.5, y: newPos.y - 0.25 },
+              0.5,
+              0.5
+            ),
+            { type: "bullet", e }
           );
-          bits.set(nu.uid, { type: "bullet", e });
-          const line = physics.createLine({ x, y }, newPos);
-          bits.set(line.uid, { type: "bullet", e });
+          tag(physics.createLine({ x, y }, newPos), { type: "bullet", e });
 
           e.move(newPos.x, newPos.y);
         }
@@ -203,35 +211,33 @@ export default class Engine {
     }
 
     // insert player
-    const pbox = physics.createBox(player.Position!, 1, 1);
-    bits.set(pbox.uid, { type: "player" });
+    tag(physics.createBox(player.Position!, 1, 1), { type: "player" });
 
     physics.update();
     physics.checkAll((r) => {
-      const a = bits.get(r.a.uid);
-      const b = bits.get(r.b.uid);
-      if (!a || !b) return;
+      const a = r.a.tag as BodyTag;
+      const b = r.b.tag as BodyTag;
 
       if (a.type === "wall") {
-        if (b instanceof Entity && b.Projectile) {
+        if (b.e?.Projectile) {
           // console.log("killed", b);
-          entities.delete(b);
+          entities.delete(b.e);
         }
         return;
       }
       if (b.type === "wall") {
-        if (a instanceof Entity && a.Projectile) {
+        if (a.e?.Projectile) {
           // console.log("killed", a);
-          entities.delete(a);
+          entities.delete(a.e);
         }
         return;
       }
 
-      if (a.type === "player" && b.type === "bullet" && b.e.alive) {
+      if (a.type === "player" && b.type === "bullet" && b.e?.alive) {
         // console.log(b, "hits", a);
         b.e.kill();
         entities.delete(b.e);
-      } else if (b.type === "player" && a.type === "bullet" && a.e.alive) {
+      } else if (b.type === "player" && a.type === "bullet" && a.e?.alive) {
         // console.log(a, "hits", b);
         a.e.kill();
         entities.delete(a.e);
@@ -263,6 +269,6 @@ export default class Engine {
 
   update() {
     this.handleKeys();
-    this.draw();
+    if (this.dirty) this.draw();
   }
 }

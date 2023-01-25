@@ -9,4 +9,6 @@ const result = await esbuild.build({
   outfile: "docs/bundle.js",
   plugins: [CDNModule],
 });
-console.log("built", result);
+console.log(
+  `build ended with ${result.errors.length} errors and ${result.warnings.length} warnings`
+);

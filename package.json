@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node build.mjs",
-    "watch": "esbuild src/index.ts --watch --bundle --sourcemap --outfile=docs/bundle.js",
+    "watch": "node watch.mjs",
     "serve": "http-server docs"
   },
   "dependencies": {

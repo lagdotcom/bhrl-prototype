@@ -41,6 +41,7 @@ export default class Entity {
   }
 
   setAppearance(c?: Appearance): this {
+    this.g.dirty = true;
     this.Appearance = c;
     return this;
   }
@@ -56,6 +57,7 @@ export default class Entity {
   }
 
   setPosition(c?: Position): this {
+    this.g.dirty = true;
     this.Position = c;
     return this;
   }
@@ -81,6 +83,7 @@ export default class Entity {
   }
 
   move(x: number, y: number) {
+    this.g.dirty = true;
     this.Position = new Position(x, y);
     this.eachChild((e, at) => e.move(x + at.x, y + at.y));
     return this.Position;
@@ -90,6 +93,7 @@ export default class Entity {
 export function compareEntities(a: Entity, b: Entity) {
   const layerA = a.Appearance?.layer ?? 0;
   const layerB = b.Appearance?.layer ?? 0;
+  if (layerA !== layerB) return layerA - layerB;
 
-  return layerA - layerB;
+  return a.id - b.id;
 }
