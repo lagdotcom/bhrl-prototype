@@ -1,12 +1,10 @@
-import Appearance, { Layer } from "../components/Appearance";
-
 import { Colors } from "wglt";
 import Engine from "../Engine";
 import Entity from "../Entity";
-import Lifetime from "../components/Lifetime";
+import { Layer } from "../components/Appearance";
 
 export function puff(g: Engine) {
   return new Entity(g, "Puff")
-    .setAppearance(new Appearance("#", Layer.Effect, Colors.LIGHT_GRAY))
-    .setLifetime(new Lifetime(2));
+    .setAppearance({ glyph: " ", layer: Layer.Effect, bg: Colors.LIGHT_GRAY })
+    .setLifetime({ duration: 2 });
 }

@@ -1,15 +1,15 @@
 export enum Layer {
   Effect,
   Ship,
+  Gun,
   Bullet,
   Player,
 }
 
-export default class Appearance {
-  constructor(
-    public glyph: string,
-    public layer: Layer,
-    public fg: number,
-    public bg?: number
-  ) {}
-}
+type Appearance = {
+  glyph: string;
+  layer: Layer;
+  fg?: number;
+  bg?: number;
+};
+export default Appearance;

@@ -7,7 +7,10 @@ import Entity from "../Entity";
 export function player(g: Engine) {
   return new Entity(g, "Player")
     .setPlayer(true)
-    .setAppearance(
-      new Appearance(">", Layer.Player, Colors.WHITE, Colors.DARK_RED)
-    );
+    .setAppearance({
+      glyph: ">",
+      layer: Layer.Player,
+      fg: Colors.WHITE,
+      bg: Colors.DARK_RED,
+    });
 }

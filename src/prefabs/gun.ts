@@ -1,20 +1,28 @@
-import Appearance, { Layer } from "../components/Appearance";
-
 import { Colors } from "wglt";
 import Engine from "../Engine";
 import Entity from "../Entity";
-import Turret from "../components/Turret";
+import { Layer } from "../components/Appearance";
 
 export function machineGun(g: Engine) {
   return new Entity(g, "MachineGun")
-    .setAppearance(new Appearance("o", Layer.Ship, Colors.WHITE, Colors.BROWN))
-    .setTurret(new Turret("bullet", 2, 5, 0, 12))
-    .setSolid(true);
+    .setAppearance({ glyph: "o", layer: Layer.Gun, fg: Colors.WHITE })
+    .setTurret({
+      bulletPrefab: "bullet",
+      bulletVelocity: 2,
+      salvoCount: 5,
+      timeBetweenShots: 0,
+      timeBetweenSalvos: 12,
+    });
 }
 
 export function missileLauncher(g: Engine) {
   return new Entity(g, "MissileLauncher")
-    .setAppearance(new Appearance("o", Layer.Ship, Colors.YELLOW, Colors.BROWN))
-    .setTurret(new Turret("missile", 1, 1, 8, 8))
-    .setSolid(true);
+    .setAppearance({ glyph: "o", layer: Layer.Gun, fg: Colors.YELLOW })
+    .setTurret({
+      bulletPrefab: "missile",
+      bulletVelocity: 1,
+      salvoCount: 1,
+      timeBetweenShots: 8,
+      timeBetweenSalvos: 8,
+    });
 }

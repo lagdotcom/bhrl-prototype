@@ -1,3 +1,2 @@
-export default class Homing {
-  constructor(public strength: number, public duration: number) {}
-}
+type Homing = { strength: number; duration: number };
+export default Homing;

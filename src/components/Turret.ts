@@ -1,26 +1,19 @@
 import { PrefabName } from "../prefabs";
 
-export default class Turret {
-  constructor(
-    public bulletPrefab: PrefabName,
-    public bulletVelocity: number,
-    public salvoCount: number,
-    public timeBetweenShots: number,
-    public timeBetweenSalvos: number,
-    public mode = "idle",
-    public timer = 0,
-    public salvo = 0
-  ) {}
-}
+type Turret = {
+  bulletPrefab: PrefabName;
+  bulletVelocity: number;
+  salvoCount: number;
+  timeBetweenShots: number;
+  timeBetweenSalvos: number;
+  mode: string;
+  timer: number;
+  salvo: number;
+};
+export default Turret;
 
 export function turretReducer(state: Turret) {
   switch (state.mode) {
-    case "idle":
-      state.mode = "fire";
-      state.salvo = state.salvoCount - 1;
-      state.timer = state.timeBetweenShots;
-      break;
-
     case "fire":
       state.timer--;
       if (state.salvo > 0) {
@@ -40,6 +33,13 @@ export function turretReducer(state: Turret) {
     case "reloading":
       state.timer--;
       if (state.timer <= 0) state.mode = "idle";
+      break;
+
+    case "idle":
+    default:
+      state.mode = "fire";
+      state.salvo = state.salvoCount - 1;
+      state.timer = state.timeBetweenShots;
       break;
   }
 

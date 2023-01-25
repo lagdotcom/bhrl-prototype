@@ -1,3 +1,2 @@
-export default class Position {
-  constructor(public x: number, public y: number) {}
-}
+type Position = { x: number; y: number };
+export default Position;

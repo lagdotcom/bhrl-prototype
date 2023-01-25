@@ -1,3 +1,2 @@
-export default class Lifetime {
-  constructor(public duration: number) {}
-}
+type Lifetime = { duration: number };
+export default Lifetime;

@@ -2,11 +2,10 @@ import { Colors, Console, Terminal } from "wglt";
 import Entity, { compareEntities } from "./Entity";
 import instantiate, { PrefabName } from "./prefabs";
 
-import Motion from "./components/Motion";
-import Position from "./components/Position";
 import SortedSet from "./SortedSet";
 import { System } from "detect-collisions";
-import anglediff from "./tools/anglediff";
+import angleDiff from "./tools/angleDiff";
+import angleMove from "./tools/angleMove";
 import int from "./tools/int";
 import { turretReducer } from "./components/Turret";
 
@@ -38,7 +37,7 @@ export default class Engine {
   }
 
   get player() {
-    const player = this.entities.get().find((e) => e.Player);
+    const player = this.entities.get().find((e) => e.player);
     if (!player) throw new Error("Could not find a player!");
     return player;
   }
@@ -62,7 +61,7 @@ export default class Engine {
 
     this.map.clear();
     this.room(1, 1, 40, 30);
-    this.spawn("player").setPosition(new Position(5, 25));
+    this.spawn("player").move(5, 25);
     this.spawn("battleship").move(8, 5);
   }
 
@@ -85,7 +84,7 @@ export default class Engine {
     const { map, player, term, entities } = this;
 
     if (this.fovRecompute) {
-      map.computeFov(player.Position!.x, player.Position!.y, 20);
+      map.computeFov(player.position!.x, player.position!.y, 20);
       this.fovRecompute = false;
     }
 
@@ -109,20 +108,20 @@ export default class Engine {
       }
     }
 
-    const draw = (x: number, y: number, g: string, f: number, b?: number) => {
+    const draw = (x: number, y: number, g: string, f?: number, b?: number) => {
       if (map.isVisible(x, y)) term.drawChar(x, y, g, f, b);
     };
 
     for (const e of entities.get()) {
-      const { Appearance, Position } = e;
+      const { appearance, position } = e;
 
-      if (Appearance && Position)
+      if (appearance && position)
         draw(
-          int(Position.x),
-          int(Position.y),
-          Appearance.glyph,
-          Appearance.fg,
-          Appearance.bg
+          int(position.x),
+          int(position.y),
+          appearance.glyph,
+          appearance.fg,
+          appearance.bg
         );
     }
 
@@ -131,86 +130,70 @@ export default class Engine {
 
   lifetimes() {
     for (const e of this.entities.get()) {
-      const { Lifetime } = e;
+      const { lifetime } = e;
 
-      if (Lifetime) {
-        if (--Lifetime.duration <= 0) {
-          e.kill();
-          this.entities.delete(e);
-        }
+      if (lifetime) {
+        if (--lifetime.duration <= 0) e.kill();
       }
     }
   }
 
   trails() {
     for (const e of this.entities.get()) {
-      const { Position, Trail } = e;
+      const { position, trail } = e;
 
-      if (Position && Trail) {
-        this.spawn(Trail.effectPrefab).setPosition(Position);
-        if (--Trail.duration <= 0) e.setTrail();
+      if (position && trail) {
+        this.spawn(trail.effectPrefab).setPosition(position);
       }
     }
   }
 
   homing() {
-    const playerPos = this.player.Position!;
+    const playerPos = this.player.position!;
 
     for (const e of this.entities.get()) {
-      const { Homing, Motion, Position } = e;
+      const { homing, motion, position } = e;
 
-      if (Homing && Motion && Position) {
+      if (homing && motion && position) {
         const desired = Math.atan2(
-          playerPos.y - Position.y,
-          playerPos.x - Position.x
+          playerPos.y - position.y,
+          playerPos.x - position.x
         );
-        const diff = anglediff(Motion.angle, desired);
+        const diff = angleDiff(motion.angle, desired);
 
-        if (Math.abs(diff) <= Homing.strength) Motion.angle = desired;
-        else if (diff < 0) Motion.angle -= Homing.strength;
-        else Motion.angle += Homing.strength;
+        if (Math.abs(diff) <= homing.strength) motion.angle = desired;
+        else if (diff < 0) motion.angle -= homing.strength;
+        else motion.angle += homing.strength;
 
-        if (--Homing.duration <= 0) e.setHoming();
+        if (--homing.duration <= 0) e.setHoming();
       }
     }
   }
 
   turrets() {
     const { entities } = this;
-    const playerPos = this.player.Position!;
+    const playerPos = this.player.position!;
 
     for (const e of entities.get()) {
-      const { Position, Turret } = e;
-      if (Position && Turret) {
-        turretReducer(Turret);
-        if (Turret.mode === "fire") {
-          this.spawn(Turret.bulletPrefab)
-            .setPosition({ x: Position.x + 0.5, y: Position.y + 0.5 })
-            .setMotion(
-              new Motion(
-                Math.atan2(playerPos.y - Position.y, playerPos.x - Position.x),
-                Turret.bulletVelocity
-              )
-            );
+      const { position, turret } = e;
+      if (position && turret) {
+        turretReducer(turret);
+        if (turret.mode === "fire") {
+          this.spawn(turret.bulletPrefab)
+            .setPosition({ x: position.x + 0.5, y: position.y + 0.5 })
+            .setMotion({
+              angle: Math.atan2(
+                playerPos.y - position.y,
+                playerPos.x - position.x
+              ),
+              vel: turret.bulletVelocity,
+            });
         }
       }
     }
   }
 
   motion() {
-    // const { entities, map } = this;
-
-    // for (const e of entities.get()) {
-    //   const { Motion, Position } = e;
-
-    //   if (Motion && Position) {
-    //     const newPos = e.move(Position.x + Motion.x, Position.y + Motion.y);
-
-    //     if (map.isBlocked(int(newPos.x), int(newPos.y)) && e.Projectile)
-    //       entities.delete(e);
-    //   }
-    // }
-
     const { entities, map, player } = this;
     const physics = new System();
 
@@ -227,17 +210,19 @@ export default class Engine {
 
     // insert ships
     for (const e of entities.get()) {
-      const { Solid, Motion, Position, Projectile } = e;
+      const { solid, motion, position, projectile } = e;
 
-      if (Position) {
-        const { x, y } = Position;
+      if (position) {
+        const { x, y } = position;
 
-        if (Solid) {
+        if (solid) {
           // insert ships
           tag(physics.createBox({ x, y }, 1, 1), { type: "ship", e });
-        } else if (Projectile && Motion) {
+        } else if (projectile && motion) {
+          const [dx, dy] = angleMove(motion);
+
           // insert bullets
-          const newPos = { x: x + Motion.x, y: y + Motion.y };
+          const newPos = { x: x + dx, y: y + dy };
 
           tag(physics.createBox({ x: x - 0.25, y: y - 0.25 }, 0.5, 0.5), {
             type: "bullet",
@@ -259,7 +244,7 @@ export default class Engine {
     }
 
     // insert player
-    tag(physics.createBox(player.Position!, 1, 1), { type: "player" });
+    tag(physics.createBox(player.position!, 1, 1), { type: "player" });
 
     physics.update();
     physics.checkAll((r) => {
@@ -267,16 +252,16 @@ export default class Engine {
       const b = r.b.tag as BodyTag;
 
       if (a.type === "wall") {
-        if (b.e?.Projectile) {
+        if (b.e?.projectile) {
           // console.log("killed", b);
-          entities.delete(b.e);
+          b.e.kill();
         }
         return;
       }
       if (b.type === "wall") {
-        if (a.e?.Projectile) {
+        if (a.e?.projectile) {
           // console.log("killed", a);
-          entities.delete(a.e);
+          a.e.kill();
         }
         return;
       }
@@ -284,13 +269,17 @@ export default class Engine {
       if (a.type === "player" && b.type === "bullet" && b.e?.alive) {
         // console.log(b, "hits", a);
         b.e.kill();
-        entities.delete(b.e);
       } else if (b.type === "player" && a.type === "bullet" && a.e?.alive) {
         // console.log(a, "hits", b);
         a.e.kill();
-        entities.delete(a.e);
       }
     });
+  }
+
+  kills() {
+    for (const e of this.entities.get()) {
+      if (!e.alive) this.entities.delete(e);
+    }
   }
 
   tick() {
@@ -299,6 +288,7 @@ export default class Engine {
     this.homing();
     this.turrets();
     this.motion();
+    this.kills();
   }
 
   handleKeys() {
@@ -306,8 +296,8 @@ export default class Engine {
 
     const move = term.getMovementKey();
     if (move) {
-      const dx = player.Position!.x + move.x;
-      const dy = player.Position!.y + move.y;
+      const dx = player.position!.x + move.x;
+      const dy = player.position!.y + move.y;
 
       if (!map.isBlocked(dx, dy)) {
         player.move(dx, dy);

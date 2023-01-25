@@ -11,24 +11,24 @@ import Turret from "./components/Turret";
 export default class Entity {
   alive: boolean;
   id: number;
-  Appearance?: Appearance;
-  Attachment?: Attachment;
-  Homing?: Homing;
-  Lifetime?: Lifetime;
-  Motion?: Motion;
-  Player: boolean;
-  Projectile: boolean;
-  Position?: Position;
-  Solid: boolean;
-  Trail?: Trail;
-  Turret?: Turret;
+  appearance?: Appearance;
+  attachment?: Attachment;
+  homing?: Homing;
+  lifetime?: Lifetime;
+  motion?: Motion;
+  player: boolean;
+  projectile: boolean;
+  position?: Position;
+  solid: boolean;
+  trail?: Trail;
+  turret?: Turret;
 
   constructor(public g: Engine, public name?: string) {
     this.alive = true;
     this.id = ++g.lastEntityId;
-    this.Player = false;
-    this.Projectile = false;
-    this.Solid = false;
+    this.player = false;
+    this.projectile = false;
+    this.solid = false;
 
     g.add(this);
   }
@@ -39,83 +39,84 @@ export default class Entity {
 
   kill(): this {
     this.alive = false;
+    this.eachChild((e) => e.kill());
     return this;
   }
 
   eachChild(callback: (e: Entity, at: Attachment) => void) {
     for (const e of this.g.entities.get()) {
-      if (e.Attachment?.parent === this) callback(e, e.Attachment);
+      if (e.attachment?.parent === this) callback(e, e.attachment);
     }
   }
 
   setAppearance(c?: Appearance): this {
     this.g.dirty = true;
-    this.Appearance = c;
+    this.appearance = c;
     return this;
   }
 
   setAttachment(c?: Attachment): this {
-    this.Attachment = c;
+    this.attachment = c;
     return this;
   }
 
   setHoming(c?: Homing): this {
-    this.Homing = c;
+    this.homing = c;
     return this;
   }
 
   setLifetime(c?: Lifetime): this {
-    this.Lifetime = c;
+    this.lifetime = c;
     return this;
   }
 
   setMotion(c?: Motion): this {
-    this.Motion = c;
+    this.motion = c;
     return this;
   }
 
   setPosition(c?: Position): this {
     this.g.dirty = true;
-    this.Position = c;
+    this.position = c;
     return this;
   }
 
   setTrail(c?: Trail): this {
-    this.Trail = c;
+    this.trail = c;
     return this;
   }
 
   setTurret(c?: Turret): this {
-    this.Turret = c;
+    this.turret = c;
     return this;
   }
 
   setPlayer(tag: boolean): this {
-    this.Player = tag;
+    this.player = tag;
     return this;
   }
 
   setProjectile(tag: boolean): this {
-    this.Projectile = tag;
+    this.projectile = tag;
     return this;
   }
 
   setSolid(tag: boolean): this {
-    this.Solid = tag;
+    this.solid = tag;
     return this;
   }
 
   move(x: number, y: number) {
     this.g.dirty = true;
-    this.Position = new Position(x, y);
+    this.position = { x, y };
     this.eachChild((e, at) => e.move(x + at.x, y + at.y));
-    return this.Position;
+    return this.position;
   }
 }
 
 export function compareEntities(a: Entity, b: Entity) {
-  const layerA = a.Appearance?.layer ?? 0;
-  const layerB = b.Appearance?.layer ?? 0;
+  const layerA = a.appearance?.layer ?? 0;
+  const layerB = b.appearance?.layer ?? 0;
   if (layerA !== layerB) return layerA - layerB;
 
   return a.id - b.id;
