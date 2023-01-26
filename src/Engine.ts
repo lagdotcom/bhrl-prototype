@@ -1,13 +1,13 @@
 import { Colors, Console, Terminal } from "wglt";
-import Entity, { compareEntities } from "./Entity";
-import instantiate, { PrefabName } from "./prefabs";
+import Entity, { compareEntities } from "@app/Entity";
+import instantiate, { PrefabName } from "@app/prefabs";
 
-import SortedSet from "./SortedSet";
+import SortedList from "@app/SortedList";
 import { System } from "detect-collisions";
-import angleDiff from "./tools/angleDiff";
-import angleMove from "./tools/angleMove";
-import int from "./tools/int";
-import { turretReducer } from "./components/Turret";
+import angleDiff from "@app/tools/angleDiff";
+import angleMove from "@app/tools/angleMove";
+import int from "@app/tools/int";
+import turretReducer from "@app/logic/turretReducer";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
@@ -24,7 +24,7 @@ export default class Engine {
   dirty: boolean;
   fovRecompute: boolean;
   map: Console;
-  entities: SortedSet<Entity>;
+  entities: SortedList<Entity>;
 
   constructor(public term: Terminal) {
     term.update = this.update.bind(this);
@@ -33,7 +33,7 @@ export default class Engine {
     this.fovRecompute = true;
     this.map = new Console(MAP_WIDTH, MAP_HEIGHT, () => true);
     this.lastEntityId = 0;
-    this.entities = new SortedSet(compareEntities);
+    this.entities = new SortedList(compareEntities);
   }
 
   get player() {
@@ -61,8 +61,8 @@ export default class Engine {
 
     this.map.clear();
     this.room(1, 1, 40, 30);
-    this.spawn("player").move(5, 25);
-    this.spawn("battleship").move(8, 5);
+    this.spawn("Player").move(5, 25);
+    this.spawn("Battleship").move(8, 5);
   }
 
   room(sx: number, sy: number, w: number, h: number) {

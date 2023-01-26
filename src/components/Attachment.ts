@@ -1,4 +1,4 @@
-import Entity from "../Entity";
+import Entity from "@app/Entity";
 
 type Attachment = {
   parent: Entity;

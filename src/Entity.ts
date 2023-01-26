@@ -1,12 +1,15 @@
-import Appearance from "./components/Appearance";
-import Attachment from "./components/Attachment";
-import Engine from "./Engine";
-import Homing from "./components/Homing";
-import Lifetime from "./components/Lifetime";
-import Motion from "./components/Motion";
-import Position from "./components/Position";
-import Trail from "./components/Trail";
-import Turret from "./components/Turret";
+import {
+  Appearance,
+  Attachment,
+  Homing,
+  Lifetime,
+  Motion,
+  Position,
+  Trail,
+  Turret,
+} from "@app/components";
+
+import Engine from "@app/Engine";
 
 export default class Entity {
   alive: boolean;

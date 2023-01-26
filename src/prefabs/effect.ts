@@ -1,10 +1,10 @@
 import { Colors } from "wglt";
-import Engine from "../Engine";
-import Entity from "../Entity";
-import { Layer } from "../components/Appearance";
+import Engine from "@app/Engine";
+import Entity from "@app/Entity";
+import Layer from "@app/Layer";
 
-export function puff(g: Engine) {
-  return new Entity(g, "Puff")
+export function SmokePuff(g: Engine) {
+  return new Entity(g, "SmokePuff")
     .setAppearance({ glyph: " ", layer: Layer.Effect, bg: Colors.LIGHT_GRAY })
     .setLifetime({ duration: 2 });
 }

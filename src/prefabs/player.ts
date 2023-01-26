@@ -1,16 +1,13 @@
-import Appearance, { Layer } from "../components/Appearance";
-
 import { Colors } from "wglt";
-import Engine from "../Engine";
-import Entity from "../Entity";
+import Engine from "@app/Engine";
+import Entity from "@app/Entity";
+import Layer from "@app/Layer";
 
-export function player(g: Engine) {
-  return new Entity(g, "Player")
-    .setPlayer(true)
-    .setAppearance({
-      glyph: ">",
-      layer: Layer.Player,
-      fg: Colors.WHITE,
-      bg: Colors.DARK_RED,
-    });
+export function Player(g: Engine) {
+  return new Entity(g, "Player").setPlayer(true).setAppearance({
+    glyph: ">",
+    layer: Layer.Player,
+    fg: Colors.WHITE,
+    bg: Colors.DARK_RED,
+  });
 }

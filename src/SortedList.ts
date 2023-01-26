@@ -1,4 +1,4 @@
-export default class SortedSet<T> {
+export default class SortedList<T> {
   dirty: boolean;
 
   constructor(

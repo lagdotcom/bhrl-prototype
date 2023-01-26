@@ -1,10 +1,4 @@
-export enum Layer {
-  Effect,
-  Ship,
-  Gun,
-  Bullet,
-  Player,
-}
+import Layer from "@app/Layer";
 
 type Appearance = {
   glyph: string;

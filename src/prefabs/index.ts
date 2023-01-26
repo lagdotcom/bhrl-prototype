@@ -4,7 +4,7 @@ import * as effect from "./effect";
 import * as gun from "./gun";
 import * as player from "./player";
 
-import Engine from "../Engine";
+import Engine from "@app/Engine";
 
 const AllPrefabs = {
   ...battleship,

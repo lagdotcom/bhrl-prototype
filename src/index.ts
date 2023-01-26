@@ -1,4 +1,4 @@
-import Engine from "./Engine";
+import Engine from "@app/Engine";
 import { Terminal } from "wglt";
 
 function loadEngine(parent: HTMLElement) {
