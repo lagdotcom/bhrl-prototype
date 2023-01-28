@@ -2,6 +2,7 @@ import {
   Appearance,
   Attachment,
   Homing,
+  IgnoreSolid,
   Lifetime,
   Motion,
   Position,
@@ -17,6 +18,7 @@ export default class Entity {
   appearance?: Appearance;
   attachment?: Attachment;
   homing?: Homing;
+  ignoreSolid?: IgnoreSolid;
   lifetime?: Lifetime;
   motion?: Motion;
   player: boolean;
@@ -65,6 +67,11 @@ export default class Entity {
 
   setHoming(c?: Homing): this {
     this.homing = c;
+    return this;
+  }
+
+  setIgnoreSolid(c?: IgnoreSolid): this {
+    this.ignoreSolid = c;
     return this;
   }
 

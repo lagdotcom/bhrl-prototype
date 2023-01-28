@@ -29,6 +29,6 @@ export default class SortedList<T> {
 
   get() {
     if (this.dirty) this.sort();
-    return this.items;
+    return this.items.slice();
   }
 }

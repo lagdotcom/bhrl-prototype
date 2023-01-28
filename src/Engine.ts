@@ -1,22 +1,17 @@
 import { Colors, Console, Terminal } from "wglt";
 import Entity, { compareEntities } from "@app/Entity";
 import instantiate, { PrefabName } from "@app/prefabs";
+import int, { intPosition } from "@app/tools/int";
 
+import { Position } from "@app/components";
 import SortedList from "@app/SortedList";
-import { System } from "detect-collisions";
 import angleDiff from "@app/tools/angleDiff";
 import angleMove from "@app/tools/angleMove";
-import int from "@app/tools/int";
 import turretReducer from "@app/logic/turretReducer";
+import walkGrid from "@app/walkGrid";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
-
-type BodyTag = { type: "wall" | "ship" | "bullet" | "player"; e?: Entity };
-function tag<T>(body: T, tag: BodyTag) {
-  (body as any).tag = tag;
-  return body;
-}
 
 export default class Engine {
   lastEntityId: number;
@@ -128,22 +123,30 @@ export default class Engine {
     this.dirty = false;
   }
 
+  getRootID(e: Entity): number {
+    return e.attachment ? this.getRootID(e.attachment.parent) : e.id;
+  }
+
+  getContents(pos: Position) {
+    const ipos = { x: int(pos.x), y: int(pos.y) };
+
+    const wall = this.map.isBlocked(ipos.x, ipos.y);
+    const entities = this.entities
+      .get()
+      .filter(
+        (e) => int(e.position?.x) === ipos.x && int(e.position?.y) == ipos.y
+      );
+    const solid = entities.find((e) => e.solid);
+
+    return { wall, solid, other: entities.filter((e) => !e.solid) };
+  }
+
   lifetimes() {
     for (const e of this.entities.get()) {
       const { lifetime } = e;
 
       if (lifetime) {
         if (--lifetime.duration <= 0) e.kill();
-      }
-    }
-  }
-
-  trails() {
-    for (const e of this.entities.get()) {
-      const { position, trail } = e;
-
-      if (position && trail) {
-        this.spawn(trail.effectPrefab).setPosition(position);
       }
     }
   }
@@ -165,7 +168,10 @@ export default class Engine {
         else if (diff < 0) motion.angle -= homing.strength;
         else motion.angle += homing.strength;
 
-        if (--homing.duration <= 0) e.setHoming();
+        if (--homing.duration <= 0) {
+          e.setHoming();
+          e.setTrail();
+        }
       }
     }
   }
@@ -180,6 +186,7 @@ export default class Engine {
         turretReducer(turret);
         if (turret.mode === "fire") {
           this.spawn(turret.bulletPrefab)
+            .setIgnoreSolid({ ids: [this.getRootID(e)] })
             .setPosition({ x: position.x + 0.5, y: position.y + 0.5 })
             .setMotion({
               angle: Math.atan2(
@@ -194,86 +201,55 @@ export default class Engine {
   }
 
   motion() {
-    const { entities, map, player } = this;
-    const physics = new System();
+    const { entities } = this;
 
-    // insert walls
-    for (let y = 0; y < map.height; y++) {
-      for (let x = 0; x < map.width; x++) {
-        if (map.isBlocked(x, y)) {
-          tag(physics.createBox({ x, y }, 1, 1, { isStatic: true }), {
-            type: "wall",
-          });
-        }
-      }
-    }
-
-    // insert ships
     for (const e of entities.get()) {
-      const { solid, motion, position, projectile } = e;
+      const { ignoreSolid, motion, position, trail } = e;
 
-      if (position) {
-        const { x, y } = position;
+      if (position && motion) {
+        const src = { ...position };
+        const [dx, dy] = angleMove(motion);
 
-        if (solid) {
-          // insert ships
-          tag(physics.createBox({ x, y }, 1, 1), { type: "ship", e });
-        } else if (projectile && motion) {
-          const [dx, dy] = angleMove(motion);
+        const dst = { x: position.x + dx, y: position.y + dy };
 
-          // insert bullets
-          const newPos = { x: x + dx, y: y + dy };
+        const line = walkGrid(intPosition(src), intPosition(dst));
 
-          tag(physics.createBox({ x: x - 0.25, y: y - 0.25 }, 0.5, 0.5), {
-            type: "bullet",
-            e,
-          });
-          tag(
-            physics.createBox(
-              { x: newPos.x - 0.5, y: newPos.y - 0.25 },
-              0.5,
-              0.5
-            ),
-            { type: "bullet", e }
-          );
-          tag(physics.createLine({ x, y }, newPos), { type: "bullet", e });
+        let reached = src;
+        let hitWall = false;
+        let hitEntity: Entity | undefined = undefined;
+        for (const pos of line) {
+          reached = pos;
 
-          e.move(newPos.x, newPos.y);
+          const { wall, solid } = this.getContents(pos);
+          if (wall) {
+            hitWall = true;
+            break;
+          } else if (
+            solid &&
+            !ignoreSolid?.ids.includes(this.getRootID(solid))
+          ) {
+            hitEntity = solid;
+            break;
+          }
+
+          if (trail && pos !== line.slice(-1)[0])
+            this.spawn(trail.effectPrefab).setPosition(pos);
+        }
+
+        if (hitWall) {
+          e.kill();
+        } else if (hitEntity) {
+          // TODO damage etc.
+          e.kill();
+        } else {
+          e.move(dst.x, dst.y);
+        }
+
+        if (!e.alive) {
+          // TODO explode etc.
         }
       }
     }
-
-    // insert player
-    tag(physics.createBox(player.position!, 1, 1), { type: "player" });
-
-    physics.update();
-    physics.checkAll((r) => {
-      const a = r.a.tag as BodyTag;
-      const b = r.b.tag as BodyTag;
-
-      if (a.type === "wall") {
-        if (b.e?.projectile) {
-          // console.log("killed", b);
-          b.e.kill();
-        }
-        return;
-      }
-      if (b.type === "wall") {
-        if (a.e?.projectile) {
-          // console.log("killed", a);
-          a.e.kill();
-        }
-        return;
-      }
-
-      if (a.type === "player" && b.type === "bullet" && b.e?.alive) {
-        // console.log(b, "hits", a);
-        b.e.kill();
-      } else if (b.type === "player" && a.type === "bullet" && a.e?.alive) {
-        // console.log(a, "hits", b);
-        a.e.kill();
-      }
-    });
   }
 
   kills() {
@@ -284,7 +260,6 @@ export default class Engine {
 
   tick() {
     this.lifetimes();
-    this.trails();
     this.homing();
     this.turrets();
     this.motion();

@@ -4,7 +4,7 @@ import Entity from "@app/Entity";
 import Layer from "@app/Layer";
 
 export function Player(g: Engine) {
-  return new Entity(g, "Player").setPlayer(true).setAppearance({
+  return new Entity(g, "Player").setPlayer(true).setSolid(true).setAppearance({
     glyph: ">",
     layer: Layer.Player,
     fg: Colors.WHITE,
