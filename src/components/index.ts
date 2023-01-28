@@ -1,5 +1,7 @@
 export { default as Appearance } from "./Appearance";
 export { default as Attachment } from "./Attachment";
+export { default as Explodes } from "./Explodes";
+export { default as Field } from "./Field";
 export { default as Homing } from "./Homing";
 export { default as IgnoreSolid } from "./IgnoreSolid";
 export { default as Lifetime } from "./Lifetime";

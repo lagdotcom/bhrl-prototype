@@ -1,7 +1,7 @@
 import { Colors } from "wglt";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import Layer from "@app/Layer";
+import Layer from "@app/types/Layer";
 
 export function Bullet(g: Engine) {
   return new Entity(g, "Bullet")
@@ -14,6 +14,7 @@ export function HomingMissile(g: Engine) {
     .setProjectile(true)
     .setHoming({ strength: 0.15, duration: 10 })
     .setTrail({ effectPrefab: "SmokePuff" })
+    .setExplodes({ size: 5, falloff: 1 })
     .setAppearance({ glyph: "*", layer: Layer.Bullet, fg: Colors.DARK_RED });
 
   return parent;

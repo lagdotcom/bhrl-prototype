@@ -1,5 +1,5 @@
 import { BlendMode } from "wglt";
-import Layer from "@app/Layer";
+import Layer from "@app/types/Layer";
 
 type Appearance = {
   glyph: string;

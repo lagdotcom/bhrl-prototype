@@ -7,8 +7,10 @@ import { Position } from "@app/components";
 import SortedList from "@app/SortedList";
 import angleDiff from "@app/tools/angleDiff";
 import angleMove from "@app/tools/angleMove";
+import generateField from "@app/logic/generateField";
+import getFieldAppearance from "@app/logic/getFieldAppearance";
 import turretReducer from "@app/logic/turretReducer";
-import walkGrid from "@app/walkGrid";
+import walkGrid from "@app/logic/walkGrid";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
@@ -139,13 +141,13 @@ export default class Engine {
   }
 
   getContents(pos: Position) {
-    const ipos = { x: int(pos.x), y: int(pos.y) };
+    const square = { x: int(pos.x), y: int(pos.y) };
 
-    const wall = this.map.isBlocked(ipos.x, ipos.y);
+    const wall = this.map.isBlocked(square.x, square.y);
     const entities = this.entities
       .get()
       .filter(
-        (e) => int(e.position?.x) === ipos.x && int(e.position?.y) == ipos.y
+        (e) => int(e.position?.x) === square.x && int(e.position?.y) == square.y
       );
     const solid = entities.find((e) => e.solid);
 
@@ -211,11 +213,29 @@ export default class Engine {
     }
   }
 
+  fields() {
+    const { entities } = this;
+
+    for (const e of entities.get()) {
+      const { field, position } = e;
+
+      if (field && position) {
+        field.intensity -= field.falloff;
+        e.setAppearance(getFieldAppearance(field));
+
+        if (field.intensity <= 0) e.kill();
+        else {
+          // TODO damage etc.
+        }
+      }
+    }
+  }
+
   motion() {
     const { entities } = this;
 
     for (const e of entities.get()) {
-      const { ignoreSolid, motion, position, trail } = e;
+      const { explodes, ignoreSolid, motion, position, trail } = e;
 
       if (position && motion) {
         const src = { ...position };
@@ -257,7 +277,22 @@ export default class Engine {
         }
 
         if (!e.alive) {
-          // TODO explode etc.
+          if (explodes) {
+            for (const { x, y, intensity } of generateField(
+              reached,
+              explodes.size
+            )) {
+              const explosion = new Entity(this, e.name + "Explosion")
+                .setPosition({ x, y })
+                .setField({
+                  type: "fire",
+                  intensity,
+                  falloff: explodes.falloff,
+                });
+
+              explosion.setAppearance(getFieldAppearance(explosion.field!));
+            }
+          }
         }
       }
     }
@@ -273,6 +308,7 @@ export default class Engine {
     this.lifetimes();
     this.homing();
     this.turrets();
+    this.fields();
     this.motion();
     this.kills();
   }

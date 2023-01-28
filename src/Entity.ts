@@ -1,6 +1,8 @@
 import {
   Appearance,
   Attachment,
+  Explodes,
+  Field,
   Homing,
   IgnoreSolid,
   Lifetime,
@@ -17,6 +19,8 @@ export default class Entity {
   id: number;
   appearance?: Appearance;
   attachment?: Attachment;
+  explodes?: Explodes;
+  field?: Field;
   homing?: Homing;
   ignoreSolid?: IgnoreSolid;
   lifetime?: Lifetime;
@@ -62,6 +66,16 @@ export default class Entity {
 
   setAttachment(c?: Attachment): this {
     this.attachment = c;
+    return this;
+  }
+
+  setExplodes(c?: Explodes): this {
+    this.explodes = c;
+    return this;
+  }
+
+  setField(c?: Field): this {
+    this.field = c;
     return this;
   }
 

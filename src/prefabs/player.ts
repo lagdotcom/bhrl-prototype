@@ -1,7 +1,7 @@
 import { Colors } from "wglt";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import Layer from "@app/Layer";
+import Layer from "@app/types/Layer";
 
 export function Player(g: Engine) {
   return new Entity(g, "Player").setPlayer(true).setSolid(true).setAppearance({
