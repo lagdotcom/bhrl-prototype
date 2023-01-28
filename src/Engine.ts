@@ -1,4 +1,4 @@
-import { Colors, Console, Terminal } from "wglt";
+import { BlendMode, Cell, Colors, Console, Terminal } from "wglt";
 import Entity, { compareEntities } from "@app/Entity";
 import instantiate, { PrefabName } from "@app/prefabs";
 import int, { intPosition } from "@app/tools/int";
@@ -103,8 +103,18 @@ export default class Engine {
       }
     }
 
-    const draw = (x: number, y: number, g: string, f?: number, b?: number) => {
-      if (map.isVisible(x, y)) term.drawChar(x, y, g, f, b);
+    const draw = (
+      x: number,
+      y: number,
+      g: string,
+      fg?: number,
+      bg?: number,
+      bm?: BlendMode
+    ) => {
+      if (map.isVisible(x, y)) {
+        if (bm) term.drawCell(x, y, { bg } as Cell, bm);
+        else term.drawChar(x, y, g, fg, bg);
+      }
     };
 
     for (const e of entities.get()) {
@@ -116,7 +126,8 @@ export default class Engine {
           int(position.y),
           appearance.glyph,
           appearance.fg,
-          appearance.bg
+          appearance.bg,
+          appearance.blendMode
         );
     }
 
