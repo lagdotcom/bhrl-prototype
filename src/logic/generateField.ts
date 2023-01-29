@@ -3,6 +3,7 @@ import distance from "@app/tools/distance";
 
 export type FieldCell = { x: number; y: number; intensity: number };
 
+// TODO shape around walls lol
 export default function generateField(centre: Position, size: number) {
   const parts: FieldCell[] = [];
 

@@ -1,6 +1,7 @@
 import {
   Appearance,
   Attachment,
+  EntityMap,
   Explodes,
   Field,
   Homing,
@@ -14,7 +15,7 @@ import {
 
 import Engine from "@app/Engine";
 
-export default class Entity {
+export default class Entity implements Partial<EntityMap> {
   alive: boolean;
   id: number;
   appearance?: Appearance;

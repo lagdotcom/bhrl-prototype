@@ -1,16 +1,17 @@
 import { BlendMode, Cell, Colors, Console, Terminal } from "wglt";
 import Entity, { compareEntities } from "@app/Entity";
 import instantiate, { PrefabName } from "@app/prefabs";
-import int, { intPosition } from "@app/tools/int";
 
+import EntityList from "@app/EntityList";
 import { Position } from "@app/components";
-import SortedList from "@app/SortedList";
-import angleDiff from "@app/tools/angleDiff";
-import angleMove from "@app/tools/angleMove";
-import generateField from "@app/logic/generateField";
-import getFieldAppearance from "@app/logic/getFieldAppearance";
-import turretReducer from "@app/logic/turretReducer";
-import walkGrid from "@app/logic/walkGrid";
+import System from "@app/System";
+import getDrawEntities from "@app/systems/DrawScreen";
+import getFields from "@app/systems/Fields";
+import getHoming from "@app/systems/Homing";
+import getLifetime from "@app/systems/Lifetime";
+import getMotion from "@app/systems/Motion";
+import getTurrets from "@app/systems/Turrets";
+import int from "@app/tools/int";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
@@ -21,16 +22,32 @@ export default class Engine {
   dirty: boolean;
   fovRecompute: boolean;
   map: Console;
-  entities: SortedList<Entity>;
+  entities: EntityList;
 
-  constructor(public term: Terminal) {
+  onTick: System<any>[];
+  onDraw: System<any>[];
+
+  constructor(
+    public term: Terminal,
+    public mapWidth = MAP_WIDTH,
+    public mapHeight = MAP_HEIGHT
+  ) {
     term.update = this.update.bind(this);
 
     this.dirty = true;
     this.fovRecompute = true;
-    this.map = new Console(MAP_WIDTH, MAP_HEIGHT, () => true);
+    this.map = new Console(mapWidth, mapHeight, () => true);
     this.lastEntityId = 0;
-    this.entities = new SortedList(compareEntities);
+    this.entities = new EntityList(compareEntities);
+
+    this.onTick = [
+      getLifetime(this),
+      getHoming(this),
+      getTurrets(this),
+      getFields(this),
+      getMotion(this),
+    ];
+    this.onDraw = [getDrawEntities(this)];
   }
 
   get player() {
@@ -77,6 +94,20 @@ export default class Engine {
     }
   }
 
+  drawAt(
+    x: number,
+    y: number,
+    g: string,
+    fg?: number,
+    bg?: number,
+    bm?: BlendMode
+  ) {
+    if (this.map.isVisible(x, y)) {
+      if (bm) this.term.drawCell(x, y, { bg } as Cell, bm);
+      else this.term.drawChar(x, y, g, fg, bg);
+    }
+  }
+
   draw() {
     const { map, player, term, entities } = this;
 
@@ -105,34 +136,7 @@ export default class Engine {
       }
     }
 
-    const draw = (
-      x: number,
-      y: number,
-      g: string,
-      fg?: number,
-      bg?: number,
-      bm?: BlendMode
-    ) => {
-      if (map.isVisible(x, y)) {
-        if (bm) term.drawCell(x, y, { bg } as Cell, bm);
-        else term.drawChar(x, y, g, fg, bg);
-      }
-    };
-
-    for (const e of entities.get()) {
-      const { appearance, position } = e;
-
-      if (appearance && position)
-        draw(
-          int(position.x),
-          int(position.y),
-          appearance.glyph,
-          appearance.fg,
-          appearance.bg,
-          appearance.blendMode
-        );
-    }
-
+    for (const sys of this.onDraw) sys.run();
     this.dirty = false;
   }
 
@@ -154,163 +158,9 @@ export default class Engine {
     return { wall, solid, other: entities.filter((e) => !e.solid) };
   }
 
-  lifetimes() {
-    for (const e of this.entities.get()) {
-      const { lifetime } = e;
-
-      if (lifetime) {
-        if (--lifetime.duration <= 0) e.kill();
-      }
-    }
-  }
-
-  homing() {
-    const playerPos = this.player.position!;
-
-    for (const e of this.entities.get()) {
-      const { homing, motion, position } = e;
-
-      if (homing && motion && position) {
-        const desired = Math.atan2(
-          playerPos.y - position.y,
-          playerPos.x - position.x
-        );
-        const diff = angleDiff(motion.angle, desired);
-
-        if (Math.abs(diff) <= homing.strength) motion.angle = desired;
-        else if (diff < 0) motion.angle -= homing.strength;
-        else motion.angle += homing.strength;
-
-        if (--homing.duration <= 0) {
-          e.setHoming();
-          e.setTrail();
-        }
-      }
-    }
-  }
-
-  turrets() {
-    const { entities } = this;
-    const playerPos = this.player.position!;
-
-    for (const e of entities.get()) {
-      const { position, turret } = e;
-      if (position && turret) {
-        turretReducer(turret);
-        if (turret.mode === "fire") {
-          this.spawn(turret.bulletPrefab)
-            .setIgnoreSolid({ ids: [this.getRootID(e)] })
-            .setPosition({ x: position.x + 0.5, y: position.y + 0.5 })
-            .setMotion({
-              angle: Math.atan2(
-                playerPos.y - position.y,
-                playerPos.x - position.x
-              ),
-              vel: turret.bulletVelocity,
-            });
-        }
-      }
-    }
-  }
-
-  fields() {
-    const { entities } = this;
-
-    for (const e of entities.get()) {
-      const { field, position } = e;
-
-      if (field && position) {
-        field.intensity -= field.falloff;
-        e.setAppearance(getFieldAppearance(field));
-
-        if (field.intensity <= 0) e.kill();
-        else {
-          // TODO damage etc.
-        }
-      }
-    }
-  }
-
-  motion() {
-    const { entities } = this;
-
-    for (const e of entities.get()) {
-      const { explodes, ignoreSolid, motion, position, trail } = e;
-
-      if (position && motion) {
-        const src = { ...position };
-        const [dx, dy] = angleMove(motion);
-
-        const dst = { x: position.x + dx, y: position.y + dy };
-
-        const line = walkGrid(intPosition(src), intPosition(dst));
-
-        let reached = src;
-        let hitWall = false;
-        let hitEntity: Entity | undefined = undefined;
-        for (const pos of line) {
-          reached = pos;
-
-          const { wall, solid } = this.getContents(pos);
-          if (wall) {
-            hitWall = true;
-            break;
-          } else if (
-            solid &&
-            !ignoreSolid?.ids.includes(this.getRootID(solid))
-          ) {
-            hitEntity = solid;
-            break;
-          }
-
-          if (trail && pos !== line.slice(-1)[0])
-            this.spawn(trail.effectPrefab).setPosition(pos);
-        }
-
-        if (hitWall) {
-          e.kill();
-        } else if (hitEntity) {
-          // TODO damage etc.
-          e.kill();
-        } else {
-          e.move(dst.x, dst.y);
-        }
-
-        if (!e.alive) {
-          if (explodes) {
-            for (const { x, y, intensity } of generateField(
-              reached,
-              explodes.size
-            )) {
-              const explosion = new Entity(this, e.name + "Explosion")
-                .setPosition({ x, y })
-                .setField({
-                  type: "fire",
-                  intensity,
-                  falloff: explodes.falloff,
-                });
-
-              explosion.setAppearance(getFieldAppearance(explosion.field!));
-            }
-          }
-        }
-      }
-    }
-  }
-
-  kills() {
-    for (const e of this.entities.get()) {
-      if (!e.alive) this.entities.delete(e);
-    }
-  }
-
   tick() {
-    this.lifetimes();
-    this.homing();
-    this.turrets();
-    this.fields();
-    this.motion();
-    this.kills();
+    for (const sys of this.onTick) sys.run();
+    this.entities.clearDead();
   }
 
   handleKeys() {
