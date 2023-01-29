@@ -6,7 +6,6 @@ type Turret = {
   salvoCount: number;
   timeBetweenShots: number;
   timeBetweenSalvos: number;
-  mode: string;
   timer: number;
   salvo: number;
 };

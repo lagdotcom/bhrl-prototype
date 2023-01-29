@@ -45,3 +45,19 @@ export {
   Trail,
   Turret,
 };
+
+export const makeTurret = ({
+  bulletPrefab = "Bullet",
+  bulletVelocity = 1,
+  salvoCount = 1,
+  timeBetweenShots = 1,
+  timeBetweenSalvos = 1,
+}: Partial<Turret>): Turret => ({
+  bulletPrefab,
+  bulletVelocity,
+  salvoCount,
+  timeBetweenShots,
+  timeBetweenSalvos,
+  timer: 0,
+  salvo: salvoCount,
+});

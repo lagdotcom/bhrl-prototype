@@ -1,13 +1,12 @@
 import Engine from "@app/Engine";
 import Query from "@app/Query";
-import turretReducer from "@app/logic/turretReducer";
+import isTurretFiring from "@app/logic/turret";
 
 export default function addTurrets(g: Engine) {
   const query = new Query(g.entities, ["position", "turret"]);
   g.on("tick", () =>
     query.forEach(({ position, turret }, e) => {
-      turretReducer(turret);
-      if (turret.mode === "fire") {
+      if (isTurretFiring(turret)) {
         g.spawn(turret.bulletPrefab)
           .setIgnoreSolid({ ids: [g.getRootID(e)] })
           .setPosition({ x: position.x + 0.5, y: position.y + 0.5 })
