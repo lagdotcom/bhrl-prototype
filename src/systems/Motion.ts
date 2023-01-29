@@ -2,10 +2,8 @@ import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import Query from "@app/Query";
 import angleMove from "@app/tools/angleMove";
-import generateField from "@app/logic/generateField";
-import getFieldAppearance from "@app/logic/getFieldAppearance";
 import { intPosition } from "@app/tools/int";
-import walkGrid from "@app/logic/walkGrid";
+import { walkGrid } from "@app/logic/geometry";
 
 export default function addMotion(g: Engine) {
   const query = new Query(g.entities, ["motion", "position"]);

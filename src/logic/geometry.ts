@@ -1,7 +1,7 @@
 import { Position } from "@app/components";
 
 /// thanks https://www.redblobgames.com/grids/line-drawing.html#stepping
-export default function walkGrid(p0: Position, p1: Position) {
+export function walkGrid(p0: Position, p1: Position) {
   const dx = p1.x - p0.x,
     dy = p1.y - p0.y,
     nx = Math.abs(dx),

@@ -1,6 +1,6 @@
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import generateField from "@app/logic/generateField";
+import { generateField } from "@app/logic/field";
 
 export default function addExplosives(g: Engine) {
   g.on("kill", ({ e }) => {

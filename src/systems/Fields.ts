@@ -1,6 +1,6 @@
 import Engine from "@app/Engine";
 import Query from "@app/Query";
-import getFieldAppearance from "@app/logic/getFieldAppearance";
+import { getFieldAppearance } from "@app/logic/field";
 
 export default function addFields(g: Engine) {
   const query = new Query(g.entities, ["field", "position"]);
