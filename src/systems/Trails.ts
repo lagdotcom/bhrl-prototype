@@ -1,5 +1,5 @@
 import Engine from "@app/Engine";
-import { isSameCell } from "@app/tools/int";
+import { isSameCell } from "@app/tools/position";
 
 export default function addTrails(g: Engine) {
   g.on("move", ({ e, old, pos }) => {

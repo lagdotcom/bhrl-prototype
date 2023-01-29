@@ -2,11 +2,11 @@ import { BlendMode, Cell, Colors, Console, Terminal } from "wglt";
 import Entity, { compareEntities } from "@app/Entity";
 import { EventCallback, EventHandler, EventMap, EventName } from "@app/events";
 import instantiate, { PrefabName } from "@app/prefabs";
+import { intPosition, isSameCell } from "./tools/position";
 
 import EntityList from "@app/EntityList";
 import { Position } from "@app/components";
-import { addSystems } from "./systems";
-import int from "@app/tools/int";
+import { addSystems } from "@app/systems";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
@@ -33,7 +33,14 @@ export default class Engine implements EventHandler {
     this.lastEntityId = 0;
     this.entities = new EntityList(compareEntities);
 
-    this.eventCallbacks = { draw: [], kill: [], move: [], spawn: [], tick: [] };
+    this.eventCallbacks = {
+      draw: [],
+      kill: [],
+      move: [],
+      playerMove: [],
+      spawn: [],
+      tick: [],
+    };
     addSystems(this);
   }
 
@@ -99,7 +106,7 @@ export default class Engine implements EventHandler {
     }
   }
 
-  drawAt(
+  drawIfVisible(
     x: number,
     y: number,
     g: string | number,
@@ -107,6 +114,7 @@ export default class Engine implements EventHandler {
     bg?: number,
     bm?: BlendMode
   ) {
+    // TODO scrolling etc.
     if (this.map.isVisible(x, y)) {
       if (bm) this.term.drawCell(x, y, { bg } as Cell, bm);
       else this.term.drawChar(x, y, g, fg, bg);
@@ -114,7 +122,7 @@ export default class Engine implements EventHandler {
   }
 
   draw() {
-    const { map, mapWidth, mapHeight, player } = this;
+    const { map, mapWidth, mapHeight, player, term } = this;
 
     if (this.fovRecompute) {
       map.computeFov(player.position!.x, player.position!.y, 20);
@@ -137,7 +145,8 @@ export default class Engine implements EventHandler {
           bg = wall ? Colors.LIGHT_GRAY : Colors.BLACK;
         }
 
-        this.drawAt(x, y, 0, 0, bg);
+        // TODO scrolling etc.
+        term.drawChar(x, y, 0, 0, bg);
       }
     }
 
@@ -145,20 +154,20 @@ export default class Engine implements EventHandler {
     this.dirty = false;
   }
 
-  getRootID(e: Entity): number {
-    return e.attachment ? this.getRootID(e.attachment.parent) : e.id;
+  getRoot(e: Entity): Entity {
+    return e.attachment ? this.getRoot(e.attachment.parent) : e;
   }
 
-  getContents(pos: Position) {
-    const square = { x: int(pos.x), y: int(pos.y) };
+  getContents(pos: Position, ignoreSolid: number[] = []) {
+    const square = intPosition(pos);
 
     const wall = this.map.isBlocked(square.x, square.y);
     const entities = this.entities
       .get()
-      .filter(
-        (e) => int(e.position?.x) === square.x && int(e.position?.y) == square.y
-      );
-    const solid = entities.find((e) => e.solid);
+      .filter((e) => e.position && isSameCell(square, e.position));
+    const solid = entities
+      .filter((e) => !ignoreSolid.includes(e.id))
+      .find((e) => e.solid);
 
     return { wall, solid, other: entities.filter((e) => !e.solid) };
   }
@@ -169,20 +178,8 @@ export default class Engine implements EventHandler {
   }
 
   handleKeys() {
-    const { map, player, term } = this;
-
-    const move = term.getMovementKey();
-    if (move) {
-      const dx = player.position!.x + move.x;
-      const dy = player.position!.y + move.y;
-
-      if (!map.isBlocked(dx, dy)) {
-        player.move(dx, dy);
-        this.fovRecompute = true;
-
-        this.tick();
-      }
-    }
+    const move = this.term.getMovementKey();
+    if (move) this.fire("playerMove", { move });
   }
 
   update() {

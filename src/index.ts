@@ -23,6 +23,7 @@ function loadEngine(parent: HTMLElement) {
 
   const canvas = document.createElement("canvas");
   container.appendChild(canvas);
+  requestAnimationFrame(() => canvas.focus());
 
   const term = new Terminal(canvas, cols, rows);
   const g = new Engine(term);

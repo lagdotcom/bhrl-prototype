@@ -1,10 +1,11 @@
 import Engine from "@app/Engine";
-import addDrawEntities from "./DrawEntities";
+import addDisplay from "./Display";
 import addExplosives from "./Explosives";
 import addFields from "./Fields";
 import addHoming from "./Homing";
 import addLifetime from "./Lifetime";
 import addMotion from "./Motion";
+import addPlayer from "./Player";
 import addTrails from "./Trails";
 import addTurrets from "./Turrets";
 
@@ -15,9 +16,11 @@ export function addSystems(g: Engine) {
   addFields(g);
   addMotion(g);
 
-  addDrawEntities(g);
+  addDisplay(g);
 
   addTrails(g);
 
   addExplosives(g);
+
+  addPlayer(g);
 }

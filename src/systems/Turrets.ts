@@ -1,3 +1,5 @@
+import { getEntityMidpoint, getEntityTreeIDs } from "@app/logic/entity";
+
 import Engine from "@app/Engine";
 import Query from "@app/Query";
 import isTurretFiring from "@app/logic/turret";
@@ -7,14 +9,13 @@ export default function addTurrets(g: Engine) {
   g.on("tick", () =>
     query.forEach(({ position, turret }, e) => {
       if (isTurretFiring(turret)) {
+        const target = getEntityMidpoint(g, g.player);
+
         g.spawn(turret.bulletPrefab)
-          .setIgnoreSolid({ ids: [g.getRootID(e)] })
+          .setIgnoreSolid({ ids: getEntityTreeIDs(g, e) })
           .setPosition({ x: position.x + 0.5, y: position.y + 0.5 })
           .setMotion({
-            angle: Math.atan2(
-              g.player.position!.y - position.y,
-              g.player.position!.x - position.x
-            ),
+            angle: Math.atan2(target.y - position.y, target.x - position.x),
             vel: turret.bulletVelocity,
           });
       }

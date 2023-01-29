@@ -5,6 +5,7 @@ export type EventMap = {
   draw: undefined;
   kill: { e: Entity };
   move: { e: Entity; old: Position; pos: Position };
+  playerMove: { move: Position };
   spawn: { e: Entity };
   tick: undefined;
 };

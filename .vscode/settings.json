@@ -2,5 +2,5 @@
   "search.exclude": {
     "docs": true
   },
-  "cSpell.words": ["wglt"]
+  "cSpell.words": ["lerp", "wglt"]
 }
