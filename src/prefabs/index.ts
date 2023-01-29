@@ -17,5 +17,5 @@ const AllPrefabs = {
 export type PrefabName = keyof typeof AllPrefabs;
 
 export default function instantiate(g: Engine, name: PrefabName) {
-  return AllPrefabs[name](g);
+  return g.add(AllPrefabs[name](g));
 }

@@ -1,31 +1,24 @@
 import { BlendMode, Cell, Colors, Console, Terminal } from "wglt";
 import Entity, { compareEntities } from "@app/Entity";
+import { EventCallback, EventHandler, EventMap, EventName } from "@app/events";
 import instantiate, { PrefabName } from "@app/prefabs";
 
 import EntityList from "@app/EntityList";
 import { Position } from "@app/components";
-import System from "@app/System";
-import getDrawEntities from "@app/systems/DrawScreen";
-import getFields from "@app/systems/Fields";
-import getHoming from "@app/systems/Homing";
-import getLifetime from "@app/systems/Lifetime";
-import getMotion from "@app/systems/Motion";
-import getTurrets from "@app/systems/Turrets";
+import { addSystems } from "./systems";
 import int from "@app/tools/int";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
 
-export default class Engine {
+export default class Engine implements EventHandler {
   lastEntityId: number;
 
   dirty: boolean;
   fovRecompute: boolean;
   map: Console;
   entities: EntityList;
-
-  onTick: System<any>[];
-  onDraw: System<any>[];
+  eventCallbacks: Record<EventName, EventCallback<any>[]>;
 
   constructor(
     public term: Terminal,
@@ -40,20 +33,22 @@ export default class Engine {
     this.lastEntityId = 0;
     this.entities = new EntityList(compareEntities);
 
-    this.onTick = [
-      getLifetime(this),
-      getHoming(this),
-      getTurrets(this),
-      getFields(this),
-      getMotion(this),
-    ];
-    this.onDraw = [getDrawEntities(this)];
+    this.eventCallbacks = { draw: [], kill: [], move: [], spawn: [], tick: [] };
+    addSystems(this);
   }
 
   get player() {
     const player = this.entities.get().find((e) => e.player);
     if (!player) throw new Error("Could not find a player!");
     return player;
+  }
+
+  fire<T extends EventName>(name: T, data: EventMap[T]): void {
+    for (const cb of this.eventCallbacks[name]) cb(data);
+  }
+
+  on<T extends EventName>(name: T, handler: EventCallback<T>): void {
+    this.eventCallbacks[name].push(handler);
   }
 
   spawn(name: PrefabName) {
@@ -63,11 +58,21 @@ export default class Engine {
   add(e: Entity) {
     this.dirty = true;
     this.entities.add(e);
+    this.fire("spawn", { e });
+    return e;
   }
 
-  addMany(es: Entity[]) {
-    this.dirty = true;
-    for (const e of es) this.add(e);
+  delete(e: Entity) {
+    if (e.alive) {
+      e.kill();
+      this.fire("kill", { e });
+    }
+  }
+
+  move(e: Entity, pos: Position) {
+    const old = e.position;
+    e.move(pos.x, pos.y);
+    if (old) this.fire("move", { e, old, pos });
   }
 
   gotoDemoRoom() {
@@ -97,7 +102,7 @@ export default class Engine {
   drawAt(
     x: number,
     y: number,
-    g: string,
+    g: string | number,
     fg?: number,
     bg?: number,
     bm?: BlendMode
@@ -109,34 +114,34 @@ export default class Engine {
   }
 
   draw() {
-    const { map, player, term, entities } = this;
+    const { map, mapWidth, mapHeight, player } = this;
 
     if (this.fovRecompute) {
       map.computeFov(player.position!.x, player.position!.y, 20);
       this.fovRecompute = false;
     }
 
-    for (let y = 0; y < MAP_HEIGHT; y++) {
-      for (let x = 0; x < MAP_WIDTH; x++) {
+    for (let y = 0; y < mapHeight; y++) {
+      for (let x = 0; x < mapWidth; x++) {
         const cell = map.grid[y][x];
         const visible = map.isVisible(x, y);
         const wall = cell.blockedSight;
-        let color = Colors.BLACK;
+        let bg = Colors.BLACK;
 
         if (visible) {
           // It's visible
-          color = wall ? Colors.WHITE : Colors.DARK_GRAY;
+          bg = wall ? Colors.WHITE : Colors.DARK_GRAY;
           cell.explored = true;
         } else if (cell.explored) {
           // It's remembered
-          color = wall ? Colors.LIGHT_GRAY : Colors.BLACK;
+          bg = wall ? Colors.LIGHT_GRAY : Colors.BLACK;
         }
 
-        term.drawChar(x, y, 0, 0, color);
+        this.drawAt(x, y, 0, 0, bg);
       }
     }
 
-    for (const sys of this.onDraw) sys.run();
+    this.fire("draw", undefined);
     this.dirty = false;
   }
 
@@ -159,7 +164,7 @@ export default class Engine {
   }
 
   tick() {
-    for (const sys of this.onTick) sys.run();
+    this.fire("tick", undefined);
     this.entities.clearDead();
   }
 

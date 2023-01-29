@@ -39,8 +39,6 @@ export default class Entity implements Partial<EntityMap> {
     this.player = false;
     this.projectile = false;
     this.solid = false;
-
-    g.add(this);
   }
 
   get [Symbol.toStringTag]() {
@@ -49,7 +47,7 @@ export default class Entity implements Partial<EntityMap> {
 
   kill(): this {
     this.alive = false;
-    this.eachChild((e) => e.kill());
+    this.eachChild((e) => this.g.delete(e));
     return this;
   }
 

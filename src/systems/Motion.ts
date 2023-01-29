@@ -1,29 +1,27 @@
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import System from "@app/System";
+import Query from "@app/Query";
 import angleMove from "@app/tools/angleMove";
 import generateField from "@app/logic/generateField";
 import getFieldAppearance from "@app/logic/getFieldAppearance";
 import { intPosition } from "@app/tools/int";
 import walkGrid from "@app/logic/walkGrid";
 
-export default function getMotion(g: Engine) {
-  return new System(
-    g,
-    ["motion", "position"],
-    ({ motion, position, explodes, ignoreSolid, trail }, e) => {
+export default function addMotion(g: Engine) {
+  const query = new Query(g.entities, ["motion", "position"]);
+  g.on("tick", () =>
+    query.forEach(({ motion, position, explodes, ignoreSolid }, e) => {
       const [dx, dy] = angleMove(motion);
       const dst = { x: position.x + dx, y: position.y + dy };
 
       const line = walkGrid(intPosition(position), intPosition(dst));
 
-      let reached = position;
       let hitWall = false;
       let hitEntity: Entity | undefined = undefined;
-      for (let i = 0; i < line.length; i++) {
-        reached = line[i];
+      for (const pos of line) {
+        g.move(e, pos);
 
-        const { wall, solid } = g.getContents(reached);
+        const { wall, solid } = g.getContents(pos);
         if (wall) {
           hitWall = true;
           break;
@@ -31,38 +29,16 @@ export default function getMotion(g: Engine) {
           hitEntity = solid;
           break;
         }
-
-        if (trail && i === line.length - 1)
-          g.spawn(trail.effectPrefab).setPosition(reached);
       }
 
       if (hitWall) {
-        e.kill();
+        g.delete(e);
       } else if (hitEntity) {
         // TODO damage etc.
-        e.kill();
+        g.delete(e);
       } else {
-        e.move(dst.x, dst.y);
+        g.move(e, dst);
       }
-
-      if (!e.alive) {
-        if (explodes) {
-          for (const { x, y, intensity } of generateField(
-            reached,
-            explodes.size
-          )) {
-            const explosion = new Entity(g, e.name + "Explosion")
-              .setPosition({ x, y })
-              .setField({
-                type: "fire",
-                intensity,
-                falloff: explodes.falloff,
-              });
-
-            explosion.setAppearance(getFieldAppearance(explosion.field!));
-          }
-        }
-      }
-    }
+    })
   );
 }

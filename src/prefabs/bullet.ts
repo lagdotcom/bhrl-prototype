@@ -10,12 +10,10 @@ export function Bullet(g: Engine) {
 }
 
 export function HomingMissile(g: Engine) {
-  const parent = new Entity(g, "HomingMissile")
+  return new Entity(g, "HomingMissile")
     .setProjectile(true)
     .setHoming({ strength: 0.15, duration: 10 })
     .setTrail({ effectPrefab: "SmokePuff" })
     .setExplodes({ size: 5, falloff: 1 })
     .setAppearance({ glyph: "*", layer: Layer.Bullet, fg: Colors.DARK_RED });
-
-  return parent;
 }

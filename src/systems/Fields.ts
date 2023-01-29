@@ -1,15 +1,21 @@
 import Engine from "@app/Engine";
-import System from "@app/System";
+import Query from "@app/Query";
 import getFieldAppearance from "@app/logic/getFieldAppearance";
 
-export default function getFields(g: Engine) {
-  return new System(g, ["field", "position"], ({ field, position }, e) => {
-    field.intensity -= field.falloff;
-    e.setAppearance(getFieldAppearance(field));
+export default function addFields(g: Engine) {
+  const query = new Query(g.entities, ["field", "position"]);
+  g.on("tick", () =>
+    query.forEach(({ field }, e) => {
+      field.intensity -= field.falloff;
+      e.setAppearance(getFieldAppearance(field));
 
-    if (field.intensity <= 0) e.kill();
-    else {
-      // TODO damage etc.
-    }
+      if (field.intensity <= 0) g.delete(e);
+      else {
+        // TODO damage etc.
+      }
+    })
+  );
+  g.on("spawn", ({ e }) => {
+    if (e.field) e.setAppearance(getFieldAppearance(e.field));
   });
 }

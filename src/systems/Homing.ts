@@ -1,12 +1,11 @@
 import Engine from "@app/Engine";
-import System from "@app/System";
+import Query from "@app/Query";
 import angleDiff from "@app/tools/angleDiff";
 
-export default function getHoming(g: Engine) {
-  return new System(
-    g,
-    ["homing", "motion", "position"],
-    ({ homing, motion, position }, e) => {
+export default function addHoming(g: Engine) {
+  const query = new Query(g.entities, ["homing", "motion", "position"]);
+  g.on("tick", () =>
+    query.forEach(({ homing, motion, position }, e) => {
       const desired = Math.atan2(
         g.player.position!.y - position.y,
         g.player.position!.x - position.x
@@ -21,6 +20,6 @@ export default function getHoming(g: Engine) {
         e.setHoming();
         e.setTrail();
       }
-    }
+    })
   );
 }

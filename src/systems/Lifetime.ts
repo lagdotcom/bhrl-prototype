@@ -1,8 +1,11 @@
 import Engine from "@app/Engine";
-import System from "@app/System";
+import Query from "@app/Query";
 
-export default function getLifetime(g: Engine) {
-  return new System(g, ["lifetime"], ({ lifetime }, e) => {
-    if (--lifetime.duration <= 0) e.kill();
-  });
+export default function addLifetime(g: Engine) {
+  const query = new Query(g.entities, ["lifetime"]);
+  g.on("tick", () =>
+    query.forEach(({ lifetime }, e) => {
+      if (--lifetime.duration <= 0) g.delete(e);
+    })
+  );
 }
