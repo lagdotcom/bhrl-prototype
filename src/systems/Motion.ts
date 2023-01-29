@@ -1,7 +1,7 @@
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import Query from "@app/Query";
-import angleMove from "@app/tools/angleMove";
+import { angleMove } from "@app/tools/angle";
 import { intPosition } from "@app/tools/position";
 import { walkGrid } from "@app/logic/geometry";
 

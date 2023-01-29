@@ -1,12 +1,14 @@
-import { BlendMode, Cell, Colors, Console, Terminal } from "wglt";
+import { BlendMode, Cell, Colors, Console, Key, Terminal } from "wglt";
 import Entity, { compareEntities } from "@app/Entity";
 import { EventCallback, EventHandler, EventMap, EventName } from "@app/events";
 import instantiate, { PrefabName } from "@app/prefabs";
-import { intPosition, isSameCell } from "./tools/position";
+import { intPosition, isSameCell } from "@app/tools/position";
 
 import EntityList from "@app/EntityList";
 import { Position } from "@app/components";
 import { addSystems } from "@app/systems";
+import { fireAirFist } from "@app/logic/airFist";
+import { getEntityMidpoint } from "@app/logic/entity";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
@@ -179,7 +181,16 @@ export default class Engine implements EventHandler {
 
   handleKeys() {
     const move = this.term.getMovementKey();
-    if (move) this.fire("playerMove", { move });
+    if (move) {
+      this.fire("playerMove", { move });
+      return;
+    }
+
+    if (this.term.isKeyPressed(Key.VK_F)) {
+      fireAirFist(this, getEntityMidpoint(this, this.player), 4.5);
+      this.tick();
+      return;
+    }
   }
 
   update() {

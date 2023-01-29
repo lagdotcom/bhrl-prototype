@@ -1,15 +1,15 @@
+import { angleBetween, angleDiff } from "@app/tools/angle";
+
 import Engine from "@app/Engine";
 import Query from "@app/Query";
-import angleDiff from "@app/tools/angleDiff";
+import { getEntityMidpoint } from "@app/logic/entity";
 
 export default function addHoming(g: Engine) {
   const query = new Query(g.entities, ["homing", "motion", "position"]);
   g.on("tick", () =>
     query.forEach(({ homing, motion, position }, e) => {
-      const desired = Math.atan2(
-        g.player.position!.y - position.y,
-        g.player.position!.x - position.x
-      );
+      const centre = getEntityMidpoint(g, g.player);
+      const desired = angleBetween(position, centre);
       const diff = angleDiff(motion.angle, desired);
 
       if (Math.abs(diff) <= homing.strength) motion.angle = desired;

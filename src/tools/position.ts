@@ -1,5 +1,5 @@
 import { Position } from "@app/components";
-import int from "./int";
+import int from "@app/tools/int";
 
 export function intPosition(pos: Position): Position {
   return { x: int(pos.x), y: int(pos.y) };
