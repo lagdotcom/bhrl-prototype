@@ -12,6 +12,7 @@
     "serve": "http-server docs"
   },
   "dependencies": {
+    "nanoclone": "^1.0.1",
     "wglt": "^0.5.1"
   },
   "devDependencies": {

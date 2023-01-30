@@ -1,13 +1,13 @@
-import { EntityAttribute, EntityMap } from "@app/components";
+import { ComponentMap, EntityAttribute } from "@app/components";
 
 import Entity from "@app/Entity";
 import EntityList from "@app/EntityList";
 
 export type HasComponents<T extends EntityAttribute[]> = Pick<
-  EntityMap,
+  ComponentMap,
   T[number]
 > &
-  Partial<EntityMap>;
+  Partial<ComponentMap>;
 
 export type QueryCallback<T extends EntityAttribute[]> = (
   components: HasComponents<T>,

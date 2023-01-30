@@ -1,30 +1,27 @@
 import { Colors } from "wglt";
-import Engine from "@app/Engine";
-import Entity from "@app/Entity";
 import Layer from "@app/types/Layer";
+import Prefab from "@app/types/Prefab";
 
-export function Battleship(g: Engine) {
-  const parent = new Entity(g, "Battleship");
+export const Battleship: Prefab = {
+  children: [
+    { name: "BattleshipHull", x: 1, y: 0 },
+    { name: "BattleshipHull", x: 2, y: 0 },
+    { name: "BattleshipHull", x: 0, y: 1 },
+    { name: "BattleshipHull", x: 1, y: 1 },
+    { name: "BattleshipHull", x: 2, y: 1 },
+    { name: "MachineGun", x: 0, y: 1 },
+    { name: "HomingMissileLauncher", x: 2, y: 1 },
+  ],
+};
 
-  g.spawn("BattleshipHull").setAttachment({ parent, x: 1, y: 0 });
-  g.spawn("BattleshipHull").setAttachment({ parent, x: 2, y: 0 });
-  g.spawn("BattleshipHull").setAttachment({ parent, x: 0, y: 1 });
-  g.spawn("BattleshipHull").setAttachment({ parent, x: 1, y: 1 });
-  g.spawn("BattleshipHull").setAttachment({ parent, x: 2, y: 1 });
-
-  g.spawn("MachineGun").setAttachment({ parent, x: 0, y: 1 });
-  g.spawn("HomingMissileLauncher").setAttachment({ parent, x: 2, y: 1 });
-
-  return parent;
-}
-
-export function BattleshipHull(g: Engine) {
-  return new Entity(g, "BattleshipHull")
-    .setAppearance({
+export const BattleshipHull: Prefab = {
+  components: {
+    solid: true,
+    appearance: {
       glyph: "/",
       layer: Layer.Ship,
       fg: Colors.WHITE,
       bg: Colors.BROWN,
-    })
-    .setSolid(true);
-}
+    },
+  },
+};

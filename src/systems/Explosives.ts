@@ -7,10 +7,7 @@ export default function addExplosives(g: Engine) {
     const { explodes, name, position } = e;
 
     if (explodes && position) {
-      for (const { x, y, intensity } of generateField(
-        position,
-        explodes.size
-      )) {
+      for (const { x, y, intensity } of generateField(position, explodes.size))
         g.add(
           new Entity(g, name + "Explosion").setPosition({ x, y }).setField({
             type: "fire",
@@ -18,7 +15,6 @@ export default function addExplosives(g: Engine) {
             falloff: explodes.falloff,
           })
         );
-      }
     }
   });
 }

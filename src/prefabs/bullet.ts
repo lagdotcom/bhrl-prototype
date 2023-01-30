@@ -1,19 +1,20 @@
 import { Colors } from "wglt";
-import Engine from "@app/Engine";
-import Entity from "@app/Entity";
 import Layer from "@app/types/Layer";
+import Prefab from "@app/types/Prefab";
 
-export function Bullet(g: Engine) {
-  return new Entity(g, "Bullet")
-    .setProjectile(true)
-    .setAppearance({ glyph: ".", layer: Layer.Bullet, fg: Colors.YELLOW });
-}
+export const Bullet: Prefab = {
+  components: {
+    projectile: true,
+    appearance: { glyph: ".", layer: Layer.Bullet, fg: Colors.YELLOW },
+  },
+};
 
-export function HomingMissile(g: Engine) {
-  return new Entity(g, "HomingMissile")
-    .setProjectile(true)
-    .setHoming({ strength: 0.15, duration: 10 })
-    .setTrail({ effectPrefab: "SmokePuff" })
-    .setExplodes({ size: 5, falloff: 1 })
-    .setAppearance({ glyph: "*", layer: Layer.Bullet, fg: Colors.DARK_RED });
-}
+export const HomingMissile: Prefab = {
+  components: {
+    projectile: true,
+    homing: { strength: 0.15, duration: 10 },
+    trail: { effectPrefab: "SmokePuff" },
+    explodes: { size: 5, falloff: 1 },
+    appearance: { glyph: "*", layer: Layer.Bullet, fg: Colors.DARK_RED },
+  },
+};

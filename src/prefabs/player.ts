@@ -1,24 +1,28 @@
 import { Colors } from "wglt";
-import Engine from "@app/Engine";
-import Entity from "@app/Entity";
 import Layer from "@app/types/Layer";
+import Prefab from "@app/types/Prefab";
 
-export function Player(g: Engine) {
-  const parent = new Entity(g, "Player").setPlayer(true);
+export const PlayerHull: Prefab = {
+  components: {
+    solid: true,
+    appearance: {
+      glyph: "#",
+      layer: Layer.Player,
+      fg: Colors.WHITE,
+      bg: Colors.DARK_RED,
+    },
+  },
+};
 
-  g.spawn("PlayerHull").setAttachment({ parent, x: 0, y: 0 });
-
-  const cone = g.spawn("PlayerHull").setAttachment({ parent, x: 1, y: 0 });
-  cone.appearance!.glyph = ">";
-
-  return parent;
-}
-
-export function PlayerHull(g: Engine) {
-  return new Entity(g, "PlayerHull").setSolid(true).setAppearance({
-    glyph: "#",
-    layer: Layer.Player,
-    fg: Colors.WHITE,
-    bg: Colors.DARK_RED,
-  });
-}
+export const Player: Prefab = {
+  components: { player: true },
+  children: [
+    { name: "PlayerHull", x: 0, y: 0 },
+    {
+      name: "PlayerHull",
+      x: 1,
+      y: 0,
+      overlay: { appearance: { glyph: ">" } },
+    },
+  ],
+};

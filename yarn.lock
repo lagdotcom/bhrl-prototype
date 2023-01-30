@@ -316,6 +316,11 @@ ms@^2.1.1:
   resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
+nanoclone@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/nanoclone/-/nanoclone-1.0.1.tgz#1174c3876fe14ffba4d9ac30e59f697728544337"
+  integrity sha512-HycbT3xwHyhFj7T/WOHrvP26LqI2CkdX6FyRQPvdjEUDJiZFXCU4iOAahg517NP21SUfKWURYBlFFm2W+nl6bw==
+
 object-inspect@^1.9.0:
   version "1.12.3"
   resolved "https://registry.npmjs.org/object-inspect/-/object-inspect-1.12.3.tgz"

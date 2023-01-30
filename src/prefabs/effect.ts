@@ -1,27 +1,28 @@
 import { BlendMode, fromRgb } from "wglt";
 
-import Engine from "@app/Engine";
-import Entity from "@app/Entity";
 import Layer from "@app/types/Layer";
+import Prefab from "@app/types/Prefab";
 
-export function AirFistRange(g: Engine) {
-  return new Entity(g, "AirFistRange")
-    .setAppearance({
+export const AirFistRange: Prefab = {
+  components: {
+    lifetime: { duration: 2 },
+    appearance: {
       glyph: " ",
       layer: Layer.Effect,
       bg: fromRgb(0, 255, 255, 100),
       blendMode: BlendMode.Add,
-    })
-    .setLifetime({ duration: 2 });
-}
+    },
+  },
+};
 
-export function SmokePuff(g: Engine) {
-  return new Entity(g, "SmokePuff")
-    .setAppearance({
+export const SmokePuff: Prefab = {
+  components: {
+    lifetime: { duration: 2 },
+    appearance: {
       glyph: " ",
       layer: Layer.Effect,
       bg: fromRgb(100, 100, 100, 50),
       blendMode: BlendMode.Add,
-    })
-    .setLifetime({ duration: 2 });
-}
+    },
+  },
+};

@@ -22,15 +22,12 @@ export type ComponentMap = {
   position: Position;
   trail: Trail;
   turret: Turret;
+
+  player: boolean;
+  projectile: boolean;
+  solid: boolean;
 };
-
-export type TagComponent = "player" | "projectile" | "solid";
-
-export type ComponentAttribute = keyof ComponentMap;
-export type ComponentType = ComponentMap[ComponentAttribute];
-
-export type EntityMap = ComponentMap & { [K in TagComponent]: boolean };
-export type EntityAttribute = keyof EntityMap;
+export type EntityAttribute = keyof ComponentMap;
 
 export {
   Appearance,

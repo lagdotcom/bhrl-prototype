@@ -20,7 +20,6 @@ export function fireAirFist(g: Engine, centre: Position, power: number) {
     }
   }
 
-  for (const point of getCirclePoints(centre.x, centre.y, power)) {
+  for (const point of getCirclePoints(centre.x, centre.y, power))
     g.spawn("AirFistRange").setPosition(point);
-  }
 }

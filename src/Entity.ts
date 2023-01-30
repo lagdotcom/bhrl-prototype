@@ -1,7 +1,7 @@
 import {
   Appearance,
   Attachment,
-  EntityMap,
+  ComponentMap,
   Explodes,
   Field,
   Homing,
@@ -12,12 +12,16 @@ import {
   Trail,
   Turret,
 } from "@app/components";
+import { clone, keys } from "@app/tools/object";
 
 import Engine from "@app/Engine";
+import Prefab from "@app/types/Prefab";
+import { PrefabName } from "@app/prefabs";
 
-export default class Entity implements Partial<EntityMap> {
+export default class Entity implements Partial<ComponentMap> {
   alive: boolean;
   id: number;
+  prefab?: PrefabName;
   appearance?: Appearance;
   attachment?: Attachment;
   explodes?: Explodes;
@@ -39,6 +43,22 @@ export default class Entity implements Partial<EntityMap> {
     this.player = false;
     this.projectile = false;
     this.solid = false;
+  }
+
+  applyPrefab(name: PrefabName, prefab: Prefab): this {
+    this.prefab = name;
+
+    if (prefab.components) Object.assign(this, clone(prefab.components));
+
+    if (prefab.children)
+      for (const { name, x, y, overlay } of prefab.children) {
+        const child = this.g.spawn(name).setAttachment({ parent: this, x, y });
+        if (overlay)
+          for (const key of keys(overlay))
+            Object.assign((child as any)[key], clone(overlay[key]));
+      }
+
+    return this;
   }
 
   get [Symbol.toStringTag]() {
