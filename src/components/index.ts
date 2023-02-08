@@ -1,3 +1,4 @@
+import AI from "./AI";
 import Appearance from "./Appearance";
 import Attachment from "./Attachment";
 import Explodes from "./Explodes";
@@ -11,6 +12,7 @@ import Trail from "./Trail";
 import Turret from "./Turret";
 
 export type ComponentMap = {
+  ai: AI;
   appearance: Appearance;
   attachment: Attachment;
   explodes: Explodes;
@@ -30,6 +32,7 @@ export type ComponentMap = {
 export type EntityAttribute = keyof ComponentMap;
 
 export {
+  AI,
   Appearance,
   Attachment,
   Explodes,

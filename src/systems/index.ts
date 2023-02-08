@@ -1,4 +1,5 @@
 import Engine from "@app/Engine";
+import addAI from "./AI";
 import addDisplay from "./Display";
 import addExplosives from "./Explosives";
 import addFields from "./Fields";
@@ -15,6 +16,7 @@ export function addSystems(g: Engine) {
   addTurrets(g);
   addFields(g);
   addMotion(g);
+  addAI(g);
 
   addDisplay(g);
 

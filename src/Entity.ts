@@ -1,4 +1,5 @@
 import {
+  AI,
   Appearance,
   Attachment,
   ComponentMap,
@@ -22,6 +23,7 @@ export default class Entity implements Partial<ComponentMap> {
   alive: boolean;
   id: number;
   prefab?: PrefabName;
+  ai?: AI;
   appearance?: Appearance;
   attachment?: Attachment;
   explodes?: Explodes;
@@ -75,6 +77,11 @@ export default class Entity implements Partial<ComponentMap> {
     for (const e of this.g.entities.get()) {
       if (e.attachment?.parent === this) callback(e, e.attachment);
     }
+  }
+
+  setAI(c?: AI): this {
+    this.ai = c;
+    return this;
   }
 
   setAppearance(c?: Appearance): this {

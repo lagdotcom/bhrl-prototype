@@ -5,6 +5,7 @@ import instantiate, { PrefabName } from "@app/prefabs";
 import { intPosition, isSameCell } from "@app/tools/position";
 
 import EntityList from "@app/EntityList";
+import HashMap from "@app/HashMap";
 import { Position } from "@app/components";
 import { addSystems } from "@app/systems";
 import { fireAirFist } from "@app/logic/airFist";
@@ -12,6 +13,8 @@ import { getEntityMidpoint } from "@app/logic/entity";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
+
+type Overlay = HashMap<Position, number>;
 
 export default class Engine implements EventHandler {
   lastEntityId: number;
@@ -21,6 +24,8 @@ export default class Engine implements EventHandler {
   map: Console;
   entities: EntityList;
   eventCallbacks: Record<EventName, EventCallback<any>[]>;
+  overlays: Map<string, Overlay>;
+  showOverlay?: string;
 
   constructor(
     public term: Terminal,
@@ -34,6 +39,7 @@ export default class Engine implements EventHandler {
     this.map = new Console(mapWidth, mapHeight, () => true);
     this.lastEntityId = 0;
     this.entities = new EntityList(compareEntities);
+    this.overlays = new Map();
 
     this.eventCallbacks = {
       draw: [],
@@ -154,6 +160,19 @@ export default class Engine implements EventHandler {
 
     this.fire("draw", undefined);
     this.dirty = false;
+
+    if (this.showOverlay) {
+      const overlay = this.overlays.get(this.showOverlay);
+      if (overlay) {
+        for (let y = 0; y < mapHeight; y++) {
+          for (let x = 0; x < mapWidth; x++) {
+            const value = overlay.get({ x, y }) || Infinity;
+            const ch = value === Infinity ? "-" : value < 10 ? `${value}` : "*";
+            term.drawChar(x, y, ch, Colors.LIGHT_RED);
+          }
+        }
+      }
+    }
   }
 
   getRoot(e: Entity): Entity {
@@ -175,6 +194,7 @@ export default class Engine implements EventHandler {
   }
 
   tick() {
+    this.overlays.clear();
     this.fire("tick", undefined);
     this.entities.clearDead();
   }
@@ -196,5 +216,9 @@ export default class Engine implements EventHandler {
   update() {
     this.handleKeys();
     if (this.dirty) this.draw();
+  }
+
+  saveOverlay(e: Entity, name: string, overlay: Overlay) {
+    this.overlays.set(`${e.id}.${name}`, overlay);
   }
 }
