@@ -13,10 +13,13 @@ export default function addTurrets(g: Engine) {
         const start = { x: position.x + 0.5, y: position.y + 0.5 };
         const target = getEntityMidpoint(g, g.player);
 
-        g.spawn(turret.bulletPrefab)
-          .setIgnoreSolid({ ids: getEntityTreeIDs(g, e) })
-          .setPosition(start)
-          .setMotion({
+        const bullet = g
+          .spawn(turret.bulletPrefab)
+          .setIgnoreSolid({ ids: getEntityTreeIDs(g, e) });
+
+        bullet.move(start.x, start.y);
+        if (turret.bulletVelocity)
+          bullet.setMotion({
             angle: angleBetween(start, target),
             vel: turret.bulletVelocity,
           });

@@ -12,6 +12,7 @@ export const Battleship: Prefab = {
     { name: "BattleshipHull", x: 2, y: 1 },
     { name: "MachineGun", x: 0, y: 1 },
     { name: "HomingMissileLauncher", x: 2, y: 1 },
+    { name: "FighterLauncher", x: 2, y: 0 },
   ],
 };
 

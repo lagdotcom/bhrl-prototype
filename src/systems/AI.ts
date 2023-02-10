@@ -1,3 +1,4 @@
+import { addPositions, intPosition } from "@app/tools/position";
 import {
   getEntityLayout,
   getEntityTree,
@@ -8,7 +9,6 @@ import {
 import Engine from "@app/Engine";
 import { Position } from "@app/components";
 import Query from "@app/Query";
-import { addPositions } from "@app/tools/position";
 import bfs from "@app/logic/bfs";
 import isDefined from "@app/tools/isDefined";
 import { neighbourOffsets } from "@app/logic/neighbours";
@@ -17,9 +17,10 @@ import oneOf from "@app/tools/oneOf";
 export default function addAI(g: Engine) {
   const query = new Query(g.entities, ["ai", "position"]);
   g.on("tick", () =>
-    query.forEach(({ ai, position }, e) => {
+    query.forEach(({ ai, position: rawPosition }, e) => {
       const ignoreSolid = getEntityTreeIDs(g, e);
       const { layout } = getEntityLayout(g, e);
+      const position = intPosition(rawPosition);
 
       const playerParts = getEntityTree(g, g.player);
       const playerPositions = playerParts
@@ -35,7 +36,7 @@ export default function addAI(g: Engine) {
         Math.abs(search.getOrDefault(pos, Infinity) - ai.idealDistance);
 
       const getScore = (pos: Position) =>
-        layout.reduce((a, [b, c]) => a + getPosScore(addPositions(pos, b)), 0) /
+        layout.reduce((a, [b]) => a + getPosScore(addPositions(pos, b)), 0) /
         layout.length;
 
       let bestScore = getScore(position);

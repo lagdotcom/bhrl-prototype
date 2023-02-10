@@ -1,6 +1,7 @@
 import * as battleship from "./battleship";
 import * as bullet from "./bullet";
 import * as effect from "./effect";
+import * as fighter from "./fighter";
 import * as gun from "./gun";
 import * as player from "./player";
 
@@ -11,6 +12,7 @@ const AllPrefabs = {
   ...battleship,
   ...bullet,
   ...effect,
+  ...fighter,
   ...gun,
   ...player,
 };
