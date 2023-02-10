@@ -31,7 +31,7 @@ export const Fighter: Prefab = {
       y: 0,
       overlay: { appearance: { glyph: ">" } },
     },
-    { name: "MachineGun", x: 1, y: 0 },
+    { name: "PeaShooter", x: 1, y: 0 },
   ],
 };
 

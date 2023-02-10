@@ -1,16 +1,9 @@
 import { addPositions, intPosition } from "@app/tools/position";
-import {
-  getEntityLayout,
-  getEntityTree,
-  getEntityTreeIDs,
-  getLayoutBlockers,
-} from "@app/logic/entity";
+import { getEntityLayout, getEntityTreeIDs } from "@app/logic/entity";
 
 import Engine from "@app/Engine";
 import { Position } from "@app/components";
 import Query from "@app/Query";
-import bfs from "@app/logic/bfs";
-import isDefined from "@app/tools/isDefined";
 import { neighbourOffsets } from "@app/logic/neighbours";
 import oneOf from "@app/tools/oneOf";
 
@@ -22,25 +15,23 @@ export default function addAI(g: Engine) {
       const { layout } = getEntityLayout(g, e);
       const position = intPosition(rawPosition);
 
-      const playerParts = getEntityTree(g, g.player);
-      const playerPositions = playerParts
-        .map((e) => e.position)
-        .filter(isDefined);
+      const search = g.getPlayerDistanceMap();
 
-      const search = bfs(playerPositions, (pos) => {
-        const blockers = getLayoutBlockers(g, layout, pos, ignoreSolid);
-        return blockers.length === 0;
-      });
+      const isPassable = (pos: Position) => {
+        const { solid, wall } = g.getContents(pos, ignoreSolid);
+        return !solid && !wall;
+      };
 
       const getPosScore = (pos: Position) =>
-        Math.abs(search.getOrDefault(pos, Infinity) - ai.idealDistance);
+        isPassable(pos)
+          ? Math.abs(search.getOrDefault(pos, Infinity) - ai.idealDistance)
+          : Infinity;
 
       const getScore = (pos: Position) =>
         layout.reduce((a, [b]) => a + getPosScore(addPositions(pos, b)), 0) /
         layout.length;
 
       let bestScore = getScore(position);
-      g.saveOverlay(e, "AI", search);
 
       let possibilities: Position[] = [];
       for (const offset of neighbourOffsets) {

@@ -1,6 +1,7 @@
 import { BlendMode, Cell, Colors, Console, Key, Terminal } from "wglt";
 import Entity, { compareEntities } from "@app/Entity";
 import { EventCallback, EventHandler, EventMap, EventName } from "@app/events";
+import { getEntityMidpoint, getEntityTree } from "@app/logic/entity";
 import instantiate, { PrefabName } from "@app/prefabs";
 import { intPosition, isSameCell } from "@app/tools/position";
 
@@ -8,8 +9,9 @@ import EntityList from "@app/EntityList";
 import HashMap from "@app/HashMap";
 import { Position } from "@app/components";
 import { addSystems } from "@app/systems";
+import bfs from "@app/logic/bfs";
 import { fireAirFist } from "@app/logic/airFist";
-import { getEntityMidpoint } from "@app/logic/entity";
+import isDefined from "@app/tools/isDefined";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
@@ -220,5 +222,30 @@ export default class Engine implements EventHandler {
 
   saveOverlay(e: Entity, name: string, overlay: Overlay) {
     this.overlays.set(`${e.id}.${name}`, overlay);
+  }
+
+  inBounds(pos: Position) {
+    return (
+      pos.x >= 0 &&
+      pos.y >= 0 &&
+      pos.x < this.mapWidth &&
+      pos.y < this.mapHeight
+    );
+  }
+
+  getPlayerDistanceMap() {
+    const key = "player.distance";
+    let map = this.overlays.get(key);
+    if (!map) {
+      map = bfs(
+        getEntityTree(this, this.player)
+          .map((e) => e.position)
+          .filter(isDefined),
+        this.inBounds.bind(this)
+      );
+      this.overlays.set(key, map);
+    }
+
+    return map;
   }
 }

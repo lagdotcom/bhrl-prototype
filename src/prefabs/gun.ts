@@ -27,3 +27,15 @@ export const HomingMissileLauncher: Prefab = {
     }),
   },
 };
+
+export const PeaShooter: Prefab = {
+  components: {
+    appearance: { glyph: "o", layer: Layer.Gun, fg: Colors.LIGHT_GRAY },
+    turret: makeTurret({
+      bulletPrefab: "Bullet",
+      bulletVelocity: 2,
+      salvoCount: 1,
+      timeBetweenSalvos: 3,
+    }),
+  },
+};
