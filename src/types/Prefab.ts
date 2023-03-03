@@ -6,6 +6,7 @@ export type PrefabChild = {
   x: number;
   y: number;
   overlay?: { [K in keyof ComponentMap]?: Partial<ComponentMap[K]> };
+  tags?: string[];
 };
 
 type Prefab = {

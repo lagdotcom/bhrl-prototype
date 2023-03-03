@@ -7,6 +7,7 @@ export const EventNames = [
   "kill",
   "move",
   "notice",
+  "playerFire",
   "playerMove",
   "spawn",
   "tick",
@@ -19,6 +20,7 @@ export type EventMap = {
   kill: { e: Entity; by?: Entity };
   move: { e: Entity; old: Position; pos: Position };
   notice: { e: Entity; noticed: Entity };
+  playerFire: { array: number };
   playerMove: { move: Position };
   spawn: { e: Entity };
   tick: undefined;

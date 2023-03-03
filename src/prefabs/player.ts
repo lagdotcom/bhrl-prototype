@@ -15,14 +15,34 @@ export const PlayerHull: Prefab = {
 };
 
 export const Player: Prefab = {
-  components: { player: { visionRange: 20 }, hull: { hp: 20, maxHp: 20 } },
+  components: {
+    player: { visionRange: 20, weaponArrays: ["primary"] },
+    hull: { hp: 20, maxHp: 20 },
+  },
   children: [
-    { name: "PlayerHull", x: 0, y: 0 },
+    {
+      name: "PlayerHull",
+      x: 0,
+      y: 0,
+      overlay: { appearance: { glyph: "\x1b", bg: Colors.DARK_RED } },
+    },
     {
       name: "PlayerHull",
       x: 1,
       y: 0,
-      overlay: { appearance: { glyph: ">" } },
+      overlay: { appearance: { glyph: "\x05", bg: Colors.DARK_RED } },
+    },
+    {
+      name: "PlayerHull",
+      x: 2,
+      y: 0,
+      overlay: { appearance: { glyph: "\x1a", bg: Colors.DARK_RED } },
+    },
+    {
+      name: "MachineGun",
+      x: 1,
+      y: 0,
+      tags: ["primary"],
     },
   ],
 };

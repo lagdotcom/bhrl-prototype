@@ -1,16 +1,46 @@
+import { Position, Turret } from "@app/components";
+
+import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import { Turret } from "@app/components";
+import { angleBetween } from "@app/tools/angle";
 
-export default function isTurretFiring(state: Turret, enemy?: Entity): boolean {
-  if (state.timer) {
-    state.timer--;
-    if (state.timer <= 0 && state.salvo <= 0) state.salvo = state.salvoCount;
-    return false;
+export function advanceTimer(turret: Turret) {
+  if (turret.timer > 0) {
+    turret.timer--;
+    if (turret.timer <= 0 && turret.salvo <= 0)
+      turret.salvo = turret.salvoCount;
+    return;
   }
+}
 
-  if (!enemy) return false;
+export function canFire(turret: Turret) {
+  return turret.timer === 0;
+}
 
-  if (--state.salvo <= 0) state.timer = state.timeBetweenSalvos;
-  else state.timer = state.timeBetweenShots;
-  return true;
+export function fireAt(
+  g: Engine,
+  turret: Turret,
+  position: Position,
+  target: Position,
+  owner: Entity,
+  ignoreIds: number[] = []
+) {
+  if (--turret.salvo <= 0) turret.timer = turret.timeBetweenSalvos;
+  else turret.timer = turret.timeBetweenShots;
+
+  const start = { x: position.x + 0.5, y: position.y + 0.5 };
+
+  const bullet = g
+    .spawn(turret.bulletPrefab)
+    .setOwner(owner)
+    .setIgnoreSolid({ ids: ignoreIds });
+
+  bullet.move(start.x, start.y);
+  if (turret.bulletVelocity)
+    bullet.setMotion({
+      angle: angleBetween(start, target),
+      vel: turret.bulletVelocity,
+    });
+
+  return bullet;
 }

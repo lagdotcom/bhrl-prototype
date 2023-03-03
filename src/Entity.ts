@@ -25,6 +25,9 @@ import { PrefabName } from "@app/prefabs";
 export default class Entity implements Partial<ComponentMap> {
   alive: boolean;
   id: number;
+  owner?: Entity;
+  tags: Set<string>;
+
   prefab?: PrefabName;
   ai?: AI;
   appearance?: Appearance;
@@ -47,6 +50,7 @@ export default class Entity implements Partial<ComponentMap> {
     this.alive = true;
     this.id = ++g.lastEntityId;
     this.solid = false;
+    this.tags = new Set();
   }
 
   applyPrefab(name: PrefabName, prefab: Prefab): this {
@@ -55,11 +59,12 @@ export default class Entity implements Partial<ComponentMap> {
     if (prefab.components) Object.assign(this, clone(prefab.components));
 
     if (prefab.children)
-      for (const { name, x, y, overlay } of prefab.children) {
+      for (const { name, x, y, overlay, tags } of prefab.children) {
         const child = this.g.spawn(name).setAttachment({ parent: this, x, y });
         if (overlay)
           for (const key of keys(overlay))
             Object.assign((child as any)[key], clone(overlay[key]));
+        if (tags) for (const tag of tags) child.tags.add(tag);
       }
 
     return this;
@@ -79,6 +84,11 @@ export default class Entity implements Partial<ComponentMap> {
     for (const e of this.g.entities.get()) {
       if (e.attachment?.parent === this) callback(e, e.attachment);
     }
+  }
+
+  setOwner(e?: Entity): this {
+    this.owner = e;
+    return this;
   }
 
   setAI(c?: AI): this {

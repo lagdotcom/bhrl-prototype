@@ -182,7 +182,8 @@ export default class Engine implements EventHandler {
   }
 
   getRoot(e: Entity): Entity {
-    return e.attachment ? this.getRoot(e.attachment.parent) : e;
+    const owner = e.owner ?? e;
+    return owner.attachment ? this.getRoot(owner.attachment.parent) : owner;
   }
 
   getContents(pos: Position, ignoreSolid: number[] = []) {
@@ -209,6 +210,15 @@ export default class Engine implements EventHandler {
     const move = this.term.getMovementKey();
     if (move) {
       this.fire("playerMove", { move });
+      return;
+    }
+
+    if (this.term.isKeyPressed(Key.VK_1)) {
+      this.fire("playerFire", { array: 0 });
+      return;
+    }
+    if (this.term.isKeyPressed(Key.VK_2)) {
+      this.fire("playerFire", { array: 1 });
       return;
     }
 

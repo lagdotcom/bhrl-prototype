@@ -62,4 +62,15 @@ export default function addAI(g: Engine) {
       }
     })
   );
+
+  g.on("damage", ({ e, inflicter }) => {
+    if (e === inflicter) return;
+
+    if (e.ai) {
+      if (!e.ai.attacking) {
+        const root = g.getRoot(inflicter);
+        if (root.alive) e.ai.attacking = root;
+      }
+    }
+  });
 }
