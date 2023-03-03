@@ -1,16 +1,28 @@
 import Entity from "@app/Entity";
 import { Position } from "@app/components";
 
+export const EventNames = [
+  "damage",
+  "draw",
+  "kill",
+  "move",
+  "notice",
+  "playerMove",
+  "spawn",
+  "tick",
+] as const;
+export type EventName = typeof EventNames[number];
+
 export type EventMap = {
+  damage: { e: Entity; inflicter: Entity; amount: number };
   draw: undefined;
-  kill: { e: Entity };
+  kill: { e: Entity; by?: Entity };
   move: { e: Entity; old: Position; pos: Position };
+  notice: { e: Entity; noticed: Entity };
   playerMove: { move: Position };
   spawn: { e: Entity };
   tick: undefined;
 };
-
-export type EventName = keyof EventMap;
 
 export type EventCallback<T extends EventName> = (data: EventMap[T]) => void;
 

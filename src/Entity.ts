@@ -6,10 +6,13 @@ import {
   Explodes,
   Field,
   Homing,
+  Hull,
   IgnoreSolid,
   Lifetime,
   Motion,
+  Player,
   Position,
+  Projectile,
   Trail,
   Turret,
 } from "@app/components";
@@ -29,11 +32,12 @@ export default class Entity implements Partial<ComponentMap> {
   explodes?: Explodes;
   field?: Field;
   homing?: Homing;
+  hull?: Hull;
   ignoreSolid?: IgnoreSolid;
   lifetime?: Lifetime;
   motion?: Motion;
-  player: boolean;
-  projectile: boolean;
+  player?: Player;
+  projectile?: Projectile;
   position?: Position;
   solid: boolean;
   trail?: Trail;
@@ -42,8 +46,6 @@ export default class Entity implements Partial<ComponentMap> {
   constructor(public g: Engine, public name?: string) {
     this.alive = true;
     this.id = ++g.lastEntityId;
-    this.player = false;
-    this.projectile = false;
     this.solid = false;
   }
 
@@ -67,9 +69,9 @@ export default class Entity implements Partial<ComponentMap> {
     return this.name;
   }
 
-  kill(): this {
+  kill(by?: Entity): this {
     this.alive = false;
-    this.eachChild((e) => this.g.delete(e));
+    this.eachChild((e) => this.g.kill(e, by));
     return this;
   }
 
@@ -110,6 +112,11 @@ export default class Entity implements Partial<ComponentMap> {
     return this;
   }
 
+  setHull(c?: Hull): this {
+    this.hull = c;
+    return this;
+  }
+
   setIgnoreSolid(c?: IgnoreSolid): this {
     this.ignoreSolid = c;
     return this;
@@ -141,13 +148,13 @@ export default class Entity implements Partial<ComponentMap> {
     return this;
   }
 
-  setPlayer(tag: boolean): this {
-    this.player = tag;
+  setPlayer(c?: Player): this {
+    this.player = c;
     return this;
   }
 
-  setProjectile(tag: boolean): this {
-    this.projectile = tag;
+  setProjectile(c?: Projectile): this {
+    this.projectile = c;
     return this;
   }
 

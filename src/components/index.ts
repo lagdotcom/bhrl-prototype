@@ -4,10 +4,13 @@ import Attachment from "./Attachment";
 import Explodes from "./Explodes";
 import Field from "./Field";
 import Homing from "./Homing";
+import Hull from "./Hull";
 import IgnoreSolid from "./IgnoreSolid";
 import Lifetime from "./Lifetime";
 import Motion from "./Motion";
+import Player from "./Player";
 import Position from "./Position";
+import Projectile from "./Projectile";
 import Trail from "./Trail";
 import Turret from "./Turret";
 
@@ -18,15 +21,16 @@ export type ComponentMap = {
   explodes: Explodes;
   field: Field;
   homing: Homing;
+  hull: Hull;
   ignoreSolid: IgnoreSolid;
   lifetime: Lifetime;
   motion: Motion;
   position: Position;
+  player: Player;
+  projectile: Projectile;
   trail: Trail;
   turret: Turret;
 
-  player: boolean;
-  projectile: boolean;
   solid: boolean;
 };
 export type EntityAttribute = keyof ComponentMap;
@@ -38,10 +42,13 @@ export {
   Explodes,
   Field,
   Homing,
+  Hull,
   IgnoreSolid,
   Lifetime,
   Motion,
+  Player,
   Position,
+  Projectile,
   Trail,
   Turret,
 };

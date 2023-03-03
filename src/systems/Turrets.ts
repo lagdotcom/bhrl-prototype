@@ -9,9 +9,11 @@ export default function addTurrets(g: Engine) {
   const query = new Query(g.entities, ["position", "turret"]);
   g.on("tick", () =>
     query.forEach(({ position, turret }, e) => {
-      if (isTurretFiring(turret)) {
+      const enemy = g.getRoot(e).ai?.attacking;
+
+      if (isTurretFiring(turret, enemy) && enemy) {
         const start = { x: position.x + 0.5, y: position.y + 0.5 };
-        const target = getEntityMidpoint(g, g.player);
+        const target = getEntityMidpoint(g, enemy);
 
         const bullet = g
           .spawn(turret.bulletPrefab)
@@ -23,6 +25,10 @@ export default function addTurrets(g: Engine) {
             angle: angleBetween(start, target),
             vel: turret.bulletVelocity,
           });
+
+        if (bullet.homing) bullet.homing.target = enemy;
+
+        if (bullet.ai) bullet.ai.attacking = enemy;
       }
     })
   );

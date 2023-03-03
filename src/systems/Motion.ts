@@ -8,7 +8,7 @@ import { walkGrid } from "@app/logic/geometry";
 export default function addMotion(g: Engine) {
   const query = new Query(g.entities, ["motion", "position"]);
   g.on("tick", () =>
-    query.forEach(({ motion, position, ignoreSolid }, e) => {
+    query.forEach(({ motion, position, projectile, ignoreSolid }, e) => {
       const [dx, dy] = angleMove(motion);
       const dst = { x: position.x + dx, y: position.y + dy };
 
@@ -30,10 +30,10 @@ export default function addMotion(g: Engine) {
       }
 
       if (hitWall) {
-        g.delete(e);
+        g.kill(e);
       } else if (hitEntity) {
-        // TODO damage etc.
-        g.delete(e);
+        if (projectile) g.damage(hitEntity, projectile.damage, e);
+        g.kill(e);
       } else {
         g.move(e, dst);
       }

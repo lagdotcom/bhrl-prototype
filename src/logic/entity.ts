@@ -3,7 +3,11 @@ import Entity from "@app/Entity";
 import { Position } from "@app/components";
 import { addPositions } from "@app/tools/position";
 
-type LayoutEntry<T = Entity> = [offset: Position, entity: T];
+type LayoutEntry<T = Entity> = {
+  absolute: Position;
+  offset: Position;
+  entity: T;
+};
 
 export function getLayoutMidpoint(
   layout: LayoutEntry[],
@@ -12,7 +16,8 @@ export function getLayoutMidpoint(
   if (!topLeft || !layout.length) throw new Error("Could not get midpoint");
 
   const avg = (key: keyof Position) =>
-    layout.reduce((total, [pos]) => total + pos[key], 0) / layout.length;
+    layout.reduce((total, { offset }) => total + offset[key], 0) /
+    layout.length;
 
   return { x: topLeft.x + avg("x"), y: topLeft.y + avg("y") };
 }
@@ -25,11 +30,11 @@ export function getLayoutBlockers(
 ): LayoutEntry<Entity | "wall">[] {
   const blockers: LayoutEntry<Entity | "wall">[] = [];
 
-  for (const [offset] of layout) {
+  for (const { offset } of layout) {
     const pos = addPositions(topLeft, offset);
     const { wall, solid } = g.getContents(pos, ignoreSolid);
-    if (wall) blockers.push([pos, "wall"]);
-    else if (solid) blockers.push([pos, solid]);
+    if (wall) blockers.push({ absolute: pos, offset, entity: "wall" });
+    else if (solid) blockers.push({ absolute: pos, offset, entity: solid });
   }
 
   return blockers;
@@ -45,17 +50,27 @@ export function getEntityTreeIDs(g: Engine, e: Entity) {
 }
 
 export function getEntityLayout(g: Engine, e: Entity) {
+  const root = g.getRoot(e);
+  const topLeft = g.getRoot(e).position ?? { x: 0, y: 0 };
+
   const parts = getEntityTree(g, e);
   const layout: LayoutEntry[] = [];
 
-  for (const x of parts) {
-    const { attachment, solid } = x;
+  for (const part of parts) {
+    const { attachment, solid } = part;
 
-    if (attachment && solid)
-      layout.push([{ x: attachment.x, y: attachment.y }, x]);
+    if (attachment && solid) {
+      const { x, y } = attachment;
+
+      layout.push({
+        absolute: addPositions(topLeft, attachment),
+        offset: { x, y },
+        entity: part,
+      });
+    }
   }
 
-  return { layout, topLeft: g.getRoot(e).position };
+  return { layout, topLeft };
 }
 
 export function getEntityBlockers(g: Engine, e: Entity, origin?: Position) {

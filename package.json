@@ -9,7 +9,7 @@
     "tsc": "tsc --noEmit",
     "build": "node build.mjs",
     "watch": "node watch.mjs",
-    "serve": "http-server docs"
+    "serve": "http-server watch"
   },
   "dependencies": {
     "nanoclone": "^1.0.1",

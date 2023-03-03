@@ -5,7 +5,7 @@ export default function addLifetime(g: Engine) {
   const query = new Query(g.entities, ["lifetime"]);
   g.on("tick", () =>
     query.forEach(({ lifetime }, e) => {
-      if (--lifetime.duration <= 0) g.delete(e);
+      if (--lifetime.duration <= 0) g.kill(e);
     })
   );
 }

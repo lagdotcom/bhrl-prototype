@@ -8,7 +8,9 @@ export default function addHoming(g: Engine) {
   const query = new Query(g.entities, ["homing", "motion", "position"]);
   g.on("tick", () =>
     query.forEach(({ homing, motion, position }, e) => {
-      const centre = getEntityMidpoint(g, g.player);
+      if (!homing.target) return;
+
+      const centre = getEntityMidpoint(g, homing.target);
       const desired = angleBetween(position, centre);
       const diff = angleDiff(motion.angle, desired);
 

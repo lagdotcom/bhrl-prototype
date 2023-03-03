@@ -1,6 +1,12 @@
 import { BlendMode, Cell, Colors, Console, Key, Terminal } from "wglt";
 import Entity, { compareEntities } from "@app/Entity";
-import { EventCallback, EventHandler, EventMap, EventName } from "@app/events";
+import {
+  EventCallback,
+  EventHandler,
+  EventMap,
+  EventName,
+  EventNames,
+} from "@app/events";
 import { getEntityMidpoint, getEntityTree } from "@app/logic/entity";
 import instantiate, { PrefabName } from "@app/prefabs";
 import { intPosition, isSameCell } from "@app/tools/position";
@@ -11,6 +17,7 @@ import { Position } from "@app/components";
 import { addSystems } from "@app/systems";
 import bfs from "@app/logic/bfs";
 import { fireAirFist } from "@app/logic/airFist";
+import { fromEntries } from "@app/tools/object";
 import isDefined from "@app/tools/isDefined";
 
 const MAP_WIDTH = 60;
@@ -43,14 +50,7 @@ export default class Engine implements EventHandler {
     this.entities = new EntityList(compareEntities);
     this.overlays = new Map();
 
-    this.eventCallbacks = {
-      draw: [],
-      kill: [],
-      move: [],
-      playerMove: [],
-      spawn: [],
-      tick: [],
-    };
+    this.eventCallbacks = fromEntries(EventNames.map((n) => [n, []]));
     addSystems(this);
   }
 
@@ -79,10 +79,10 @@ export default class Engine implements EventHandler {
     return e;
   }
 
-  delete(e: Entity) {
+  kill(e: Entity, by?: Entity) {
     if (e.alive) {
-      e.kill();
-      this.fire("kill", { e });
+      e.kill(by);
+      this.fire("kill", { e, by });
     }
   }
 
@@ -135,7 +135,11 @@ export default class Engine implements EventHandler {
     const { map, mapWidth, mapHeight, player, term } = this;
 
     if (this.fovRecompute) {
-      map.computeFov(player.position!.x, player.position!.y, 20);
+      map.computeFov(
+        player.position!.x,
+        player.position!.y,
+        player.player!.visionRange
+      );
       this.fovRecompute = false;
     }
 
@@ -233,12 +237,12 @@ export default class Engine implements EventHandler {
     );
   }
 
-  getPlayerDistanceMap() {
-    const key = "player.distance";
+  getDistanceMap(entity: Entity) {
+    const key = `${entity.id}.distance`;
     let map = this.overlays.get(key);
     if (!map) {
       map = bfs(
-        getEntityTree(this, this.player)
+        getEntityTree(this, entity)
           .map((e) => e.position)
           .filter(isDefined),
         this.inBounds.bind(this)
@@ -247,5 +251,16 @@ export default class Engine implements EventHandler {
     }
 
     return map;
+  }
+
+  damage(hit: Entity, amount: number, inflicter: Entity) {
+    const e = this.getRoot(hit);
+    if (!e.hull) return;
+
+    e.hull.hp -= amount;
+    console.log(inflicter.name, "hits", e.name, "for", amount);
+    this.fire("damage", { e, inflicter, amount });
+
+    if (e.hull.hp <= 0) this.kill(e, inflicter);
   }
 }

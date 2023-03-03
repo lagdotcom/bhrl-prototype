@@ -15,7 +15,7 @@ export const PlayerHull: Prefab = {
 };
 
 export const Player: Prefab = {
-  components: { player: true },
+  components: { player: { visionRange: 20 }, hull: { hp: 20, maxHp: 20 } },
   children: [
     { name: "PlayerHull", x: 0, y: 0 },
     {
