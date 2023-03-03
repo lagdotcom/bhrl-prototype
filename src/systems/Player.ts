@@ -41,5 +41,6 @@ export default function addPlayer(g: Engine) {
         fired = true;
       }
     }
+    if (fired) g.tick();
   });
 }

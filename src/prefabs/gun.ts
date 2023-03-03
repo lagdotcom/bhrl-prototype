@@ -39,3 +39,16 @@ export const PeaShooter: Prefab = {
     }),
   },
 };
+
+export const PlayerGun: Prefab = {
+  components: {
+    appearance: { glyph: "o", layer: Layer.Gun, fg: Colors.WHITE },
+    turret: makeTurret({
+      bulletPrefab: "PlayerBullet",
+      bulletVelocity: 2,
+      salvoCount: 2,
+      timeBetweenShots: 0,
+      timeBetweenSalvos: 3,
+    }),
+  },
+};

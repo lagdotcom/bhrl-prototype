@@ -1,4 +1,5 @@
 import { Colors } from "wglt";
+import { InvertedExclamation } from "@app/glyphs";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
 
@@ -16,5 +17,16 @@ export const HomingMissile: Prefab = {
     trail: { effectPrefab: "SmokePuff" },
     explodes: { size: 5, falloff: 1 },
     appearance: { glyph: "*", layer: Layer.Bullet, fg: Colors.DARK_RED },
+  },
+};
+
+export const PlayerBullet: Prefab = {
+  components: {
+    projectile: { damage: 1 },
+    appearance: {
+      glyph: InvertedExclamation,
+      layer: Layer.Bullet,
+      fg: Colors.YELLOW,
+    },
   },
 };
