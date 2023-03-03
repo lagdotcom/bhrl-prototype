@@ -4,6 +4,5 @@ type AI = {
   attacking?: Entity;
   idealDistance: number;
   speed: number;
-  visionRange: number;
 };
 export default AI;

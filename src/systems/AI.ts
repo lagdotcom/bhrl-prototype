@@ -4,7 +4,6 @@ import { getEntityLayout, getEntityTreeIDs } from "@app/logic/entity";
 import Engine from "@app/Engine";
 import { Position } from "@app/components";
 import Query from "@app/Query";
-import distance from "@app/tools/distance";
 import { neighbourOffsets } from "@app/logic/neighbours";
 import oneOf from "@app/tools/oneOf";
 
@@ -12,9 +11,8 @@ export default function addAI(g: Engine) {
   const query = new Query(g.entities, ["ai", "position"]);
   g.on("tick", () =>
     query.forEach(({ ai, position: rawPosition }, e) => {
+      // TODO something better than this?
       if (!ai.attacking) {
-        if (distance(rawPosition, g.player.position!) >= ai.visionRange) return;
-
         ai.attacking = g.player;
         g.fire("notice", { e, noticed: g.player });
       }

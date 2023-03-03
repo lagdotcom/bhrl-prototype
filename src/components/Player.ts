@@ -1,2 +1,2 @@
-type Player = { visionRange: number; weaponArrays: string[] };
+type Player = { weaponArrays: string[] };
 export default Player;

@@ -32,7 +32,7 @@ export function fireAt(
 
   const bullet = g
     .spawn(turret.bulletPrefab)
-    .setOwner(owner)
+
     .setIgnoreSolid({ ids: ignoreIds });
 
   bullet.move(start.x, start.y);
@@ -41,6 +41,8 @@ export function fireAt(
       angle: angleBetween(start, target),
       vel: turret.bulletVelocity,
     });
+
+  if (!bullet.ai) bullet.setOwner(owner);
 
   return bullet;
 }

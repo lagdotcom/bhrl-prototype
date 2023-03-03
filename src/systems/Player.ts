@@ -11,7 +11,6 @@ export default function addPlayer(g: Engine) {
     const blockers = getEntityBlockers(g, player, destination);
     if (!blockers.length) {
       player.move(destination.x, destination.y);
-      g.fovRecompute = true;
       g.tick();
     }
   });

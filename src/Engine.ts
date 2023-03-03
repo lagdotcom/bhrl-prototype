@@ -29,7 +29,6 @@ export default class Engine implements EventHandler {
   lastEntityId: number;
 
   dirty: boolean;
-  fovRecompute: boolean;
   map: Console;
   entities: EntityList;
   eventCallbacks: Record<EventName, EventCallback<any>[]>;
@@ -44,7 +43,6 @@ export default class Engine implements EventHandler {
     term.update = this.update.bind(this);
 
     this.dirty = true;
-    this.fovRecompute = true;
     this.map = new Console(mapWidth, mapHeight, () => true);
     this.lastEntityId = 0;
     this.entities = new EntityList(compareEntities);
@@ -94,26 +92,23 @@ export default class Engine implements EventHandler {
 
   gotoDemoRoom() {
     this.entities.clear();
+    this.blankMap();
 
-    this.map.clear();
-    this.room(1, 1, 40, 30);
     this.spawn("Player").move(5, 25);
     this.spawn("Battleship").move(8, 5);
   }
 
-  room(sx: number, sy: number, w: number, h: number) {
-    const { map } = this;
+  blankMap() {
+    const { map, mapHeight, mapWidth } = this;
+    map.clear();
 
-    for (let yo = 0; yo < h; yo++) {
-      for (let xo = 0; xo < w; xo++) {
-        const wall = xo === 0 || yo === 0 || xo === w - 1 || yo === h - 1;
-        const x = sx + xo;
-        const y = sy + yo;
-
-        map.setBlocked(x, y, wall);
-        map.setBlockedSight(x, y, wall);
+    for (let y = 0; y < mapHeight; y++)
+      for (let x = 0; x < mapWidth; x++) {
+        map.setBlocked(x, y, false);
+        map.setBlockedSight(x, y, false);
       }
-    }
+
+    map.computeFov(0, 0, Infinity);
   }
 
   drawIfVisible(
@@ -133,15 +128,6 @@ export default class Engine implements EventHandler {
 
   draw() {
     const { map, mapWidth, mapHeight, player, term } = this;
-
-    if (this.fovRecompute) {
-      map.computeFov(
-        player.position!.x,
-        player.position!.y,
-        player.player!.visionRange
-      );
-      this.fovRecompute = false;
-    }
 
     for (let y = 0; y < mapHeight; y++) {
       for (let x = 0; x < mapWidth; x++) {
@@ -188,6 +174,7 @@ export default class Engine implements EventHandler {
 
   getContents(pos: Position, ignoreSolid: number[] = []) {
     const square = intPosition(pos);
+    if (!this.inBounds(square)) return { wall: true };
 
     const wall = this.map.isBlocked(square.x, square.y);
     const entities = this.entities

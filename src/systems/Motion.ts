@@ -17,6 +17,11 @@ export default function addMotion(g: Engine) {
       let hitWall = false;
       let hitEntity: Entity | undefined = undefined;
       for (const pos of line) {
+        if (!g.inBounds(pos)) {
+          g.kill(e);
+          return;
+        }
+
         g.move(e, pos);
 
         const { wall, solid } = g.getContents(pos, ignoreSolid?.ids);
