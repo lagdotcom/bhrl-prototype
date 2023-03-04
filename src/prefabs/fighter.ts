@@ -18,7 +18,7 @@ export const FighterLauncher: Prefab = {
 export const Fighter: Prefab = {
   components: {
     ai: { idealDistance: 6, speed: 2 },
-    hull: { hp: 2, maxHp: 2 },
+    ship: { name: "Fighter", hp: 2, maxHp: 2 },
   },
   children: [
     {

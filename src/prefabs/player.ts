@@ -16,10 +16,10 @@ export const PlayerHull: Prefab = {
   },
 };
 
-export const Player: Prefab = {
+export const PlayerShip: Prefab = {
   components: {
     player: { weaponArrays: ["primary"] },
-    hull: { hp: 20, maxHp: 20 },
+    ship: { name: "Your Ship", hp: 20, maxHp: 20 },
   },
   children: [
     {

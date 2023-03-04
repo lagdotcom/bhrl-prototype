@@ -32,10 +32,9 @@ export function fireAt(
 
   const bullet = g
     .spawn(turret.bulletPrefab)
+    .setIgnoreSolid({ ids: ignoreIds })
+    .move(start.x, start.y);
 
-    .setIgnoreSolid({ ids: ignoreIds });
-
-  bullet.move(start.x, start.y);
   if (turret.bulletVelocity)
     bullet.setMotion({
       angle: angleBetween(start, target),

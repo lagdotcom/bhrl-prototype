@@ -4,13 +4,14 @@ import Attachment from "./Attachment";
 import Explodes from "./Explodes";
 import Field from "./Field";
 import Homing from "./Homing";
-import Hull from "./Hull";
 import IgnoreSolid from "./IgnoreSolid";
 import Lifetime from "./Lifetime";
 import Motion from "./Motion";
+import Pilot from "./Pilot";
 import Player from "./Player";
 import Position from "./Position";
 import Projectile from "./Projectile";
+import Ship from "./Ship";
 import Trail from "./Trail";
 import Turret from "./Turret";
 
@@ -21,13 +22,14 @@ export type ComponentMap = {
   explodes: Explodes;
   field: Field;
   homing: Homing;
-  hull: Hull;
   ignoreSolid: IgnoreSolid;
   lifetime: Lifetime;
   motion: Motion;
+  pilot: Pilot;
   position: Position;
   player: Player;
   projectile: Projectile;
+  ship: Ship;
   trail: Trail;
   turret: Turret;
 
@@ -42,13 +44,14 @@ export {
   Explodes,
   Field,
   Homing,
-  Hull,
   IgnoreSolid,
   Lifetime,
   Motion,
+  Pilot,
   Player,
   Position,
   Projectile,
+  Ship,
   Trail,
   Turret,
 };

@@ -5,7 +5,7 @@ import Prefab from "@app/types/Prefab";
 export const Battleship: Prefab = {
   components: {
     ai: { idealDistance: 8, speed: 1 },
-    hull: { hp: 40, maxHp: 40 },
+    ship: { name: "Battleship", hp: 40, maxHp: 40 },
   },
   children: [
     { name: "BattleshipHull", x: 1, y: 0 },

@@ -6,13 +6,14 @@ import {
   Explodes,
   Field,
   Homing,
-  Hull,
   IgnoreSolid,
   Lifetime,
   Motion,
+  Pilot,
   Player,
   Position,
   Projectile,
+  Ship,
   Trail,
   Turret,
 } from "@app/components";
@@ -35,13 +36,14 @@ export default class Entity implements Partial<ComponentMap> {
   explodes?: Explodes;
   field?: Field;
   homing?: Homing;
-  hull?: Hull;
   ignoreSolid?: IgnoreSolid;
   lifetime?: Lifetime;
   motion?: Motion;
+  pilot?: Pilot;
   player?: Player;
   projectile?: Projectile;
   position?: Position;
+  ship?: Ship;
   solid: boolean;
   trail?: Trail;
   turret?: Turret;
@@ -122,11 +124,6 @@ export default class Entity implements Partial<ComponentMap> {
     return this;
   }
 
-  setHull(c?: Hull): this {
-    this.hull = c;
-    return this;
-  }
-
   setIgnoreSolid(c?: IgnoreSolid): this {
     this.ignoreSolid = c;
     return this;
@@ -142,9 +139,19 @@ export default class Entity implements Partial<ComponentMap> {
     return this;
   }
 
+  setPilot(c?: Pilot): this {
+    this.pilot = c;
+    return this;
+  }
+
   setPosition(c?: Position): this {
     this.g.dirty = true;
     this.position = c;
+    return this;
+  }
+
+  setShip(c?: Ship): this {
+    this.ship = c;
     return this;
   }
 
@@ -173,11 +180,11 @@ export default class Entity implements Partial<ComponentMap> {
     return this;
   }
 
-  move(x: number, y: number) {
+  move(x: number, y: number): this {
     this.g.dirty = true;
     this.position = { x, y };
     this.eachChild((e, at) => e.move(x + at.x, y + at.y));
-    return this.position;
+    return this;
   }
 }
 

@@ -13,6 +13,7 @@ import { intPosition, isSameCell } from "@app/tools/position";
 
 import EntityList from "@app/EntityList";
 import HashMap from "@app/HashMap";
+import PlayerPilots from "./pilots/player";
 import { Position } from "@app/components";
 import { addSystems } from "@app/systems";
 import bfs from "@app/logic/bfs";
@@ -33,6 +34,7 @@ export default class Engine implements EventHandler {
   entities: EntityList;
   eventCallbacks: Record<EventName, EventCallback<any>[]>;
   overlays: Map<string, Overlay>;
+  player!: Entity; // be careful of this !
   showOverlay?: string;
 
   constructor(
@@ -50,12 +52,6 @@ export default class Engine implements EventHandler {
 
     this.eventCallbacks = fromEntries(EventNames.map((n) => [n, []]));
     addSystems(this);
-  }
-
-  get player() {
-    const player = this.entities.get().find((e) => e.player);
-    if (!player) throw new Error("Could not find a player!");
-    return player;
   }
 
   fire<T extends EventName>(name: T, data: EventMap[T]): void {
@@ -94,7 +90,9 @@ export default class Engine implements EventHandler {
     this.entities.clear();
     this.blankMap();
 
-    this.spawn("Player").move(5, 25);
+    this.player = this.spawn("PlayerShip")
+      .move(5, 25)
+      .setPilot(PlayerPilots[0]);
     this.spawn("Battleship").move(8, 5);
   }
 
@@ -252,12 +250,12 @@ export default class Engine implements EventHandler {
 
   damage(hit: Entity, amount: number, inflicter: Entity) {
     const e = this.getRoot(hit);
-    if (!e.hull) return;
+    if (!e.ship) return;
 
-    e.hull.hp -= amount;
+    e.ship.hp -= amount;
     console.log(inflicter.name, "hits", e.name, "for", amount);
     this.fire("damage", { e, inflicter, amount });
 
-    if (e.hull.hp <= 0) this.kill(e, inflicter);
+    if (e.ship.hp <= 0) this.kill(e, inflicter);
   }
 }
