@@ -8,7 +8,7 @@ export default function addHoming(g: Engine) {
   const query = new Query(g.entities, ["homing", "motion", "position"]);
   g.on("tick", () =>
     query.forEach(({ homing, motion, position }, e) => {
-      if (!homing.target) return;
+      if (!homing.target?.alive) return;
 
       const centre = getEntityMidpoint(g, homing.target);
       const desired = angleBetween(position, centre);

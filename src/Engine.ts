@@ -19,6 +19,7 @@ import { addSystems } from "@app/systems";
 import bfs from "@app/logic/bfs";
 import { fireAirFist } from "@app/logic/airFist";
 import { fromEntries } from "@app/tools/object";
+import int from "@app/tools/int";
 import isDefined from "@app/tools/isDefined";
 
 const MAP_WIDTH = 60;
@@ -91,7 +92,7 @@ export default class Engine implements EventHandler {
     this.blankMap();
 
     this.player = this.spawn("PlayerShip")
-      .move(5, 25)
+      .move(int(this.mapWidth / 2) - 1, this.mapHeight - 5)
       .setPilot(PlayerPilots[0]);
     this.spawn("Battleship").move(8, 5);
   }

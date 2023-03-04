@@ -12,6 +12,8 @@ export default function addTurrets(g: Engine) {
       const enemy = root.ai?.attacking;
       advanceTimer(turret);
 
+      if (!enemy?.alive) return;
+
       if (canFire(turret) && enemy) {
         const target = getEntityMidpoint(g, enemy);
         const bullet = fireAt(
