@@ -50,11 +50,12 @@ export function getEntityTreeIDs(g: Engine, e: Entity) {
 }
 
 export function getEntityLayout(g: Engine, e: Entity) {
-  const root = g.getRoot(e);
   const topLeft = g.getRoot(e).position ?? { x: 0, y: 0 };
 
   const parts = getEntityTree(g, e);
   const layout: LayoutEntry[] = [];
+  let width = 0;
+  let height = 0;
 
   for (const part of parts) {
     const { attachment, solid } = part;
@@ -67,10 +68,13 @@ export function getEntityLayout(g: Engine, e: Entity) {
         offset: { x, y },
         entity: part,
       });
+
+      width = Math.max(x + 1, width);
+      height = Math.max(y + 1, height);
     }
   }
 
-  return { layout, topLeft };
+  return { layout, topLeft, width, height };
 }
 
 export function getEntityBlockers(g: Engine, e: Entity, origin?: Position) {

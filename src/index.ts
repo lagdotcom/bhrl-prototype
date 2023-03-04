@@ -1,7 +1,7 @@
 import { DEFAULT_FONT, Terminal } from "wglt";
 
 import Engine from "@app/Engine";
-import { HUD_HEIGHT } from "./systems/HUD";
+import { HUD_HEIGHT } from "@app/systems/HUD";
 
 function loadEngine(parent: HTMLElement) {
   const cols = 60;

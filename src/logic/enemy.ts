@@ -1,13 +1,14 @@
+import { Appearance, Position } from "@app/components";
 import ShipPower, { ShipPowers } from "@app/types/ShipPower";
 
-import { Appearance } from "@app/components";
 import { Colors } from "wglt";
 import EnemyPilots from "@app/pilots/enemy";
 import Engine from "@app/Engine";
 import StarPilots from "@app/pilots/star";
-import { getEntityTree } from "./entity";
-import instantiate from "@app/prefabs";
+import enumerate from "@app/tools/enumerate";
+import { getEntityTree } from "@app/logic/entity";
 import oneOf from "@app/tools/oneOf";
+import shuffle from "@app/tools/shuffle";
 
 const Colours: Record<ShipPower, Partial<Appearance>> = {
   Typical: { fg: Colors.DARK_GRAY },
@@ -85,7 +86,7 @@ export function generateEnemy(g: Engine, maxDifficulty: number) {
 
     if (difficulty <= maxDifficulty) {
       // TODO give AI
-      const entity = instantiate(g, prefab).setPilot(pilot);
+      const entity = g.spawn(prefab).setPilot(pilot);
 
       // TODO set hp, weapons, etc.
 
@@ -97,4 +98,30 @@ export function generateEnemy(g: Engine, maxDifficulty: number) {
       return { entity, difficulty };
     }
   }
+}
+
+function isFree(g: Engine, sx: number, sy: number, w: number, h: number) {
+  for (let y = 0; y < h; y++)
+    for (let x = 0; x < w; x++) {
+      const { wall, solid, other } = g.getContents({ x: sx + x, y: sy + y });
+      if (wall || solid || other.length) return false;
+    }
+
+  return true;
+}
+
+export function findSpawnPosition(
+  g: Engine,
+  width: number,
+  height: number
+): Position {
+  for (let y = 0; y < 5; y++) {
+    const xList = shuffle(enumerate(g.term.width - width));
+
+    for (const x of xList) {
+      if (isFree(g, x, y, width, height)) return { x, y };
+    }
+  }
+
+  throw new Error(`Could not find spawn position for ${width}x${height}!`);
 }

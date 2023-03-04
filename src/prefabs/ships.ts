@@ -38,11 +38,7 @@ export const ShipE: Prefab = {
 
 export const ShipF: Prefab = {
   components: { ship: { name: "F", hp: 1, maxHp: 1 } },
-  children: [
-    child("Hull", 0, 0, {
-      appearance: { glyph: Glyphs.BoxVerticalDoubleHorizontalSingle },
-    }),
-  ],
+  children: [child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pi } })],
 };
 
 export const ShipG: Prefab = {
@@ -97,7 +93,8 @@ export const GoutOFlame: Prefab = {
     child("Hull", 1, 0, {
       appearance: { glyph: Glyphs.BoxVerticalDoubleHorizontalSingle },
     }),
-    child("Hull", 2, 0, {
+    child("Hull", 2, 0, { appearance: { glyph: Glyphs.Pentagon } }),
+    child("Hull", 1, 1, {
       appearance: { glyph: Glyphs.BoxUpDoubleHorizontalSingle },
     }),
   ],

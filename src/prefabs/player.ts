@@ -2,7 +2,7 @@ import { Colors } from "wglt";
 import Glyphs from "@app/logic/glyphs";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
-import { child } from "./tools";
+import { child } from "@app/prefabs/tools";
 
 export const PlayerHull: Prefab = {
   components: {

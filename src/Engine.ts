@@ -13,7 +13,7 @@ import { intPosition, isSameCell } from "@app/tools/position";
 
 import EntityList from "@app/EntityList";
 import HashMap from "@app/HashMap";
-import PlayerPilots from "./pilots/player";
+import PlayerPilots from "@app/pilots/player";
 import { Position } from "@app/components";
 import { addSystems } from "@app/systems";
 import bfs from "@app/logic/bfs";
@@ -91,7 +91,6 @@ export default class Engine implements EventHandler {
     this.player = this.spawn("PlayerShip")
       .move(int(this.mapWidth / 2) - 1, this.mapHeight - 5)
       .setPilot(PlayerPilots[0]);
-    this.spawn("Battleship").move(8, 5);
   }
 
   blankMap() {
@@ -156,9 +155,12 @@ export default class Engine implements EventHandler {
     return owner.attachment ? this.getRoot(owner.attachment.parent) : owner;
   }
 
-  getContents(pos: Position, ignoreSolid: number[] = []) {
+  getContents(
+    pos: Position,
+    ignoreSolid: number[] = []
+  ): { wall: boolean; solid?: Entity; other: Entity[] } {
     const square = intPosition(pos);
-    if (!this.inBounds(square)) return { wall: true };
+    if (!this.inBounds(square)) return { wall: true, other: [] };
 
     const wall = this.map.isBlocked(square.x, square.y);
     const entities = this.entities
