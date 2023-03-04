@@ -3,6 +3,7 @@ import addAI from "./AI";
 import addDisplay from "./Display";
 import addExplosives from "./Explosives";
 import addFields from "./Fields";
+import addHUD from "./HUD";
 import addHoming from "./Homing";
 import addLifetime from "./Lifetime";
 import addMotion from "./Motion";
@@ -19,6 +20,7 @@ export function addSystems(g: Engine) {
   addAI(g);
 
   addDisplay(g);
+  addHUD(g);
 
   addTrails(g);
 

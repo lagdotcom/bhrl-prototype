@@ -22,9 +22,6 @@ import { fromEntries } from "@app/tools/object";
 import int from "@app/tools/int";
 import isDefined from "@app/tools/isDefined";
 
-const MAP_WIDTH = 60;
-const MAP_HEIGHT = 40;
-
 type Overlay = HashMap<Position, number>;
 
 export default class Engine implements EventHandler {
@@ -40,8 +37,8 @@ export default class Engine implements EventHandler {
 
   constructor(
     public term: Terminal,
-    public mapWidth = MAP_WIDTH,
-    public mapHeight = MAP_HEIGHT
+    public mapWidth: number,
+    public mapHeight: number
   ) {
     term.update = this.update.bind(this);
 
@@ -103,6 +100,7 @@ export default class Engine implements EventHandler {
 
     for (let y = 0; y < mapHeight; y++)
       for (let x = 0; x < mapWidth; x++) {
+        // TODO draw something? :D
         map.setBlocked(x, y, false);
         map.setBlockedSight(x, y, false);
       }
@@ -118,7 +116,6 @@ export default class Engine implements EventHandler {
     bg?: number,
     bm?: BlendMode
   ) {
-    // TODO scrolling etc.
     if (this.map.isVisible(x, y)) {
       if (bm) this.term.drawCell(x, y, { bg } as Cell, bm);
       else this.term.drawChar(x, y, g, fg, bg);
@@ -126,26 +123,14 @@ export default class Engine implements EventHandler {
   }
 
   draw() {
-    const { map, mapWidth, mapHeight, player, term } = this;
+    const { map, mapWidth, mapHeight, term } = this;
 
     for (let y = 0; y < mapHeight; y++) {
       for (let x = 0; x < mapWidth; x++) {
         const cell = map.grid[y][x];
-        const visible = map.isVisible(x, y);
-        const wall = cell.blockedSight;
-        let bg = Colors.BLACK;
-
-        if (visible) {
-          // It's visible
-          bg = wall ? Colors.WHITE : Colors.DARK_GRAY;
-          cell.explored = true;
-        } else if (cell.explored) {
-          // It's remembered
-          bg = wall ? Colors.LIGHT_GRAY : Colors.BLACK;
-        }
 
         // TODO scrolling etc.
-        term.drawChar(x, y, 0, 0, bg);
+        term.drawChar(x, y, 0, cell.fg, cell.bg);
       }
     }
 

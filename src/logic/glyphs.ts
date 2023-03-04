@@ -20,6 +20,12 @@ const Glyphs = {
   Not: "\xaa",
   InvertedExclamation: "\xad",
 
+  BoxVerticalSingle: "\xb3",
+
+  BoxUpSingleHorizontalSingle: "\xc1",
+  BoxDownSingleHorizontalSingle: "\xc2",
+  BoxHorizontalSingle: "\xc4",
+
   BoxUpDoubleHorizontalSingle: "\xd0",
   BoxDownSingleHorizontalDouble: "\xd1",
   BoxVerticalDoubleHorizontalSingle: "\xd7",

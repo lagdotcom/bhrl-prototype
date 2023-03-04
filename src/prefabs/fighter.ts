@@ -6,7 +6,7 @@ import { makeTurret } from "@app/components";
 export const FighterLauncher: Prefab = {
   components: {
     appearance: { glyph: "_", layer: Layer.Gun, fg: Colors.DARK_CYAN },
-    turret: makeTurret({
+    turret: makeTurret("Fighter Bay", "nearestEnemy", {
       bulletPrefab: "Fighter",
       bulletVelocity: 0,
       salvoCount: 1,
