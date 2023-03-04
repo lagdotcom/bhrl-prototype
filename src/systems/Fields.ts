@@ -5,7 +5,7 @@ import { getFieldAppearance } from "@app/logic/field";
 import { isSameCell } from "@app/tools/position";
 
 export default function addFields(g: Engine) {
-  const hulls = new Query(g.entities, ["hull"]);
+  const ships = new Query(g.entities, ["ship"]);
   const query = new Query(g.entities, ["field", "position"]);
   g.on("tick", () =>
     query.forEach(({ field, position }, e) => {
@@ -14,7 +14,7 @@ export default function addFields(g: Engine) {
 
       if (field.intensity <= 0) g.kill(e);
       else
-        hulls.forEach(({}, victim) => {
+        ships.forEach(({}, victim) => {
           const { layout } = getEntityLayout(g, victim);
           const hit = layout.find(({ absolute }) =>
             isSameCell(absolute, position)

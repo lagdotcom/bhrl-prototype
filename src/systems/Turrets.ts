@@ -1,4 +1,4 @@
-import { advanceTimer, canFire, fireAt } from "@app/logic/turret";
+import { advanceTimer, canFire, fire } from "@app/logic/turret";
 import { getEntityMidpoint, getEntityTreeIDs } from "@app/logic/entity";
 
 import Engine from "@app/Engine";
@@ -16,7 +16,7 @@ export default function addTurrets(g: Engine) {
 
       if (canFire(turret) && enemy) {
         const target = getEntityMidpoint(g, enemy);
-        const bullet = fireAt(
+        const bullet = fire(
           g,
           turret,
           position,

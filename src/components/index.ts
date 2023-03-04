@@ -58,12 +58,14 @@ export {
 
 export const makeTurret = ({
   bulletPrefab = "Bullet",
+  bulletAngle = "nearestEnemy",
   bulletVelocity = 1,
   salvoCount = 1,
   timeBetweenShots = 1,
   timeBetweenSalvos = 1,
 }: Partial<Turret>): Turret => ({
   bulletPrefab,
+  bulletAngle,
   bulletVelocity,
   salvoCount,
   timeBetweenShots,

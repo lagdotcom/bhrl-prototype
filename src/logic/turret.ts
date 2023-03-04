@@ -17,7 +17,7 @@ export function canFire(turret: Turret) {
   return turret.timer === 0;
 }
 
-export function fireAt(
+export function fire(
   g: Engine,
   turret: Turret,
   position: Position,
@@ -29,6 +29,10 @@ export function fireAt(
   else turret.timer = turret.timeBetweenShots;
 
   const start = { x: position.x + 0.5, y: position.y + 0.5 };
+  const angle =
+    turret.bulletAngle === "nearestEnemy"
+      ? angleBetween(start, target)
+      : turret.bulletAngle;
 
   const bullet = g
     .spawn(turret.bulletPrefab)
@@ -36,10 +40,7 @@ export function fireAt(
     .move(start.x, start.y);
 
   if (turret.bulletVelocity)
-    bullet.setMotion({
-      angle: angleBetween(start, target),
-      vel: turret.bulletVelocity,
-    });
+    bullet.setMotion({ angle, vel: turret.bulletVelocity });
 
   if (!bullet.ai) bullet.setOwner(owner);
 

@@ -1,4 +1,4 @@
-import { canFire, fireAt } from "@app/logic/turret";
+import { canFire, fire } from "@app/logic/turret";
 import { getEntityBlockers, getEntityTree } from "@app/logic/entity";
 
 import Engine from "@app/Engine";
@@ -25,15 +25,12 @@ export default function addPlayer(g: Engine) {
     for (const weapon of weapons) {
       if (!weapon.turret) continue;
 
-      const position = weapon.position!;
-      const target = addPositions(position, { x: 0.5, y: -0.5 });
-
       if (canFire(weapon.turret)) {
-        fireAt(
+        fire(
           g,
           weapon.turret,
-          position,
-          target,
+          weapon.position!,
+          { x: 0, y: 0 },
           player,
           tree.map((e) => e.id)
         );
