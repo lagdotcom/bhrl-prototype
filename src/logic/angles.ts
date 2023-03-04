@@ -1,5 +1,8 @@
 // radians baby
-export const Right = 0;
-export const Down = Math.PI / 2;
-export const Left = Math.PI;
-export const Up = (Math.PI * 3) / 2;
+const Angles = {
+  Right: 0,
+  Down: Math.PI / 2,
+  Left: Math.PI,
+  Up: (Math.PI * 3) / 2,
+};
+export default Angles;

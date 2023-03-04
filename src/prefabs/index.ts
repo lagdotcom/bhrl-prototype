@@ -4,6 +4,7 @@ import * as effect from "./effect";
 import * as fighter from "./fighter";
 import * as gun from "./gun";
 import * as player from "./player";
+import * as ships from "./ships";
 
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
@@ -15,6 +16,7 @@ const AllPrefabs = {
   ...fighter,
   ...gun,
   ...player,
+  ...ships,
 };
 
 export type PrefabName = keyof typeof AllPrefabs;

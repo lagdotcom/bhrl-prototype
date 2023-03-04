@@ -1,5 +1,5 @@
 import { Colors } from "wglt";
-import { InvertedExclamation } from "@app/glyphs";
+import Glyphs from "@app/logic/glyphs";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
 
@@ -24,7 +24,7 @@ export const PlayerBullet: Prefab = {
   components: {
     projectile: { damage: 1 },
     appearance: {
-      glyph: InvertedExclamation,
+      glyph: Glyphs.InvertedExclamation,
       layer: Layer.Bullet,
       fg: Colors.YELLOW,
     },

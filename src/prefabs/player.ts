@@ -1,6 +1,5 @@
-import { Club, LeftArrow, RightArrow } from "@app/glyphs";
-
 import { Colors } from "wglt";
+import Glyphs from "@app/logic/glyphs";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
 
@@ -26,19 +25,21 @@ export const PlayerShip: Prefab = {
       name: "PlayerHull",
       x: 0,
       y: 0,
-      overlay: { appearance: { glyph: LeftArrow, bg: Colors.DARK_RED } },
+      overlay: { appearance: { glyph: Glyphs.LeftArrow, bg: Colors.DARK_RED } },
     },
     {
       name: "PlayerHull",
       x: 1,
       y: 0,
-      overlay: { appearance: { glyph: Club, bg: Colors.DARK_RED } },
+      overlay: { appearance: { glyph: Glyphs.Club, bg: Colors.DARK_RED } },
     },
     {
       name: "PlayerHull",
       x: 2,
       y: 0,
-      overlay: { appearance: { glyph: RightArrow, bg: Colors.DARK_RED } },
+      overlay: {
+        appearance: { glyph: Glyphs.RightArrow, bg: Colors.DARK_RED },
+      },
     },
     { name: "PlayerGun", x: 1, y: 0, tags: ["primary"] },
   ],
