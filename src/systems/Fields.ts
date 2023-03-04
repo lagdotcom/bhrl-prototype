@@ -14,7 +14,7 @@ export default function addFields(g: Engine) {
 
       if (field.intensity <= 0) g.kill(e);
       else
-        ships.forEach(({}, victim) => {
+        ships.forEach((_, victim) => {
           const { layout } = getEntityLayout(g, victim);
           const hit = layout.find(({ absolute }) =>
             isSameCell(absolute, position)

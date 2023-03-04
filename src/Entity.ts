@@ -99,7 +99,7 @@ export default class Entity implements Partial<ComponentMap> {
   }
 
   setAppearance(c?: Appearance): this {
-    this.g.dirty = true;
+    this.g.refresh();
     this.appearance = c;
     return this;
   }
@@ -145,7 +145,7 @@ export default class Entity implements Partial<ComponentMap> {
   }
 
   setPosition(c?: Position): this {
-    this.g.dirty = true;
+    this.g.refresh();
     this.position = c;
     return this;
   }
@@ -181,7 +181,7 @@ export default class Entity implements Partial<ComponentMap> {
   }
 
   move(x: number, y: number): this {
-    this.g.dirty = true;
+    this.g.refresh();
     this.position = { x, y };
     this.eachChild((e, at) => e.move(x + at.x, y + at.y));
     return this;

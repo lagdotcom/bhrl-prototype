@@ -1,4 +1,4 @@
-import { BlendMode, Cell, Colors, Console, Key, Terminal } from "wglt";
+import { BlendMode, Cell, Console, Terminal } from "wglt";
 import Entity, { compareEntities } from "@app/Entity";
 import {
   EventCallback,
@@ -7,19 +7,18 @@ import {
   EventName,
   EventNames,
 } from "@app/events";
-import { getEntityMidpoint, getEntityTree } from "@app/logic/entity";
 import instantiate, { PrefabName } from "@app/prefabs";
 import { intPosition, isSameCell } from "@app/tools/position";
 
 import EntityList from "@app/EntityList";
+import GameMode from "@app/types/GameMode";
 import HashMap from "@app/HashMap";
+import MainMode from "@app/MainMode";
 import PlayerPilots from "@app/pilots/player";
 import { Position } from "@app/components";
-import { addSystems } from "@app/systems";
 import bfs from "@app/logic/bfs";
-import { fireAirFist } from "@app/logic/airFist";
 import { fromEntries } from "@app/tools/object";
-import int from "@app/tools/int";
+import { getEntityTree } from "@app/logic/entity";
 import isDefined from "@app/tools/isDefined";
 
 type Overlay = HashMap<Position, number>;
@@ -27,13 +26,12 @@ type Overlay = HashMap<Position, number>;
 export default class Engine implements EventHandler {
   lastEntityId: number;
 
-  dirty: boolean;
   map: Console;
   entities: EntityList;
-  eventCallbacks: Record<EventName, EventCallback<any>[]>;
+  eventCallbacks!: Record<EventName, EventCallback<any>[]>;
   overlays: Map<string, Overlay>;
   player!: Entity; // be careful of this !
-  showOverlay?: string;
+  mode: GameMode;
 
   constructor(
     public term: Terminal,
@@ -42,14 +40,18 @@ export default class Engine implements EventHandler {
   ) {
     term.update = this.update.bind(this);
 
-    this.dirty = true;
     this.map = new Console(mapWidth, mapHeight, () => true);
     this.lastEntityId = 0;
     this.entities = new EntityList(compareEntities);
     this.overlays = new Map();
 
+    this.clearEventHandlers();
+    this.mode = new MainMode(this, "PlayerShip", PlayerPilots[0]);
+    this.mode.init();
+  }
+
+  clearEventHandlers() {
     this.eventCallbacks = fromEntries(EventNames.map((n) => [n, []]));
-    addSystems(this);
   }
 
   fire<T extends EventName>(name: T, data: EventMap[T]): void {
@@ -64,8 +66,12 @@ export default class Engine implements EventHandler {
     return instantiate(this, name);
   }
 
+  refresh() {
+    this.mode.dirty = true;
+  }
+
   add(e: Entity) {
-    this.dirty = true;
+    this.refresh();
     this.entities.add(e);
     this.fire("spawn", { e });
     return e;
@@ -82,15 +88,6 @@ export default class Engine implements EventHandler {
     const old = e.position;
     e.move(pos.x, pos.y);
     if (old) this.fire("move", { e, old, pos });
-  }
-
-  gotoDemoRoom() {
-    this.entities.clear();
-    this.blankMap();
-
-    this.player = this.spawn("PlayerShip")
-      .move(int(this.mapWidth / 2) - 1, this.mapHeight - 5)
-      .setPilot(PlayerPilots[0]);
   }
 
   blankMap() {
@@ -118,35 +115,6 @@ export default class Engine implements EventHandler {
     if (this.map.isVisible(x, y)) {
       if (bm) this.term.drawCell(x, y, { bg } as Cell, bm);
       else this.term.drawChar(x, y, g, fg, bg);
-    }
-  }
-
-  draw() {
-    const { map, mapWidth, mapHeight, term } = this;
-
-    for (let y = 0; y < mapHeight; y++) {
-      for (let x = 0; x < mapWidth; x++) {
-        const cell = map.grid[y][x];
-
-        // TODO scrolling etc.
-        term.drawChar(x, y, 0, cell.fg, cell.bg);
-      }
-    }
-
-    this.fire("draw", undefined);
-    this.dirty = false;
-
-    if (this.showOverlay) {
-      const overlay = this.overlays.get(this.showOverlay);
-      if (overlay) {
-        for (let y = 0; y < mapHeight; y++) {
-          for (let x = 0; x < mapWidth; x++) {
-            const value = overlay.get({ x, y }) || Infinity;
-            const ch = value === Infinity ? "-" : value < 10 ? `${value}` : "*";
-            term.drawChar(x, y, ch, Colors.LIGHT_RED);
-          }
-        }
-      }
     }
   }
 
@@ -179,36 +147,8 @@ export default class Engine implements EventHandler {
     this.entities.clearDead();
   }
 
-  handleKeys() {
-    const move = this.term.getMovementKey();
-    if (move) {
-      this.fire("playerMove", { move });
-      return;
-    }
-
-    if (this.term.isKeyPressed(Key.VK_1)) {
-      this.fire("playerFire", { array: 0 });
-      return;
-    }
-    if (this.term.isKeyPressed(Key.VK_2)) {
-      this.fire("playerFire", { array: 1 });
-      return;
-    }
-
-    if (this.term.isKeyPressed(Key.VK_F)) {
-      fireAirFist(this, getEntityMidpoint(this, this.player), 4.5);
-      this.tick();
-      return;
-    }
-  }
-
   update() {
-    this.handleKeys();
-    if (this.dirty) this.draw();
-  }
-
-  saveOverlay(e: Entity, name: string, overlay: Overlay) {
-    this.overlays.set(`${e.id}.${name}`, overlay);
+    this.mode.update();
   }
 
   inBounds(pos: Position) {

@@ -5,7 +5,7 @@ import neighbours from "@app/logic/neighbours";
 export default function bfs(
   start: Position[],
   isPassable: (pos: Position) => boolean,
-  maximum: number = Infinity
+  maximum = Infinity
 ) {
   const frontier: Position[] = [];
   const costs = new HashMap<Position, number>((p) => `${p.x},${p.y}`);
@@ -15,9 +15,8 @@ export default function bfs(
     costs.set(location, 0);
   }
 
-  while (true) {
-    const current = frontier.shift();
-    if (!current) break;
+  while (frontier.length) {
+    const current = frontier.shift()!;
 
     const neighbourCost = costs.getOrDie(current) + 1;
     if (neighbourCost > maximum) continue;

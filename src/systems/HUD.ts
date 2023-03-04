@@ -45,8 +45,7 @@ function drawWeaponInfo(term: Terminal, x: number, y: number, turret: Turret) {
 }
 
 export default function addHUD(g: Engine) {
-  const { mapWidth, mapHeight, term } = g;
-  const startY = mapHeight;
+  const { mapHeight, term } = g;
 
   g.on("draw", () => {
     const player = g.player;
@@ -56,7 +55,7 @@ export default function addHUD(g: Engine) {
     term.drawSingleBox(0, mapHeight, term.width, HUD_HEIGHT);
 
     let x = 1;
-    let y = mapHeight + 1;
+    const y = mapHeight + 1;
     const name = `${player.pilot!.name} in ${player.ship!.name}`;
     const barLength = Math.max(10, name.length - 3);
     term.drawString(x, y, name);

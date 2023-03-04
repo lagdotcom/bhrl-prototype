@@ -9,6 +9,7 @@
     "tsc": "tsc --noEmit",
     "build": "node build.mjs",
     "watch": "node watch.mjs",
+    "lint": "eslint --fix src",
     "serve": "http-server watch"
   },
   "dependencies": {
@@ -16,8 +17,14 @@
     "wglt": "^0.5.1"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
     "esbuild": "^0.17.6",
+    "eslint": "^8.35.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "http-server": "^14.1.1",
+    "prettier": "^2.8.4",
     "typescript": "^4.9.5"
   }
 }

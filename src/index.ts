@@ -30,7 +30,6 @@ function loadEngine(parent: HTMLElement) {
 
   const term = new Terminal(canvas, cols, rows, { font });
   const g = new Engine(term, cols, rows - HUD_HEIGHT);
-  g.gotoDemoRoom();
   (window as any).g = g;
 }
 
