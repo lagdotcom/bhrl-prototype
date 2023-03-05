@@ -4,7 +4,9 @@ import ShipPower, { ShipPowers } from "@app/types/ShipPower";
 import { Colors } from "wglt";
 import EnemyPilots from "@app/pilots/enemy";
 import Engine from "@app/Engine";
+import { PilotClasses } from "@app/types/PilotClass";
 import StarPilots from "@app/pilots/star";
+import { clone } from "@app/tools/object";
 import enumerate from "@app/tools/enumerate";
 import { getEntityTree } from "@app/logic/entity";
 import oneOf from "@app/tools/oneOf";
@@ -16,6 +18,9 @@ const isDrone = (prefab: ShipPrefab) =>
 
 const isHealthy = (power: ShipPower) =>
   ["Healthy", "Multi", "Mega"].includes(power);
+
+const hasStarPilot = (power: ShipPower) =>
+  ["StarPilot", "Mega"].includes(power);
 
 const Colours: Record<ShipPower, Partial<Appearance>> = {
   Typical: { fg: Colors.DARK_GRAY },
@@ -89,11 +94,14 @@ export function generateEnemy(g: Engine, maxDifficulty: number) {
   while (true) {
     const prefab = oneOf(ShipPrefabs);
     const power = oneOf(ShipPowers);
-    const pilot = getPilot(prefab, power);
+    if (isDrone(prefab) && hasStarPilot(power)) continue;
+
+    const basePilot = getPilot(prefab, power);
+
     const difficulty =
       powerDifficulty[power] +
       prefabDifficulty[prefab] +
-      (pilot?.difficulty ?? 0);
+      (basePilot?.difficulty ?? 0);
 
     if (difficulty <= maxDifficulty) {
       const entity = g.spawn(prefab);
@@ -105,7 +113,17 @@ export function generateEnemy(g: Engine, maxDifficulty: number) {
       // TODO set hp, weapons, etc.
       if (isHealthy(power)) ship.maxHp = ship.maxHp * 2 + 3;
 
-      if (pilot) putPilotInShip(entity, pilot);
+      if (basePilot) {
+        const pilot = clone(basePilot);
+
+        // give random classes up to Talent limit
+        while (pilot.class.length < pilot.talent)
+          pilot.class.push(
+            oneOf(PilotClasses.filter((cl) => !pilot.class.includes(cl)))
+          );
+
+        putPilotInShip(entity, pilot);
+      }
 
       entity.setAI({ idealDistance: 6, speed: 1 });
 

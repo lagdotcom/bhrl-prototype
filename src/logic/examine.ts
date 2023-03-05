@@ -22,30 +22,22 @@ export function drawExamineOverlay(
   const x = 1;
   let y = 1;
 
+  const add = (object: Drawable) => {
+    instructions.push({ x, y, object });
+    y += object.height + 1;
+  };
+
   for (const e of entities) {
-    if (e.ship) {
-      const object = new ShipInfo(g, e.ship);
-      instructions.push({ x, y, object });
-
-      y += object.height + 1;
-    }
-
-    if (e.pilot) {
-      const object = new PilotInfo(g, e.pilot);
-      instructions.push({ x, y, object });
-
-      y += object.height + 1;
-    }
+    if (e.ship) add(new ShipInfo(g, e.ship));
+    if (e.pilot) add(new PilotInfo(g, e.pilot, true));
 
     const tree = getEntityTree(g, e);
 
-    for (const weapon of tree.filter((x) => x.turret)) {
-      const object = new WeaponInfo(g, weapon.turret!);
-      instructions.push({ x, y, object });
-
-      y += object.height + 1;
-    }
+    for (const weapon of tree.filter((x) => x.turret))
+      add(new WeaponInfo(g, weapon.turret!));
   }
+
+  if (!instructions.length) return;
 
   const width = Math.max(...instructions.map((i) => i.object.width)) + 2;
 

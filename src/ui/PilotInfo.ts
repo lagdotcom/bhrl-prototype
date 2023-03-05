@@ -9,9 +9,9 @@ export default class PilotInfo implements Drawable {
   width: number;
   height: number;
 
-  constructor(public g: Engine, public pilot: Pilot) {
+  constructor(public g: Engine, public pilot: Pilot, public full: boolean) {
     this.width = 11;
-    this.height = this.isPlayer ? 1 : 2;
+    this.height = full ? 2 + pilot.class.length : 1;
   }
 
   get isPlayer() {
@@ -19,7 +19,7 @@ export default class PilotInfo implements Drawable {
   }
 
   draw(x: number, y: number) {
-    if (!this.isPlayer) {
+    if (this.full) {
       this.g.term.drawString(
         x,
         y,
@@ -33,6 +33,9 @@ export default class PilotInfo implements Drawable {
     this.drawStat(x + 3, y, "mind");
     this.drawStat(x + 6, y, "spirit");
     this.drawStat(x + 9, y, "talent");
+
+    for (const cl of this.pilot.class)
+      this.g.term.drawString(x, ++y, cl, Colors.LIGHT_GREEN);
   }
 
   drawStat(x: number, y: number, stat: PilotStat) {

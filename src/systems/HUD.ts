@@ -34,7 +34,7 @@ export default function addHUD(g: Engine) {
     shipInfo.draw(x, y);
 
     const statX = x + Math.floor((shipInfo.width - 11) / 2);
-    const pilotInfo = new PilotInfo(g, pilot!);
+    const pilotInfo = new PilotInfo(g, pilot!, false);
     pilotInfo.draw(statX, y + 3);
 
     x += shipInfo.width + 1;

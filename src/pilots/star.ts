@@ -8,7 +8,7 @@ export const Bodini: Pilot = {
   mind: 2,
   spirit: 3,
   talent: 2,
-  class: [],
+  class: ["Psychic"],
 };
 
 const StarPilots = [Bodini];
