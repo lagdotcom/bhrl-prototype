@@ -108,6 +108,8 @@ export function generateEnemy(g: Engine, maxDifficulty: number) {
 
       if (pilot) putPilotInShip(entity, pilot);
 
+      entity.setAI({ idealDistance: 6, speed: 1 });
+
       ship.hp = ship.maxHp;
       ship.shield = ship.maxShield;
 
