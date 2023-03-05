@@ -96,7 +96,6 @@ export function generateEnemy(g: Engine, maxDifficulty: number) {
       (pilot?.difficulty ?? 0);
 
     if (difficulty <= maxDifficulty) {
-      // TODO give AI
       const entity = g.spawn(prefab);
       const { ship } = entity;
 

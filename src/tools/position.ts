@@ -5,7 +5,9 @@ export function intPosition(pos: Position): Position {
   return { x: int(pos.x), y: int(pos.y) };
 }
 
-export function isSameCell(a: Position, b: Position): boolean {
+export function isSameCell(a?: Position, b?: Position): boolean {
+  if (typeof a === "undefined" || typeof b === "undefined") return false;
+
   const ia = intPosition(a);
   const ib = intPosition(b);
   return ia.x === ib.x && ia.y === ib.y;

@@ -2,6 +2,7 @@ import { Colors } from "wglt";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
 import { makeTurret } from "@app/components";
+import { ship } from "@app/prefabs/tools";
 
 export const FighterLauncher: Prefab = {
   components: {
@@ -18,7 +19,7 @@ export const FighterLauncher: Prefab = {
 export const Fighter: Prefab = {
   components: {
     ai: { idealDistance: 6, speed: 2 },
-    ship: { name: "Fighter", hp: 2, maxHp: 2 },
+    ship: ship("Fighter", 2),
   },
   children: [
     {

@@ -1,17 +1,22 @@
 import { Colors, Key } from "wglt";
+import { Pilot, Position } from "@app/components";
 import { getEntityLayout, getEntityMidpoint } from "@app/logic/entity";
 
 import Engine from "@app/Engine";
+import Entity from "@app/Entity";
 import GameMode from "@app/types/GameMode";
-import { Pilot } from "@app/components";
 import { PrefabName } from "@app/prefabs";
 import { addSystems } from "@app/systems";
+import { drawExamineOverlay } from "@app/logic/examine";
 import { fireAirFist } from "@app/logic/airFist";
 import int from "@app/tools/int";
+import { isSameCell } from "@app/tools/position";
 import { putPilotInShip } from "@app/logic/pilot";
 
 export default class MainMode implements GameMode {
   dirty: boolean;
+  examineAt?: Position;
+  examining: Entity[];
   showOverlay?: string;
 
   constructor(
@@ -20,10 +25,14 @@ export default class MainMode implements GameMode {
     public pilot: Pilot
   ) {
     this.dirty = true;
+    this.examining = [];
   }
 
   init() {
     const { g } = this;
+
+    this.examineAt = undefined;
+    this.examining = [];
 
     g.clearEventHandlers();
 
@@ -42,10 +51,15 @@ export default class MainMode implements GameMode {
     const { g, shipPrefab, pilot } = this;
 
     const e = g.spawn(shipPrefab);
+    if (!e.ship)
+      throw new Error(
+        `Ship prefab ${shipPrefab} doesn't have a ship component!`
+      );
+
     putPilotInShip(e, pilot);
 
-    e.ship!.hp = e.ship!.maxHp;
-    e.ship!.shield = e.ship!.maxShield;
+    e.ship.hp = e.ship.maxHp;
+    e.ship.shield = e.ship.maxShield;
 
     return e;
   }
@@ -77,11 +91,37 @@ export default class MainMode implements GameMode {
         }
       }
     }
+
+    if (this.examineAt)
+      drawExamineOverlay(this.g, this.examineAt, this.examining);
   }
 
   update() {
+    if (this.g.term.mouse.dx || this.g.term.mouse.dy) this.handleMouseMove();
+
     this.handleKeys();
+
     if (this.dirty) this.draw();
+  }
+
+  examine(pos: Position) {
+    if (isSameCell(this.examineAt, pos)) return;
+
+    this.examineAt = pos;
+    this.dirty = true;
+
+    const { solid, other } = this.g.getContents(pos);
+
+    const set = new Set<Entity>();
+    if (solid) set.add(this.g.getRoot(solid));
+    for (const e of other) set.add(this.g.getRoot(e));
+
+    this.examining = [...set];
+  }
+
+  handleMouseMove() {
+    const { x, y } = this.g.term.mouse;
+    this.examine({ x, y });
   }
 
   handleKeys() {

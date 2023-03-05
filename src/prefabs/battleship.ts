@@ -1,11 +1,12 @@
 import { Colors } from "wglt";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
+import { ship } from "@app/prefabs/tools";
 
 export const Battleship: Prefab = {
   components: {
     ai: { idealDistance: 8, speed: 1 },
-    ship: { name: "Battleship", hp: 40, maxHp: 40 },
+    ship: ship("Battleship", 40),
   },
   children: [
     { name: "BattleshipHull", x: 1, y: 0 },
