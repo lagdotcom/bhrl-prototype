@@ -22,7 +22,7 @@ export const HomingMissile: Prefab = {
 
 export const PlayerBullet: Prefab = {
   components: {
-    projectile: { damage: 1 },
+    projectile: { damage: 3 },
     appearance: {
       glyph: Glyphs.InvertedExclamation,
       layer: Layer.Bullet,

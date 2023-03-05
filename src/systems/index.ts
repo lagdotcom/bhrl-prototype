@@ -8,6 +8,7 @@ import addHoming from "./Homing";
 import addLifetime from "./Lifetime";
 import addMotion from "./Motion";
 import addPlayer from "./Player";
+import addShields from "./Shields";
 import addSpawns from "./Spawns";
 import addTrails from "./Trails";
 import addTurrets from "./Turrets";
@@ -17,6 +18,7 @@ export function addSystems(g: Engine) {
   addHoming(g);
   addTurrets(g);
   addFields(g);
+  addShields(g);
   addMotion(g);
   addAI(g);
   addSpawns(g);

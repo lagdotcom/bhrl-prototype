@@ -8,7 +8,14 @@ import StarPilots from "@app/pilots/star";
 import enumerate from "@app/tools/enumerate";
 import { getEntityTree } from "@app/logic/entity";
 import oneOf from "@app/tools/oneOf";
+import { putPilotInShip } from "@app/logic/pilot";
 import shuffle from "@app/tools/shuffle";
+
+const isDrone = (prefab: ShipPrefab) =>
+  ["DroneA", "DroneB", "DroneC"].includes(prefab);
+
+const isHealthy = (power: ShipPower) =>
+  ["Healthy", "Multi", "Mega"].includes(power);
 
 const Colours: Record<ShipPower, Partial<Appearance>> = {
   Typical: { fg: Colors.DARK_GRAY },
@@ -70,7 +77,9 @@ const prefabDifficulty: Record<ShipPrefab, number> = {
   Demigod: 40,
 };
 
-function getPilot(power: ShipPower) {
+function getPilot(prefab: ShipPrefab, power: ShipPower) {
+  if (isDrone(prefab)) return undefined;
+
   // TODO make sure star pilot doesn't already exist
   if (power === "StarPilot" || power === "Mega") return oneOf(StarPilots);
   return oneOf(EnemyPilots);
@@ -80,15 +89,27 @@ export function generateEnemy(g: Engine, maxDifficulty: number) {
   while (true) {
     const prefab = oneOf(ShipPrefabs);
     const power = oneOf(ShipPowers);
-    const pilot = getPilot(power);
+    const pilot = getPilot(prefab, power);
     const difficulty =
-      powerDifficulty[power] + prefabDifficulty[prefab] + pilot.difficulty;
+      powerDifficulty[power] +
+      prefabDifficulty[prefab] +
+      (pilot?.difficulty ?? 0);
 
     if (difficulty <= maxDifficulty) {
       // TODO give AI
-      const entity = g.spawn(prefab).setPilot(pilot);
+      const entity = g.spawn(prefab);
+      const { ship } = entity;
+
+      if (!ship)
+        throw new Error(`Ship prefab ${prefab} doesn't have a ship component!`);
 
       // TODO set hp, weapons, etc.
+      if (isHealthy(power)) ship.maxHp = ship.maxHp * 2 + 3;
+
+      if (pilot) putPilotInShip(entity, pilot);
+
+      ship.hp = ship.maxHp;
+      ship.shield = ship.maxShield;
 
       const appearance = Colours[power];
       for (const part of getEntityTree(g, entity)) {

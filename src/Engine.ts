@@ -182,7 +182,19 @@ export default class Engine implements EventHandler {
     const e = this.getRoot(hit);
     if (!e.ship) return;
 
-    e.ship.hp -= amount;
+    let damageToHp = amount;
+
+    if (e.ship.shield > 0) {
+      if (e.ship.shield > amount) {
+        e.ship.shield -= amount;
+        damageToHp = 0;
+      } else {
+        damageToHp -= e.ship.shield;
+        e.ship.shield = 0;
+      }
+    }
+    if (damageToHp) e.ship.hp -= damageToHp;
+
     console.log(inflicter.name, "hits", e.name, "for", amount);
     this.fire("damage", { e, inflicter, amount });
 

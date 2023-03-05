@@ -9,7 +9,7 @@ import { getEntityTree } from "@app/logic/entity";
 import { getState } from "@app/logic/turret";
 import pluralise from "@app/tools/pluralise";
 
-export const HUD_HEIGHT = 5;
+export const HUD_HEIGHT = 6;
 
 function drawBar(
   term: Terminal,
@@ -87,11 +87,24 @@ export default function addHUD(g: Engine) {
       Colors.WHITE
     );
 
+    term.drawString(x, y + 2, "Sh:", Colors.WHITE);
+    drawBar(
+      term,
+      x + 3,
+      y + 2,
+      barLength,
+      ship!.shield,
+      ship!.maxShield,
+      Colors.DARK_CYAN,
+      Colors.LIGHT_BLUE,
+      Colors.WHITE
+    );
+
     const statX = x + Math.floor((sectionWidth - 11) / 2);
-    drawStat(term, statX, y + 2, pilot!, "body");
-    drawStat(term, statX + 3, y + 2, pilot!, "mind");
-    drawStat(term, statX + 6, y + 2, pilot!, "spirit");
-    drawStat(term, statX + 9, y + 2, pilot!, "talent");
+    drawStat(term, statX, y + 3, pilot!, "body");
+    drawStat(term, statX + 3, y + 3, pilot!, "mind");
+    drawStat(term, statX + 6, y + 3, pilot!, "spirit");
+    drawStat(term, statX + 9, y + 3, pilot!, "talent");
 
     x += sectionWidth + 1;
     term.drawChar(

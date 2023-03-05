@@ -8,6 +8,7 @@ import { PrefabName } from "@app/prefabs";
 import { addSystems } from "@app/systems";
 import { fireAirFist } from "@app/logic/airFist";
 import int from "@app/tools/int";
+import { putPilotInShip } from "@app/logic/pilot";
 
 export default class MainMode implements GameMode {
   dirty: boolean;
@@ -22,19 +23,31 @@ export default class MainMode implements GameMode {
   }
 
   init() {
-    const { g, shipPrefab, pilot } = this;
+    const { g } = this;
 
     g.clearEventHandlers();
 
     g.entities.clear();
     g.blankMap();
 
-    g.player = g.spawn(shipPrefab).setPilot(pilot);
+    g.player = this.makePlayer();
 
     const { width, height } = getEntityLayout(g, g.player);
     g.player.move(int(g.mapWidth / 2 - width / 2), g.mapHeight - height - 4);
 
     addSystems(g);
+  }
+
+  makePlayer() {
+    const { g, shipPrefab, pilot } = this;
+
+    const e = g.spawn(shipPrefab);
+    putPilotInShip(e, pilot);
+
+    e.ship!.hp = e.ship!.maxHp;
+    e.ship!.shield = e.ship!.maxShield;
+
+    return e;
   }
 
   draw() {

@@ -1,8 +1,9 @@
+import { child, ship } from "@app/prefabs/tools";
+
 import { Colors } from "wglt";
 import Glyphs from "@app/logic/glyphs";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
-import { child } from "@app/prefabs/tools";
 
 export const PlayerHull: Prefab = {
   components: {
@@ -14,7 +15,7 @@ export const PlayerHull: Prefab = {
 export const PlayerShip: Prefab = {
   components: {
     player: { weaponArrays: ["Primary"] },
-    ship: { name: "Ace of Clubs", hp: 20, maxHp: 20 },
+    ship: ship("Ace of Clubs", 20, 10),
   },
   children: [
     child("PlayerHull", 0, 0, { appearance: { glyph: Glyphs.LeftArrow } }),
