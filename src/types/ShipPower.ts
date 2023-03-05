@@ -8,5 +8,5 @@ export const ShipPowers = [
   "Mega",
 ] as const;
 
-type ShipPower = typeof ShipPowers[number];
+type ShipPower = (typeof ShipPowers)[number];
 export default ShipPower;

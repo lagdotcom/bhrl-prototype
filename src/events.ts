@@ -12,7 +12,7 @@ export const EventNames = [
   "spawn",
   "tick",
 ] as const;
-export type EventName = typeof EventNames[number];
+export type EventName = (typeof EventNames)[number];
 
 export type EventMap = {
   damage: { e: Entity; inflicter: Entity; amount: number };

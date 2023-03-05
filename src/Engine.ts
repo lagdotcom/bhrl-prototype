@@ -13,8 +13,7 @@ import { intPosition, isSameCell } from "@app/tools/position";
 import EntityList from "@app/EntityList";
 import GameMode from "@app/types/GameMode";
 import HashMap from "@app/HashMap";
-import MainMode from "@app/MainMode";
-import PlayerPilots from "@app/pilots/player";
+import MenuMode from "@app/MenuMode";
 import { Position } from "@app/components";
 import bfs from "@app/logic/bfs";
 import { fromEntries } from "@app/tools/object";
@@ -31,7 +30,7 @@ export default class Engine implements EventHandler {
   eventCallbacks!: Record<EventName, EventCallback<any>[]>;
   overlays: Map<string, Overlay>;
   player!: Entity; // be careful of this !
-  mode: GameMode;
+  mode!: GameMode;
 
   constructor(
     public term: Terminal,
@@ -46,7 +45,11 @@ export default class Engine implements EventHandler {
     this.overlays = new Map();
 
     this.clearEventHandlers();
-    this.mode = new MainMode(this, "PlayerShip", PlayerPilots[0]);
+    this.setMode(new MenuMode(this));
+  }
+
+  setMode(mode: GameMode) {
+    this.mode = mode;
     this.mode.init();
   }
 

@@ -16,20 +16,20 @@ function drawBar(
   width: number,
   val: number,
   max: number,
-  filled: number,
-  empty: number,
-  text: number
+  filledBg: number,
+  emptyBg: number,
+  textFg: number
 ) {
   const label = `${Math.ceil(val)}/${max}`;
   const length = Math.floor((val / max) * width);
 
-  term.drawHLine(x, y, width, " ", undefined, empty);
-  if (length) term.drawHLine(x, y, length, " ", undefined, filled);
-  term.drawCenteredString(x + width / 2, y, label, text);
+  term.drawHLine(x, y, width, " ", undefined, emptyBg);
+  if (length) term.drawHLine(x, y, length, " ", undefined, filledBg);
+  term.drawCenteredString(x + width / 2, y, label, textFg);
 }
 
 function drawWeaponInfo(term: Terminal, x: number, y: number, turret: Turret) {
-  term.drawString(x, y, turret.name);
+  term.drawString(x, y, turret.name, Colors.WHITE);
 
   const state = getState(turret);
   if (state === "Reloading") {
@@ -52,14 +52,14 @@ export default function addHUD(g: Engine) {
 
     // term.drawHLine(0, startY, term.width, Glyphs.BoxHorizontalSingle);
     term.fillRect(0, mapHeight, term.width, HUD_HEIGHT, " ");
-    term.drawSingleBox(0, mapHeight, term.width, HUD_HEIGHT);
+    term.drawSingleBox(0, mapHeight, term.width, HUD_HEIGHT, Colors.WHITE);
 
     let x = 1;
     const y = mapHeight + 1;
     const name = `${player.pilot!.name} in ${player.ship!.name}`;
     const barLength = Math.max(10, name.length - 3);
-    term.drawString(x, y, name);
-    term.drawString(x, y + 1, "HP:");
+    term.drawString(x, y, name, Colors.WHITE);
+    term.drawString(x, y + 1, "HP:", Colors.WHITE);
     drawBar(
       term,
       x + 3,
@@ -73,12 +73,24 @@ export default function addHUD(g: Engine) {
     );
 
     x += barLength + 4;
-    term.drawChar(x - 1, y - 1, Glyphs.BoxDownSingleHorizontalSingle);
-    term.drawVLine(x - 1, y, HUD_HEIGHT - 2, Glyphs.BoxVerticalSingle);
+    term.drawChar(
+      x - 1,
+      y - 1,
+      Glyphs.BoxDownSingleHorizontalSingle,
+      Colors.WHITE
+    );
+    term.drawVLine(
+      x - 1,
+      y,
+      HUD_HEIGHT - 2,
+      Glyphs.BoxVerticalSingle,
+      Colors.WHITE
+    );
     term.drawChar(
       x - 1,
       y + HUD_HEIGHT - 2,
-      Glyphs.BoxUpSingleHorizontalSingle
+      Glyphs.BoxUpSingleHorizontalSingle,
+      Colors.WHITE
     );
 
     for (const tag of player.player!.weaponArrays) {

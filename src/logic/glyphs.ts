@@ -1,5 +1,6 @@
 const Glyphs = {
   Club: "\x05",
+  Dot: "\x07",
   RingInvert: "\x0a",
   Female: "\x0c",
 

@@ -50,7 +50,7 @@ const ShipPrefabs = [
   "GoutOFlame",
   "Demigod",
 ] as const;
-type ShipPrefab = typeof ShipPrefabs[number];
+type ShipPrefab = (typeof ShipPrefabs)[number];
 
 const prefabDifficulty: Record<ShipPrefab, number> = {
   ShipA: 1,
