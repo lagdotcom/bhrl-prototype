@@ -122,8 +122,7 @@ export default class Engine implements EventHandler {
   }
 
   getRoot(e: Entity): Entity {
-    const owner = e.owner ?? e;
-    return owner.attachment ? this.getRoot(owner.attachment.parent) : owner;
+    return e.attachment ? this.getRoot(e.attachment.parent) : e;
   }
 
   getContents(

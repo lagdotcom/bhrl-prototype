@@ -66,7 +66,7 @@ export default function addAI(g: Engine) {
 
     if (e.ai) {
       if (!e.ai.attacking) {
-        const root = g.getRoot(inflicter);
+        const root = g.getRoot(inflicter.owner ?? inflicter);
         if (root.alive) e.ai.attacking = root;
       }
     }

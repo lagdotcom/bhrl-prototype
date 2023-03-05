@@ -5,6 +5,8 @@ import GameMode from "@app/types/GameMode";
 import Glyphs from "@app/logic/glyphs";
 import MainMode from "@app/MainMode";
 import { Pilot } from "@app/components";
+import PilotStat from "@app/types/PilotStat";
+import { StatColours } from "@app/logic/colours";
 import { angleMove } from "@app/tools/angle";
 import { intPosition } from "@app/tools/position";
 import oneOf from "@app/tools/oneOf";
@@ -17,18 +19,6 @@ type Star = {
   angle: number;
   vel: number;
 };
-
-type StatName = "body" | "mind" | "spirit" | "talent";
-
-const StatColours = [
-  0,
-  Colors.DARK_RED,
-  Colors.BROWN,
-  Colors.LIGHT_RED,
-  Colors.ORANGE,
-  Colors.YELLOW,
-  Colors.WHITE,
-];
 
 export default class MenuMode implements GameMode {
   dirty!: boolean;
@@ -93,7 +83,7 @@ export default class MenuMode implements GameMode {
     this.dirty = false;
   }
 
-  drawStat(stat: StatName, x: number) {
+  drawStat(stat: PilotStat, x: number) {
     const { term } = this.g;
 
     const label = `(${stat[0].toUpperCase()})${stat.slice(1)}`;
@@ -155,7 +145,7 @@ export default class MenuMode implements GameMode {
     return this.g.term.isKeyPressed(key) && shift === shiftDown;
   }
 
-  changeStat(stat: StatName, value: number) {
+  changeStat(stat: PilotStat, value: number) {
     const newValue = this.pilot[stat] + value;
 
     if (newValue < 1 || newValue > 6) return false;
