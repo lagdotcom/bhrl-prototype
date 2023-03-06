@@ -172,7 +172,11 @@ export default class MenuMode implements GameMode {
     if (this.isPressed(Key.VK_S, true)) this.changeStat("spirit", -1);
     if (this.isPressed(Key.VK_T, true)) this.changeStat("talent", -1);
 
-    if (this.points === 0 && this.g.term.isKeyPressed(Key.VK_ENTER))
+    if (
+      this.points === 0 &&
+      (this.g.term.isKeyPressed(Key.VK_ENTER) ||
+        this.g.term.isKeyPressed(Key.VK_NUMPAD_ENTER))
+    )
       this.g.setMode(new CampaignMode(this.g, "PlayerShip", this.pilot));
   }
 }

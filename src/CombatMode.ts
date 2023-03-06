@@ -5,6 +5,7 @@ import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import GameMode from "@app/types/GameMode";
 import { Position } from "@app/components";
+import Sector from "@app/types/Sector";
 import { addSystems } from "@app/systems";
 import { drawExamineOverlay } from "@app/logic/examine";
 import { fireAirFist } from "@app/logic/airFist";
@@ -17,7 +18,7 @@ export default class CombatMode implements GameMode {
   examining: Entity[];
   showOverlay?: string;
 
-  constructor(public g: Engine) {
+  constructor(public g: Engine, public sector: Sector) {
     this.dirty = true;
     this.examining = [];
   }
