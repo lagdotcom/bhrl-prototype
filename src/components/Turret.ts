@@ -10,5 +10,6 @@ type Turret = {
   timeBetweenSalvos: number;
   timer: number;
   salvo: number;
+  ammunition: number;
 };
 export default Turret;

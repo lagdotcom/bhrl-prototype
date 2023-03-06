@@ -1,13 +1,13 @@
+import { ship, turret } from "@app/prefabs/tools";
+
 import { Colors } from "wglt";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
-import { makeTurret } from "@app/components";
-import { ship } from "@app/prefabs/tools";
 
 export const FighterLauncher: Prefab = {
   components: {
     appearance: { glyph: "_", layer: Layer.Gun, fg: Colors.DARK_CYAN },
-    turret: makeTurret("Fighter Bay", "nearestEnemy", {
+    turret: turret("Fighter Bay", "nearestEnemy", {
       bulletPrefab: "Fighter",
       bulletVelocity: 0,
       salvoCount: 1,

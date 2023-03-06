@@ -1,3 +1,4 @@
+import BulletInfo from "@app/ui/BulletInfo";
 import { Colors } from "wglt";
 import Drawable from "@app/types/Drawable";
 import Engine from "@app/Engine";
@@ -35,6 +36,8 @@ export function drawExamineOverlay(
 
     for (const weapon of tree.filter((x) => x.turret))
       add(new WeaponInfo(g, weapon.turret!));
+
+    if (e.motion || e.projectile || e.homing) add(new BulletInfo(g, e));
   }
 
   if (!instructions.length) return;

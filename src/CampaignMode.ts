@@ -1,5 +1,6 @@
 import { Colors, Key } from "wglt";
 import { Pilot, Position } from "@app/components";
+import { addPositions, isSameCell } from "@app/tools/position";
 
 import CombatMode from "@app/CombatMode";
 import Engine from "@app/Engine";
@@ -8,7 +9,6 @@ import Grid from "@app/Grid";
 import { PrefabName } from "@app/prefabs";
 import Sector from "@app/types/Sector";
 import StarPilots from "@app/pilots/star";
-import { isSameCell } from "@app/tools/position";
 import oneOf from "@app/tools/oneOf";
 import { putPilotInShip } from "@app/logic/pilot";
 
@@ -136,13 +136,21 @@ export default class CampaignMode implements GameMode {
         this.g.term.isKeyPressed(Key.VK_NUMPAD_ENTER))
     )
       this.startCombat();
+
+    const move = this.g.term.getMovementKey();
+    if (sector.completed && move) {
+      const destination = addPositions(this.position, move);
+      if (this.space.contains(destination)) {
+        this.position = destination;
+        this.dirty = true;
+      }
+    }
   }
 
   update() {
-    this.handleKeys();
-
     if (this.combat) return this.combat.update();
 
+    this.handleKeys();
     if (this.dirty) this.draw();
   }
 }

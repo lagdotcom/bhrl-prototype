@@ -5,7 +5,10 @@ import Entity from "@app/Entity";
 import { angleBetween } from "@app/tools/angle";
 
 export function getState(turret: Turret) {
-  if (turret.salvo <= 0) return "Reloading";
+  if (turret.salvo <= 0) {
+    if (turret.ammunition <= 0) return "Spent";
+    return "Reloading";
+  }
   if (turret.timer > 0) return "Chambering";
   return "Ready";
 }
@@ -13,8 +16,12 @@ export function getState(turret: Turret) {
 export function advanceTimer(turret: Turret) {
   if (turret.timer > 0) {
     turret.timer--;
-    if (turret.timer <= 0 && turret.salvo <= 0)
-      turret.salvo = turret.salvoCount;
+    if (turret.timer <= 0 && turret.salvo <= 0) {
+      if (turret.ammunition) {
+        turret.salvo = Math.min(turret.salvoCount, turret.ammunition);
+        turret.ammunition -= turret.salvo;
+      } else turret.timer = Infinity;
+    }
   }
 }
 

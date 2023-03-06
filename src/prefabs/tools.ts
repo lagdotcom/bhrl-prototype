@@ -1,6 +1,7 @@
+import { Ship, Turret } from "@app/components";
+
 import { PrefabChild } from "@app/types/Prefab";
 import { PrefabName } from ".";
-import { Ship } from "@app/components";
 
 export const child = (
   name: PrefabName,
@@ -16,4 +17,28 @@ export const ship = (name: string, maxHp: number, maxShield = 0): Ship => ({
   hp: 0,
   maxShield,
   shield: 0,
+});
+
+export const turret = (
+  name: string,
+  bulletAngle: Turret["bulletAngle"],
+  {
+    bulletPrefab = "Bullet",
+    bulletVelocity = 1,
+    salvoCount = 1,
+    timeBetweenShots = 1,
+    timeBetweenSalvos = 1,
+    ammunition = Infinity,
+  }: Partial<Turret>
+): Turret => ({
+  name,
+  bulletPrefab,
+  bulletAngle,
+  bulletVelocity,
+  salvoCount,
+  timeBetweenShots,
+  timeBetweenSalvos,
+  timer: 0,
+  salvo: salvoCount,
+  ammunition,
 });

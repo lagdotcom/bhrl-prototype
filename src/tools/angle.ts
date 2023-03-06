@@ -18,3 +18,8 @@ export function angleMove(mo: Motion): [dx: number, dy: number] {
   const dy = Math.sin(mo.angle) * mo.vel;
   return [dx, dy];
 }
+
+export function angleWrap(angle: number) {
+  while (angle < 0) angle += tau;
+  return angle;
+}

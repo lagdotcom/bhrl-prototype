@@ -1,5 +1,6 @@
 import { child, ship } from "@app/prefabs/tools";
 
+import { AI } from "@app/components";
 import { Colors } from "wglt";
 import Glyphs from "@app/logic/glyphs";
 import Layer from "@app/types/Layer";
@@ -12,83 +13,92 @@ export const Hull: Prefab = {
   },
 };
 
+const defaultAI: AI = { idealDistance: 8, firingDistance: 14, speed: 1 };
+const tinyGun = child("PeaShooter", 0, 0);
+
 export const ShipA: Prefab = {
-  components: { ship: ship("A", 0) },
+  components: { ai: defaultAI, ship: ship("A", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pilcrow } }),
-    child("PeaShooter", 0, 0),
+    tinyGun,
   ],
 };
 
 export const ShipB: Prefab = {
-  components: { ship: ship("B", 0) },
+  components: { ai: defaultAI, ship: ship("B", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Yen } }),
-    child("PeaShooter", 0, 0),
+    tinyGun,
   ],
 };
 
 export const ShipC: Prefab = {
-  components: { ship: ship("C", 0) },
-  children: [
-    child("Hull", 0, 0, { appearance: { glyph: "W" } }),
-    child("PeaShooter", 0, 0),
-  ],
+  components: { ai: defaultAI, ship: ship("C", 0) },
+  children: [child("Hull", 0, 0, { appearance: { glyph: "W" } }), tinyGun],
 };
 
 export const ShipD: Prefab = {
-  components: { ship: ship("D", 0) },
+  components: { ai: defaultAI, ship: ship("D", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Omega } }),
-    child("PeaShooter", 0, 0),
+    tinyGun,
   ],
 };
 
 export const ShipE: Prefab = {
-  components: { ship: ship("E", 0) },
+  components: { ai: defaultAI, ship: ship("E", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.DownWedge } }),
-    child("PeaShooter", 0, 0),
+    tinyGun,
   ],
 };
 
 export const ShipF: Prefab = {
-  components: { ship: ship("F", 0) },
+  components: { ai: defaultAI, ship: ship("F", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pi } }),
-    child("PeaShooter", 0, 0),
+    tinyGun,
   ],
 };
 
 export const ShipG: Prefab = {
-  components: { ship: ship("G", 0) },
-  children: [
-    child("Hull", 0, 0, { appearance: { glyph: "M" } }),
-    child("PeaShooter", 0, 0),
-  ],
+  components: { ai: defaultAI, ship: ship("G", 0) },
+  children: [child("Hull", 0, 0, { appearance: { glyph: "M" } }), tinyGun],
 };
 
 export const ShipH: Prefab = {
-  components: { ship: ship("H", 0) },
+  components: { ai: defaultAI, ship: ship("H", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Female } }),
-    child("PeaShooter", 0, 0),
+    tinyGun,
   ],
 };
 
+const droneAI: AI = { idealDistance: 5, firingDistance: 6, speed: 1 };
+const droneGun = child("DroneGun", 0, 0);
+
 export const DroneA: Prefab = {
-  components: { ship: ship("Drone A", 1) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: Glyphs.Theta } })],
+  components: { ai: droneAI, ship: ship("Drone A", 1) },
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: Glyphs.Theta } }),
+    droneGun,
+  ],
 };
 
 export const DroneB: Prefab = {
-  components: { ship: ship("Drone B", 1) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: Glyphs.SymbolED } })],
+  components: { ai: droneAI, ship: ship("Drone B", 1) },
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: Glyphs.SymbolED } }),
+    droneGun,
+  ],
 };
 
 export const DroneC: Prefab = {
-  components: { ship: ship("Drone C", 1) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: Glyphs.Silcrow } })],
+  components: { ai: droneAI, ship: ship("Drone C", 1) },
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: Glyphs.Silcrow } }),
+    droneGun,
+  ],
 };
 
 export const CruiseyWing: Prefab = {

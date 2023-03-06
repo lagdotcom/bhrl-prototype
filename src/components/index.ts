@@ -58,25 +58,3 @@ export {
   Trail,
   Turret,
 };
-
-export const makeTurret = (
-  name: string,
-  bulletAngle: Turret["bulletAngle"],
-  {
-    bulletPrefab = "Bullet",
-    bulletVelocity = 1,
-    salvoCount = 1,
-    timeBetweenShots = 1,
-    timeBetweenSalvos = 1,
-  }: Partial<Turret>
-): Turret => ({
-  name,
-  bulletPrefab,
-  bulletAngle,
-  bulletVelocity,
-  salvoCount,
-  timeBetweenShots,
-  timeBetweenSalvos,
-  timer: 0,
-  salvo: salvoCount,
-});

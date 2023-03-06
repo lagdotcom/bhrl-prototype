@@ -19,7 +19,11 @@ export default class Grid<T> {
     }
   }
 
-  get({ x, y }: Position): T {
+  contains({ x, y }: Position) {
+    return x >= 0 && x < this.width && y >= 0 && y < this.height;
+  }
+
+  get({ x, y }: Position) {
     return this.grid[y][x];
   }
 

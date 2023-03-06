@@ -10,6 +10,13 @@ export const Bullet: Prefab = {
   },
 };
 
+export const DroneBullet: Prefab = {
+  components: {
+    projectile: { damage: 1 },
+    appearance: { glyph: ".", layer: Layer.Bullet, fg: Colors.ORANGE },
+  },
+};
+
 export const HomingMissile: Prefab = {
   components: {
     projectile: { damage: 1 },
