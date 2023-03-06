@@ -7,6 +7,7 @@ import Homing from "./Homing";
 import IgnoreSolid from "./IgnoreSolid";
 import Lifetime from "./Lifetime";
 import Motion from "./Motion";
+import Origin from "./Origin";
 import Pilot from "./Pilot";
 import Player from "./Player";
 import Position from "./Position";
@@ -25,6 +26,7 @@ export type ComponentMap = {
   ignoreSolid: IgnoreSolid;
   lifetime: Lifetime;
   motion: Motion;
+  origin: Origin;
   pilot: Pilot;
   position: Position;
   player: Player;
@@ -47,6 +49,7 @@ export {
   IgnoreSolid,
   Lifetime,
   Motion,
+  Origin,
   Pilot,
   Player,
   Position,

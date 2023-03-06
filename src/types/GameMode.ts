@@ -1,6 +1,6 @@
 type GameMode = {
-  dirty: boolean;
   init(): void;
+  refresh(): void;
   update(): void;
 };
 export default GameMode;

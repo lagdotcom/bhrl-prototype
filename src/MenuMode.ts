@@ -1,9 +1,9 @@
 import { Colors, Key } from "wglt";
 
+import CampaignMode from "@app/CampaignMode";
 import Engine from "@app/Engine";
 import GameMode from "@app/types/GameMode";
 import Glyphs from "@app/logic/glyphs";
-import MainMode from "@app/MainMode";
 import { Pilot } from "@app/components";
 import PilotStat from "@app/types/PilotStat";
 import { StatColours } from "@app/logic/colours";
@@ -32,6 +32,10 @@ export default class MenuMode implements GameMode {
     public starfieldSpeed = 5,
     public starCount = 100
   ) {}
+
+  refresh() {
+    this.dirty = true;
+  }
 
   init() {
     this.dirty = true;
@@ -169,6 +173,6 @@ export default class MenuMode implements GameMode {
     if (this.isPressed(Key.VK_T, true)) this.changeStat("talent", -1);
 
     if (this.points === 0 && this.g.term.isKeyPressed(Key.VK_ENTER))
-      this.g.setMode(new MainMode(this.g, "PlayerShip", this.pilot));
+      this.g.setMode(new CampaignMode(this.g, "PlayerShip", this.pilot));
   }
 }

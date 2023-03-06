@@ -61,14 +61,11 @@ export default function addAI(g: Engine) {
     })
   );
 
-  g.on("damage", ({ e, inflicter }) => {
-    if (e === inflicter) return;
+  g.on("damage", ({ e, source }) => {
+    if (!source.owner) return;
+    if (e === source.owner) return;
 
-    if (e.ai) {
-      if (!e.ai.attacking) {
-        const root = g.getRoot(inflicter.owner ?? inflicter);
-        if (root.alive) e.ai.attacking = root;
-      }
-    }
+    if (e.ai && !e.ai.attacking && source.owner.alive)
+      e.ai.attacking = source.owner;
   });
 }

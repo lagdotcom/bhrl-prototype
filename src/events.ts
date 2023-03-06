@@ -1,5 +1,6 @@
+import { Position, Ship, Turret } from "@app/components";
+
 import Entity from "@app/Entity";
-import { Position } from "@app/components";
 
 export const EventNames = [
   "damage",
@@ -14,10 +15,17 @@ export const EventNames = [
 ] as const;
 export type EventName = (typeof EventNames)[number];
 
+export type DamageSource = {
+  e: Entity;
+  owner: Entity;
+  ship?: Ship;
+  turret?: Turret;
+};
+
 export type EventMap = {
-  damage: { e: Entity; inflicter: Entity; amount: number };
+  damage: { e: Entity; amount: number; source: DamageSource };
   draw: undefined;
-  kill: { e: Entity; by?: Entity };
+  kill: { e: Entity; source?: DamageSource };
   move: { e: Entity; old: Position; pos: Position };
   notice: { e: Entity; noticed: Entity };
   playerFire: { array: number };

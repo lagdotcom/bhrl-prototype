@@ -14,42 +14,66 @@ export const Hull: Prefab = {
 
 export const ShipA: Prefab = {
   components: { ship: ship("A", 0) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pilcrow } })],
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pilcrow } }),
+    child("PeaShooter", 0, 0),
+  ],
 };
 
 export const ShipB: Prefab = {
   components: { ship: ship("B", 0) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: Glyphs.Yen } })],
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: Glyphs.Yen } }),
+    child("PeaShooter", 0, 0),
+  ],
 };
 
 export const ShipC: Prefab = {
   components: { ship: ship("C", 0) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: "W" } })],
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: "W" } }),
+    child("PeaShooter", 0, 0),
+  ],
 };
 
 export const ShipD: Prefab = {
   components: { ship: ship("D", 0) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: Glyphs.Omega } })],
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: Glyphs.Omega } }),
+    child("PeaShooter", 0, 0),
+  ],
 };
 
 export const ShipE: Prefab = {
   components: { ship: ship("E", 0) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: Glyphs.DownWedge } })],
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: Glyphs.DownWedge } }),
+    child("PeaShooter", 0, 0),
+  ],
 };
 
 export const ShipF: Prefab = {
   components: { ship: ship("F", 0) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pi } })],
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pi } }),
+    child("PeaShooter", 0, 0),
+  ],
 };
 
 export const ShipG: Prefab = {
   components: { ship: ship("G", 0) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: "M" } })],
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: "M" } }),
+    child("PeaShooter", 0, 0),
+  ],
 };
 
 export const ShipH: Prefab = {
   components: { ship: ship("H", 0) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: Glyphs.Female } })],
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: Glyphs.Female } }),
+    child("PeaShooter", 0, 0),
+  ],
 };
 
 export const DroneA: Prefab = {

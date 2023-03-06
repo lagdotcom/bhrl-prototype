@@ -47,7 +47,7 @@ export function fire(
   if (turret.bulletVelocity)
     bullet.setMotion({ angle, vel: turret.bulletVelocity });
 
-  if (!bullet.ai) bullet.setOwner(owner);
+  if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
 
   return bullet;
 }

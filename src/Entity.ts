@@ -9,6 +9,7 @@ import {
   IgnoreSolid,
   Lifetime,
   Motion,
+  Origin,
   Pilot,
   Player,
   Position,
@@ -19,6 +20,7 @@ import {
 } from "@app/components";
 import { clone, keys } from "@app/tools/object";
 
+import { DamageSource } from "@app/events";
 import Engine from "@app/Engine";
 import Prefab from "@app/types/Prefab";
 import { PrefabName } from "@app/prefabs";
@@ -26,7 +28,6 @@ import { PrefabName } from "@app/prefabs";
 export default class Entity implements Partial<ComponentMap> {
   alive: boolean;
   id: number;
-  owner?: Entity;
   tags: Set<string>;
 
   prefab?: PrefabName;
@@ -39,6 +40,7 @@ export default class Entity implements Partial<ComponentMap> {
   ignoreSolid?: IgnoreSolid;
   lifetime?: Lifetime;
   motion?: Motion;
+  origin?: Origin;
   pilot?: Pilot;
   player?: Player;
   projectile?: Projectile;
@@ -76,9 +78,9 @@ export default class Entity implements Partial<ComponentMap> {
     return this.name;
   }
 
-  kill(by?: Entity): this {
+  kill(source?: DamageSource): this {
     this.alive = false;
-    this.eachChild((e) => this.g.kill(e, by));
+    this.eachChild((e) => this.g.kill(e, source));
     return this;
   }
 
@@ -86,11 +88,6 @@ export default class Entity implements Partial<ComponentMap> {
     for (const e of this.g.entities.get()) {
       if (e.attachment?.parent === this) callback(e, e.attachment);
     }
-  }
-
-  setOwner(e?: Entity): this {
-    this.owner = e;
-    return this;
   }
 
   setAI(c?: AI): this {
@@ -136,6 +133,11 @@ export default class Entity implements Partial<ComponentMap> {
 
   setMotion(c?: Motion): this {
     this.motion = c;
+    return this;
+  }
+
+  setOrigin(c?: Origin): this {
+    this.origin = c;
     return this;
   }
 

@@ -34,6 +34,8 @@ export default class PilotInfo implements Drawable {
     this.drawStat(x + 6, y, "spirit");
     this.drawStat(x + 9, y, "talent");
 
+    if (!this.full) return;
+
     for (const cl of this.pilot.class)
       this.g.term.drawString(x, ++y, cl, Colors.LIGHT_GREEN);
   }

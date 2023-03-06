@@ -1,12 +1,13 @@
 import { BlendMode, Cell, Console, Terminal } from "wglt";
-import Entity, { compareEntities } from "@app/Entity";
 import {
+  DamageSource,
   EventCallback,
   EventHandler,
   EventMap,
   EventName,
   EventNames,
 } from "@app/events";
+import Entity, { compareEntities } from "@app/Entity";
 import instantiate, { PrefabName } from "@app/prefabs";
 import { intPosition, isSameCell } from "@app/tools/position";
 
@@ -70,7 +71,7 @@ export default class Engine implements EventHandler {
   }
 
   refresh() {
-    this.mode.dirty = true;
+    this.mode.refresh();
   }
 
   add(e: Entity) {
@@ -80,10 +81,10 @@ export default class Engine implements EventHandler {
     return e;
   }
 
-  kill(e: Entity, by?: Entity) {
+  kill(e: Entity, source?: DamageSource) {
     if (e.alive) {
-      e.kill(by);
-      this.fire("kill", { e, by });
+      e.kill(source);
+      this.fire("kill", { e, source });
     }
   }
 
@@ -176,28 +177,5 @@ export default class Engine implements EventHandler {
     }
 
     return map;
-  }
-
-  damage(hit: Entity, amount: number, inflicter: Entity) {
-    const e = this.getRoot(hit);
-    if (!e.ship) return;
-
-    let damageToHp = amount;
-
-    if (e.ship.shield > 0) {
-      if (e.ship.shield > amount) {
-        e.ship.shield -= amount;
-        damageToHp = 0;
-      } else {
-        damageToHp -= e.ship.shield;
-        e.ship.shield = 0;
-      }
-    }
-    if (damageToHp) e.ship.hp -= damageToHp;
-
-    console.log(inflicter.name, "hits", e.name, "for", amount);
-    this.fire("damage", { e, inflicter, amount });
-
-    if (e.ship.hp <= 0) this.kill(e, inflicter);
   }
 }

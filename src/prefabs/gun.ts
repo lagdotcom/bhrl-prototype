@@ -31,7 +31,7 @@ export const HomingMissileLauncher: Prefab = {
 
 export const PeaShooter: Prefab = {
   components: {
-    appearance: { glyph: "o", layer: Layer.Gun, fg: Colors.LIGHT_GRAY },
+    // appearance: { glyph: "o", layer: Layer.Gun, fg: Colors.LIGHT_GRAY },
     turret: makeTurret("Pea Shooter", Angles.Down, {
       bulletPrefab: "Bullet",
       bulletVelocity: 2,

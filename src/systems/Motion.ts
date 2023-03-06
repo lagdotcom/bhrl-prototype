@@ -2,6 +2,7 @@ import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import Query from "@app/Query";
 import { angleMove } from "@app/tools/angle";
+import damage from "@app/logic/damage";
 import { intPosition } from "@app/tools/position";
 import { walkGrid } from "@app/logic/geometry";
 
@@ -37,7 +38,7 @@ export default function addMotion(g: Engine) {
       if (hitWall) {
         g.kill(e);
       } else if (hitEntity) {
-        if (projectile) g.damage(hitEntity, projectile.damage, e);
+        if (projectile) damage(g, hitEntity, projectile.damage, e);
         g.kill(e);
       } else {
         g.move(e, dst);
