@@ -1,5 +1,6 @@
 import { Position, Turret } from "@app/components";
 
+import Angles from "./angles";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import { angleBetween } from "@app/tools/angle";
@@ -25,7 +26,9 @@ export function advanceTimer(turret: Turret) {
   }
 }
 
-export function canFire(turret: Turret) {
+export function canFire(turret: Turret, owner: Entity) {
+  if (turret.bulletAngle === "lastMovement" && !owner.lastMovement)
+    return false;
   return turret.timer === 0;
 }
 
@@ -44,6 +47,8 @@ export function fire(
   const angle =
     turret.bulletAngle === "nearestEnemy"
       ? angleBetween(start, target)
+      : turret.bulletAngle === "lastMovement"
+      ? owner.lastMovement!.angle
       : turret.bulletAngle;
 
   const bullet = g

@@ -14,7 +14,7 @@ export const PlayerHull: Prefab = {
 
 export const PlayerShip: Prefab = {
   components: {
-    player: { weaponArrays: ["Primary"] },
+    player: { weaponArrays: ["Primary", "Secondary"] },
     ship: ship("Ace of Clubs", 20, 10),
   },
   children: [
@@ -24,5 +24,6 @@ export const PlayerShip: Prefab = {
     }),
     child("PlayerHull", 2, 0, { appearance: { glyph: Glyphs.RightArrow } }),
     child("PlayerGun", 1, 0, undefined, ["Primary"]),
+    child("Sword", 1, 0, undefined, ["Secondary"]),
   ],
 };

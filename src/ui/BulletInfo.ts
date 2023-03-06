@@ -46,6 +46,8 @@ export default class BulletInfo implements Drawable {
         }`,
         Colors.DARK_RED
       );
+    if (e.lifetime)
+      this.add(`(lasts ${e.lifetime.duration})`, Colors.DARK_GRAY);
 
     this.width = this.instructions.reduce(
       (a, b) => Math.max(b.line.length, a),

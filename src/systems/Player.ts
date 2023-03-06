@@ -3,14 +3,17 @@ import { getEntityBlockers, getEntityTree } from "@app/logic/entity";
 
 import Engine from "@app/Engine";
 import { addPositions } from "@app/tools/position";
+import { angleBetween } from "@app/tools/angle";
 
 export default function addPlayer(g: Engine) {
   g.on("playerMove", ({ move }) => {
     const player = g.player;
-    const destination = addPositions(player.position!, move);
+    const position = player.position!;
+    const destination = addPositions(position, move);
     const blockers = getEntityBlockers(g, player, destination);
     if (!blockers.length) {
       player.move(destination.x, destination.y);
+      player.setLastMovement({ angle: angleBetween(position, destination) });
       g.tick();
     }
   });
@@ -25,7 +28,7 @@ export default function addPlayer(g: Engine) {
     for (const weapon of weapons) {
       if (!weapon.turret) continue;
 
-      if (canFire(weapon.turret)) {
+      if (canFire(weapon.turret, player)) {
         fire(
           g,
           weapon.turret,
@@ -37,6 +40,10 @@ export default function addPlayer(g: Engine) {
         fired = true;
       }
     }
-    if (fired) g.tick();
+
+    if (fired) {
+      player.setLastMovement();
+      g.tick();
+    }
   });
 }

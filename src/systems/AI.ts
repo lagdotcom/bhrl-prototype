@@ -4,6 +4,7 @@ import { getEntityLayout, getEntityTreeIDs } from "@app/logic/entity";
 import Engine from "@app/Engine";
 import { Position } from "@app/components";
 import Query from "@app/Query";
+import { angleBetween } from "@app/tools/angle";
 import { neighbourOffsets } from "@app/logic/neighbours";
 import oneOf from "@app/tools/oneOf";
 
@@ -11,6 +12,8 @@ export default function addAI(g: Engine) {
   const query = new Query(g.entities, ["ai", "position"]);
   g.on("tick", () =>
     query.forEach(({ ai, position: rawPosition }, e) => {
+      e.setLastMovement();
+
       // TODO something better than this?
       if (!ai.attacking) {
         ai.attacking = g.player;
@@ -56,6 +59,7 @@ export default function addAI(g: Engine) {
       if (possibilities.length) {
         const destination = oneOf(possibilities);
         e.move(destination.x, destination.y);
+        e.setLastMovement({ angle: angleBetween(position, destination) });
         return;
       }
     })

@@ -1,8 +1,11 @@
 const Glyphs = {
+  Diamond: "\x04",
   Club: "\x05",
   Dot: "\x07",
+  Ring: "\x09",
   RingInvert: "\x0a",
   Female: "\x0c",
+  Star: "\x0f",
 
   Pilcrow: "\x14",
   Silcrow: "\x15",

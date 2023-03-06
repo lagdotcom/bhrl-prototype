@@ -58,21 +58,22 @@ export default function addHUD(g: Engine) {
       Colors.WHITE
     );
 
+    let wx = x;
     for (const tag of player.player!.weaponArrays) {
-      const weapons = getEntityTree(g, player).filter((e) => e.turret);
-      let wx = x;
+      const sx = wx;
+      const weapons = getEntityTree(g, player).filter(
+        (e) => e.turret && e.tags.has(tag)
+      );
       for (const weapon of weapons) {
         const weaponInfo = new WeaponInfo(g, weapon.turret!);
         weaponInfo.draw(wx, y + 1);
         wx += weaponInfo.width + 1;
       }
 
-      term.drawString(
-        x,
-        y,
-        `${tag} ${pluralise("Weapon", weapons.length)}`,
-        Colors.LIGHT_CYAN
-      );
+      const arrayLabel = `${tag} ${pluralise("Weapon", weapons.length)}`;
+      term.drawString(sx, y, arrayLabel, Colors.LIGHT_CYAN);
+
+      wx = Math.max(wx, sx + arrayLabel.length + 1);
     }
   });
 }

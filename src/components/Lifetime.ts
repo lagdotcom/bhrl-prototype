@@ -1,2 +1,7 @@
-type Lifetime = { duration: number };
+import Appearance from "./Appearance";
+
+type Lifetime = {
+  duration: number;
+  decayingAppearance?: Partial<Appearance>[];
+};
 export default Lifetime;

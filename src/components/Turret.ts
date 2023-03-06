@@ -3,7 +3,7 @@ import { PrefabName } from "@app/prefabs";
 type Turret = {
   name: string;
   bulletPrefab: PrefabName;
-  bulletAngle: number | "nearestEnemy";
+  bulletAngle: number | "lastMovement" | "nearestEnemy";
   bulletVelocity: number;
   salvoCount: number;
   timeBetweenShots: number;
