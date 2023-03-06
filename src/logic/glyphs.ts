@@ -7,6 +7,8 @@ const Glyphs = {
   Pilcrow: "\x14",
   Silcrow: "\x15",
   ResizeVertical: "\x17",
+  UpArrow: "\x18",
+  DownArrow: "\x19",
   RightArrow: "\x1a",
   LeftArrow: "\x1b",
   DownWedge: "\x1f",

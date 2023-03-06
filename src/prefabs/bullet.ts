@@ -6,7 +6,11 @@ import Prefab from "@app/types/Prefab";
 export const Bullet: Prefab = {
   components: {
     projectile: { damage: 1 },
-    appearance: { glyph: ".", layer: Layer.Bullet, fg: Colors.YELLOW },
+    appearance: {
+      glyph: Glyphs.InvertedExclamation,
+      layer: Layer.Bullet,
+      fg: Colors.YELLOW,
+    },
   },
 };
 
@@ -30,10 +34,6 @@ export const HomingMissile: Prefab = {
 export const PlayerBullet: Prefab = {
   components: {
     projectile: { damage: 3 },
-    appearance: {
-      glyph: Glyphs.InvertedExclamation,
-      layer: Layer.Bullet,
-      fg: Colors.YELLOW,
-    },
+    appearance: { glyph: "!", layer: Layer.Bullet, fg: Colors.YELLOW },
   },
 };

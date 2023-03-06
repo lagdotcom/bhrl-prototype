@@ -1,4 +1,4 @@
-import { Colors, Key } from "wglt";
+import { BlendMode, Cell, Colors, Key } from "wglt";
 import { getEntityLayout, getEntityMidpoint } from "@app/logic/entity";
 
 import Engine from "@app/Engine";
@@ -7,10 +7,12 @@ import GameMode from "@app/types/GameMode";
 import { Position } from "@app/components";
 import Sector from "@app/types/Sector";
 import { addSystems } from "@app/systems";
+import { angleMove } from "@app/tools/angle";
 import { drawExamineOverlay } from "@app/logic/examine";
 import { fireAirFist } from "@app/logic/airFist";
 import int from "@app/tools/int";
-import { isSameCell } from "@app/tools/position";
+import { intPosition } from "@app/tools/position";
+import { walkGrid } from "@app/logic/geometry";
 
 export default class CombatMode implements GameMode {
   dirty: boolean;
@@ -69,21 +71,41 @@ export default class CombatMode implements GameMode {
       }
     }
 
-    if (this.examineAt)
+    if (this.examineAt) {
       drawExamineOverlay(this.g, this.examineAt, this.examining);
+
+      for (const e of this.examining) {
+        const { motion, position } = e;
+        if (motion && position) {
+          const [dx, dy] = angleMove(motion);
+          const dst = { x: position.x + dx, y: position.y + dy };
+
+          const line = walkGrid(intPosition(position), intPosition(dst));
+
+          for (const pos of line)
+            term.drawCell(
+              pos.x,
+              pos.y,
+              { bg: Colors.DARK_RED } as Cell,
+              BlendMode.Add
+            );
+        }
+      }
+    }
   }
 
   update() {
-    if (this.g.term.mouse.dx || this.g.term.mouse.dy) this.handleMouseMove();
+    if (this.g.term.mouse.dx || this.g.term.mouse.dy) this.refresh();
 
     this.handleKeys();
 
-    if (this.dirty) this.draw();
+    if (this.dirty) {
+      this.handleMouseMove();
+      this.draw();
+    }
   }
 
   examine(pos: Position) {
-    if (isSameCell(this.examineAt, pos)) return;
-
     this.examineAt = pos;
     this.dirty = true;
 

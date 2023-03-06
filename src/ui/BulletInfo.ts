@@ -2,14 +2,25 @@ import { Colors } from "wglt";
 import Drawable from "@app/types/Drawable";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
+import Glyphs from "@app/logic/glyphs";
 import { angleWrap } from "@app/tools/angle";
 
 type LineInstruction = { x: number; y: number; line: string; fg: number };
 
 const circleEighth = Math.PI / 4;
+const directions = [
+  Glyphs.RightArrow,
+  Glyphs.DownArrow + Glyphs.RightArrow,
+  Glyphs.DownArrow,
+  Glyphs.DownArrow + Glyphs.LeftArrow,
+  Glyphs.LeftArrow,
+  Glyphs.UpArrow + Glyphs.LeftArrow,
+  Glyphs.UpArrow,
+  Glyphs.UpArrow + Glyphs.RightArrow,
+];
 function getDirection(ang: number) {
   const octant = Math.floor(angleWrap(ang) / circleEighth + circleEighth / 2);
-  return ["E", "SE", "S", "SW", "W", "NW", "N", "NE"][octant];
+  return directions[octant];
 }
 
 export default class BulletInfo implements Drawable {
