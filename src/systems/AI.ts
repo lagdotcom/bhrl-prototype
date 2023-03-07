@@ -10,7 +10,7 @@ import oneOf from "@app/tools/oneOf";
 
 export default function addAI(g: Engine) {
   const query = new Query(g.entities, ["ai", "position"]);
-  g.on("tick", () =>
+  g.on("tick", function MoveEnemies() {
     query.forEach(({ ai, position: rawPosition }, e) => {
       e.setLastMovement();
 
@@ -62,10 +62,10 @@ export default function addAI(g: Engine) {
         e.setLastMovement({ angle: angleBetween(position, destination) });
         return;
       }
-    })
-  );
+    });
+  });
 
-  g.on("damage", ({ e, source }) => {
+  g.on("damage", function AIReactsTODamage({ e, source }) {
     if (!source.owner) return;
     if (e === source.owner) return;
 

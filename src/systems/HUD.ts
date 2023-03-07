@@ -12,7 +12,7 @@ export const HUD_HEIGHT = 6;
 export default function addHUD(g: Engine) {
   const { mapHeight, term } = g;
 
-  g.on("draw", () => {
+  g.on("draw", function DrawHUD() {
     const player = g.player;
     const { pilot, ship } = player;
 

@@ -7,7 +7,7 @@ import distance from "@app/tools/distance";
 
 export default function addTurrets(g: Engine) {
   const query = new Query(g.entities, ["position", "turret"]);
-  g.on("tick", () =>
+  g.on("tick", function FireTurrets() {
     query.forEach(({ position, turret }, e) => {
       advanceTimer(turret);
 
@@ -35,6 +35,6 @@ export default function addTurrets(g: Engine) {
           if (bullet.ai) bullet.ai.attacking = enemy;
         }
       }
-    })
-  );
+    });
+  });
 }

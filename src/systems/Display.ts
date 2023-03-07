@@ -4,7 +4,7 @@ import int from "@app/tools/int";
 
 export default function addDisplay(g: Engine) {
   const query = new Query(g.entities, ["appearance", "position"]);
-  g.on("draw", () =>
+  g.on("draw", function DrawEntities() {
     query.forEach(({ appearance, position }) =>
       g.drawIfVisible(
         int(position.x),
@@ -14,6 +14,6 @@ export default function addDisplay(g: Engine) {
         appearance.bg,
         appearance.blendMode
       )
-    )
-  );
+    );
+  });
 }

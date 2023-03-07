@@ -8,7 +8,7 @@ import { isSameCell } from "@app/tools/position";
 export default function addFields(g: Engine) {
   const ships = new Query(g.entities, ["ship"]);
   const query = new Query(g.entities, ["field", "position"]);
-  g.on("tick", () =>
+  g.on("tick", function ApplyFields() {
     query.forEach(({ field, position }, e) => {
       field.intensity -= field.falloff;
       e.setAppearance(getFieldAppearance(field));
@@ -22,9 +22,9 @@ export default function addFields(g: Engine) {
           );
           if (hit) damage(g, victim, field.intensity, e);
         });
-    })
-  );
-  g.on("spawn", ({ e }) => {
+    });
+  });
+  g.on("spawn", function InitialiseField({ e }) {
     if (e.field) e.setAppearance(getFieldAppearance(e.field));
   });
 }

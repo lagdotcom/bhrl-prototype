@@ -6,7 +6,7 @@ import { addPositions } from "@app/tools/position";
 import { angleBetween } from "@app/tools/angle";
 
 export default function addPlayer(g: Engine) {
-  g.on("playerMove", ({ move }) => {
+  g.on("playerMove", function MovePlayer({ move }) {
     const player = g.player;
     const position = player.position!;
     const destination = addPositions(position, move);
@@ -18,7 +18,7 @@ export default function addPlayer(g: Engine) {
     }
   });
 
-  g.on("playerFire", ({ array }) => {
+  g.on("playerFire", function FirePlayerWeapons({ array }) {
     const player = g.player;
     const tag = player.player!.weaponArrays[array];
 

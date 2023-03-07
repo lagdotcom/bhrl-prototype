@@ -70,7 +70,8 @@ export function fire(
         .spawn(bulletPrefab)
         .setIgnoreSolid({ ids: ignoreIds })
         .setLifetime({ duration: beam.duration })
-        .move(position.x, position.y);
+        .move(position.x, position.y)
+        .setMotion({ angle, vel: 0 });
       if (bullet.appearance) Object.assign(bullet.appearance, patch);
       if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
 

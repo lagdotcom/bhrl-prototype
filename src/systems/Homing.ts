@@ -6,7 +6,7 @@ import { getEntityMidpoint } from "@app/logic/entity";
 
 export default function addHoming(g: Engine) {
   const query = new Query(g.entities, ["homing", "motion", "position"]);
-  g.on("tick", () =>
+  g.on("tick", function ApplyHoming() {
     query.forEach(({ homing, motion, position }, e) => {
       if (!homing.target?.alive) return;
 
@@ -22,6 +22,6 @@ export default function addHoming(g: Engine) {
         e.setHoming();
         e.setTrail();
       }
-    })
-  );
+    });
+  });
 }

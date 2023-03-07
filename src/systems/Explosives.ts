@@ -3,7 +3,7 @@ import Entity from "@app/Entity";
 import { generateField } from "@app/logic/field";
 
 export default function addExplosives(g: Engine) {
-  g.on("kill", ({ e }) => {
+  g.on("kill", function CreateExplosion({ e }) {
     const { explodes, name, position } = e;
 
     if (explodes && position) {

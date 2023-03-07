@@ -8,7 +8,7 @@ import { walkGrid } from "@app/logic/geometry";
 
 export default function addMotion(g: Engine) {
   const query = new Query(g.entities, ["motion", "position"]);
-  g.on("tick", () =>
+  g.on("tick", function MoveProjectiles() {
     query.forEach(({ motion, position, projectile, ignoreSolid }, e) => {
       const [dx, dy] = angleMove(motion);
       const dst = { x: position.x + dx, y: position.y + dy };
@@ -43,6 +43,6 @@ export default function addMotion(g: Engine) {
       } else {
         g.move(e, dst);
       }
-    })
-  );
+    });
+  });
 }

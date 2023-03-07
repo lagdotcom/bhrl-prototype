@@ -6,7 +6,7 @@ import { getEntityLayout } from "@app/logic/entity";
 export default function addSpawns(g: Engine) {
   let time = 0;
 
-  g.on("tick", () => {
+  g.on("tick", function SpawnEnemies() {
     time++;
 
     if (!(time % 10)) {
