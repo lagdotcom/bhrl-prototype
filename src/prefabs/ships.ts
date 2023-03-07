@@ -102,7 +102,7 @@ export const DroneC: Prefab = {
 };
 
 export const CruiseyWing: Prefab = {
-  components: { ship: ship("Cruisey Wing", 10, 5) },
+  components: { ai: defaultAI, ship: ship("Cruisey Wing", 10, 5) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Not } }),
     child("Hull", 1, 0, { appearance: { glyph: Glyphs.HorizontalDivide } }),
@@ -111,7 +111,7 @@ export const CruiseyWing: Prefab = {
 };
 
 export const Olm: Prefab = {
-  components: { ship: ship("Olm", 15, 4) },
+  components: { ai: defaultAI, ship: ship("Olm", 15, 4) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Cent } }),
     child("Hull", 0, 1, { appearance: { glyph: Glyphs.ResizeVertical } }),
@@ -122,7 +122,7 @@ export const Olm: Prefab = {
 };
 
 export const GoutOFlame: Prefab = {
-  components: { ship: ship("Gout-'o-flame", 5, 20) },
+  components: { ai: defaultAI, ship: ship("Gout-'o-flame", 5, 20) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pentagon } }),
     child("Hull", 1, 0, {
@@ -136,7 +136,7 @@ export const GoutOFlame: Prefab = {
 };
 
 export const Demigod: Prefab = {
-  components: { ship: ship("Demigod", 30, 15) },
+  components: { ai: defaultAI, ship: ship("Demigod", 30, 15) },
   children: [
     child("Hull", 1, 0, { appearance: { glyph: Glyphs.CapitalUUmlaut } }),
     child("Hull", 0, 1, { appearance: { glyph: "}" } }),

@@ -93,3 +93,19 @@ export function getEntityMidpoint(g: Engine, e: Entity): Position {
 
   return getLayoutMidpoint(layout, topLeft);
 }
+
+export function isSpaceFree(
+  g: Engine,
+  sx: number,
+  sy: number,
+  w: number,
+  h: number
+) {
+  for (let y = 0; y < h; y++)
+    for (let x = 0; x < w; x++) {
+      const { wall, solid, other } = g.getContents({ x: sx + x, y: sy + y });
+      if (wall || solid || other.length) return false;
+    }
+
+  return true;
+}

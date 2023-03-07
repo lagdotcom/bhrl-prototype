@@ -1,28 +1,28 @@
-import { Appearance, Position } from "@app/components";
-import ShipPower, { ShipPowers } from "@app/types/ShipPower";
+import { Appearance, Pilot } from "@app/components";
+import { getEntityLayout, getEntityTree, isSpaceFree } from "@app/logic/entity";
 
+import AttackWave from "@app/types/AttackWave";
 import { Colors } from "wglt";
-import EnemyPilots from "@app/pilots/enemy";
 import Engine from "@app/Engine";
+import Entity from "@app/Entity";
 import { PilotClasses } from "@app/types/PilotClass";
-import StarPilots from "@app/pilots/star";
+import { PrefabName } from "@app/prefabs";
+import ShipPower from "@app/types/ShipPower";
 import { clone } from "@app/tools/object";
 import enumerate from "@app/tools/enumerate";
-import { getEntityTree } from "@app/logic/entity";
 import oneOf from "@app/tools/oneOf";
 import { putPilotInShip } from "@app/logic/pilot";
 import shuffle from "@app/tools/shuffle";
 
-const isDrone = (prefab: ShipPrefab) =>
-  ["DroneA", "DroneB", "DroneC"].includes(prefab);
+enum EnemyFlags {
+  None = 0,
+  Healthy = 1,
+  Double = 2,
+  Drain = 4,
+  HasPilot = 8,
+}
 
-const isHealthy = (power: ShipPower) =>
-  ["Healthy", "Multi", "Mega"].includes(power);
-
-const hasStarPilot = (power: ShipPower) =>
-  ["StarPilot", "Mega"].includes(power);
-
-const Colours: Record<ShipPower, Partial<Appearance>> = {
+const PowerAppearancePatch: Record<ShipPower, Partial<Appearance>> = {
   Typical: { fg: Colors.DARK_GRAY },
   Healthy: { fg: Colors.DARK_GREEN },
   Double: { fg: Colors.LIGHT_GRAY },
@@ -32,134 +32,125 @@ const Colours: Record<ShipPower, Partial<Appearance>> = {
   StarPilot: { fg: Colors.YELLOW },
   Mega: { fg: Colors.BLACK, bg: Colors.DARK_MAGENTA },
 };
-export default Colours;
 
-const powerDifficulty: Record<ShipPower, number> = {
-  Typical: 0,
-  Healthy: 2,
-  Double: 3,
-  Multi: 6,
+const PowerToFlags: Record<ShipPower, EnemyFlags> = {
+  Typical: EnemyFlags.None,
+  Healthy: EnemyFlags.Healthy,
+  Double: EnemyFlags.Double,
+  Multi: EnemyFlags.Healthy | EnemyFlags.Double,
 
-  Drain: 4,
-  StarPilot: 8,
-  Mega: 20,
+  Drain: EnemyFlags.Drain,
+  StarPilot: EnemyFlags.HasPilot,
+  Mega:
+    EnemyFlags.Healthy |
+    EnemyFlags.Double |
+    EnemyFlags.Drain |
+    EnemyFlags.HasPilot,
 };
 
-const ShipPrefabs = [
-  "ShipA",
-  "ShipB",
-  "ShipC",
-  "ShipD",
-  "ShipE",
-  "ShipF",
-  "ShipG",
-  "ShipH",
-  "DroneA",
-  "DroneB",
-  "DroneC",
-  "CruiseyWing",
-  "Olm",
-  "GoutOFlame",
-  "Demigod",
-] as const;
-type ShipPrefab = (typeof ShipPrefabs)[number];
+const typeA: PrefabName[] = ["ShipA", "ShipB", "ShipC"];
 
-const prefabDifficulty: Record<ShipPrefab, number> = {
-  ShipA: 1,
-  ShipB: 1,
-  ShipC: 1,
-  ShipD: 1,
-  ShipE: 1,
-  ShipF: 1,
-  ShipG: 1,
-  ShipH: 1,
-  DroneA: 2,
-  DroneB: 2,
-  DroneC: 2,
-  CruiseyWing: 8,
-  Olm: 10,
-  GoutOFlame: 20,
-  Demigod: 40,
-};
+const typeB: PrefabName[] = ["ShipD", "DroneA"];
 
-function getPilot(prefab: ShipPrefab, power: ShipPower) {
-  if (isDrone(prefab)) return undefined;
+const typeC: PrefabName[] = ["ShipB", "ShipD"];
 
-  // TODO make sure star pilot doesn't already exist
-  if (power === "StarPilot" || power === "Mega") return oneOf(StarPilots);
-  return oneOf(EnemyPilots);
+const waves: AttackWave[] = [
+  {
+    difficulty: 1,
+    escorts: 5,
+    escortTypes: typeA,
+    flagships: 1,
+    flagshipTypes: ["Olm"],
+  },
+  {
+    difficulty: 2,
+    escorts: 6,
+    escortTypes: typeB,
+    flagships: 1,
+    flagshipTypes: ["CruiseyWing"],
+  },
+  {
+    difficulty: 3,
+    escorts: 7,
+    escortTypes: typeC,
+    flagships: 2,
+    flagshipTypes: ["Olm"],
+  },
+];
+
+export function getWaves(count = 3) {
+  return shuffle(waves.slice())
+    .slice(0, count)
+    .sort((a, b) => a.difficulty - b.difficulty);
 }
 
-export function generateEnemy(g: Engine, maxDifficulty: number) {
-  while (true) {
-    const prefab = oneOf(ShipPrefabs);
-    const power = oneOf(ShipPowers);
-    if (isDrone(prefab) && hasStarPilot(power)) continue;
+export function getShipPower(
+  specialChance: number,
+  starPilot: boolean
+): ShipPower {
+  if (Math.random() * 100 >= specialChance)
+    return starPilot ? "StarPilot" : "Typical";
 
-    const basePilot = getPilot(prefab, power);
+  if (starPilot) return "Mega";
 
-    const difficulty =
-      powerDifficulty[power] +
-      prefabDifficulty[prefab] +
-      (basePilot?.difficulty ?? 0);
-
-    if (difficulty <= maxDifficulty) {
-      const entity = g.spawn(prefab);
-      const { ship } = entity;
-
-      if (!ship)
-        throw new Error(`Ship prefab ${prefab} doesn't have a ship component!`);
-
-      // TODO set hp, weapons, etc.
-      if (isHealthy(power)) ship.maxHp = ship.maxHp * 2 + 3;
-
-      if (basePilot) {
-        const pilot = clone(basePilot);
-
-        // give random classes up to Talent limit
-        while (pilot.class.length < pilot.talent)
-          pilot.class.push(
-            oneOf(PilotClasses.filter((cl) => !pilot.class.includes(cl)))
-          );
-
-        putPilotInShip(entity, pilot);
-      }
-
-      ship.hp = ship.maxHp;
-      ship.shield = ship.maxShield;
-
-      const appearance = Colours[power];
-      for (const part of getEntityTree(g, entity)) {
-        if (part.appearance) Object.assign(part.appearance, appearance);
-      }
-
-      return { entity, difficulty };
-    }
-  }
+  return oneOf(["Healthy", "Double", "Multi", "Drain"]);
 }
 
-function isFree(g: Engine, sx: number, sy: number, w: number, h: number) {
-  for (let y = 0; y < h; y++)
-    for (let x = 0; x < w; x++) {
-      const { wall, solid, other } = g.getContents({ x: sx + x, y: sy + y });
-      if (wall || solid || other.length) return false;
-    }
+export function makePilot(basePilot: Pilot) {
+  const pilot = clone(basePilot);
 
-  return true;
+  // give random classes up to Talent limit
+  while (pilot.class.length < pilot.talent)
+    pilot.class.push(
+      oneOf(PilotClasses.filter((cl) => !pilot.class.includes(cl)))
+    );
+
+  return pilot;
 }
 
-export function findSpawnPosition(
+export function makeEnemy(
   g: Engine,
-  width: number,
-  height: number
-): Position {
-  for (let y = 0; y < 5; y++) {
+  prefab: PrefabName,
+  power: ShipPower,
+  basePilot?: Pilot
+) {
+  const flags = PowerToFlags[power];
+  if (flags & EnemyFlags.HasPilot && !basePilot)
+    throw new Error(`power ${power} needs pilot, none given`);
+
+  const e = g.spawn(prefab);
+  const { ship } = e;
+  if (!ship)
+    throw new Error(`Ship prefab ${prefab} doesn't have a ship component!`);
+
+  if (flags & EnemyFlags.Healthy) ship.maxHp = ship.maxHp * 2 + 3;
+
+  if (basePilot) {
+    const pilot = makePilot(basePilot);
+    putPilotInShip(e, pilot);
+  }
+
+  ship.hp = ship.maxHp;
+  ship.shield = ship.maxShield;
+
+  const appearance = PowerAppearancePatch[power];
+  for (const part of getEntityTree(g, e)) {
+    if (part.appearance) Object.assign(part.appearance, appearance);
+  }
+
+  return e;
+}
+
+export function findSpawnPosition(g: Engine, e: Entity) {
+  const { width, height } = getEntityLayout(g, e);
+
+  for (let y = 0; y < g.term.height; y++) {
     const xList = shuffle(enumerate(g.term.width - width));
 
     for (const x of xList) {
-      if (isFree(g, x, y, width, height)) return { x, y };
+      if (isSpaceFree(g, x, y, width, height)) return { x, y };
     }
   }
 
-  throw new Error(`Could not find spawn position for ${width}x${height}!`);
+  throw new Error(`Could not find ${width}x${height} spawn location`);
 }

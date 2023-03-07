@@ -1,5 +1,6 @@
-import { Position, Ship, Turret } from "@app/components";
+import { Pilot, Position, Ship, Turret } from "@app/components";
 
+import AttackWave from "./types/AttackWave";
 import Entity from "@app/Entity";
 
 export const EventNames = [
@@ -12,6 +13,7 @@ export const EventNames = [
   "playerMove",
   "spawn",
   "tick",
+  "waveBegin",
 ] as const;
 export type EventName = (typeof EventNames)[number];
 
@@ -32,6 +34,7 @@ export type EventMap = {
   playerMove: { move: Position };
   spawn: { e: Entity };
   tick: undefined;
+  waveBegin: { wave: AttackWave; difficulty: number; pilot?: Pilot };
 };
 
 export type EventCallback<T extends EventName> = (data: EventMap[T]) => void;

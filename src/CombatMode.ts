@@ -1,6 +1,7 @@
 import { BlendMode, Cell, Colors, Key } from "wglt";
 import { getEntityLayout, getEntityMidpoint } from "@app/logic/entity";
 
+import AttackWave from "@app/types/AttackWave";
 import CampaignMode from "@app/CampaignMode";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
@@ -10,6 +11,7 @@ import { addSystems } from "@app/systems";
 import { angleMove } from "@app/tools/angle";
 import { drawExamineOverlay } from "@app/logic/examine";
 import { fireAirFist } from "@app/logic/airFist";
+import { getWaves } from "./logic/enemy";
 import int from "@app/tools/int";
 import { intPosition } from "@app/tools/position";
 import { walkGrid } from "@app/logic/geometry";
@@ -19,6 +21,7 @@ export default class CombatMode implements GameMode {
   examineAt?: Position;
   examining: Entity[];
   showOverlay?: string;
+  waves!: AttackWave[];
 
   constructor(public g: Engine, public campaign: CampaignMode) {
     this.dirty = true;
@@ -35,12 +38,30 @@ export default class CombatMode implements GameMode {
     this.examineAt = undefined;
     this.examining = [];
 
+    this.waves = getWaves();
+
     g.blankMap();
 
     const { width, height } = getEntityLayout(g, g.player);
     g.player.move(int(g.mapWidth / 2 - width / 2), g.mapHeight - height - 4);
 
     addSystems(g);
+    this.nextWave();
+  }
+
+  nextWave() {
+    const wave = this.waves.shift();
+    if (wave) {
+      const pilot =
+        this.waves.length === 0 ? this.campaign.currentSector.star : undefined;
+      this.g.fire("waveBegin", {
+        wave,
+        difficulty: this.campaign.difficulty,
+        pilot,
+      });
+    }
+
+    // TODO out of waves?
   }
 
   draw() {
