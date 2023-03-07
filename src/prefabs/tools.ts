@@ -29,12 +29,14 @@ export const turret = (
     timeBetweenShots = 1,
     timeBetweenSalvos = 1,
     ammunition = Infinity,
+    beam,
   }: Partial<Turret>
 ): Turret => ({
   name,
   bulletPrefab,
   bulletAngle,
   bulletVelocity,
+  beam,
   salvoCount,
   timeBetweenShots,
   timeBetweenSalvos,

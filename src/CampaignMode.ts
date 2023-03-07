@@ -13,8 +13,8 @@ import oneOf from "@app/tools/oneOf";
 import { putPilotInShip } from "@app/logic/pilot";
 
 export default class CampaignMode implements GameMode {
-  combat?: CombatMode;
   dirty: boolean;
+  difficulty!: number;
   space!: Grid<Sector>;
   position!: Position;
 
@@ -26,9 +26,12 @@ export default class CampaignMode implements GameMode {
     this.dirty = true;
   }
 
+  get currentSector() {
+    return this.space.get(this.position);
+  }
+
   refresh() {
-    if (this.combat) this.combat.refresh();
-    else this.dirty = true;
+    this.dirty = true;
   }
 
   init() {
@@ -38,6 +41,7 @@ export default class CampaignMode implements GameMode {
     g.entities.clear();
     g.player = this.makePlayer();
 
+    this.difficulty = 0;
     this.position = { x: 2, y: 2 };
     this.space = new Grid(5, 5, () => ({ completed: false }));
     const stars = new Set<Pilot>();
@@ -62,8 +66,16 @@ export default class CampaignMode implements GameMode {
   }
 
   startCombat() {
-    this.combat = new CombatMode(this.g, this.space.get(this.position));
-    this.combat.init();
+    this.g.setMode(new CombatMode(this.g, this));
+  }
+
+  endCombat() {
+    this.currentSector.completed = true;
+    this.difficulty++;
+
+    // don't call setMode or we'll get initialised again
+    this.g.mode = this;
+    this.refresh();
   }
 
   makePlayer() {
@@ -148,8 +160,6 @@ export default class CampaignMode implements GameMode {
   }
 
   update() {
-    if (this.combat) return this.combat.update();
-
     this.handleKeys();
     if (this.dirty) this.draw();
   }

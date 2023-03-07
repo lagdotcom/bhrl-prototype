@@ -1,3 +1,4 @@
+import Appearance from "./Appearance";
 import { PrefabName } from "@app/prefabs";
 
 type Turret = {
@@ -5,6 +6,7 @@ type Turret = {
   bulletPrefab: PrefabName;
   bulletAngle: number | "lastMovement" | "nearestEnemy";
   bulletVelocity: number;
+  beam?: { duration: number; appearance: Partial<Appearance>[] };
   salvoCount: number;
   timeBetweenShots: number;
   timeBetweenSalvos: number;

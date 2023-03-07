@@ -12,16 +12,6 @@ export const SwordBullet: Prefab = {
       layer: Layer.Bullet,
       fg: Colors.LIGHT_GREEN,
     },
-    lifetime: {
-      duration: 6,
-      decayingAppearance: [
-        { glyph: Glyphs.Dot, fg: Colors.DARK_GRAY },
-        { glyph: Glyphs.Ring, fg: Colors.DARK_GREEN },
-        { glyph: Glyphs.Diamond, fg: Colors.LIGHT_GREEN },
-        { glyph: "o", fg: Colors.LIGHT_GREEN },
-        { glyph: Glyphs.Star, fg: Colors.LIGHT_GREEN },
-      ],
-    },
   },
 };
 
@@ -32,6 +22,16 @@ export const Sword: Prefab = {
       bulletVelocity: 1,
       salvoCount: 1,
       timeBetweenSalvos: 20,
+      beam: {
+        duration: 2,
+        appearance: [
+          { glyph: Glyphs.Star, fg: Colors.LIGHT_GREEN },
+          { glyph: "o", fg: Colors.LIGHT_GREEN },
+          { glyph: Glyphs.Diamond, fg: Colors.LIGHT_GREEN },
+          { glyph: Glyphs.Ring, fg: Colors.DARK_GREEN },
+          { glyph: Glyphs.Dot, fg: Colors.DARK_GRAY },
+        ],
+      },
     }),
   },
 };

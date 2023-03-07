@@ -22,18 +22,18 @@ export default function addTurrets(g: Engine) {
         return;
 
       if (canFire(turret, root)) {
-        const bullet = fire(
+        for (const bullet of fire(
           g,
           turret,
           position,
           target,
           root,
           getEntityTreeIDs(g, e)
-        );
+        )) {
+          if (bullet.homing) bullet.homing.target = enemy;
 
-        if (bullet.homing) bullet.homing.target = enemy;
-
-        if (bullet.ai) bullet.ai.attacking = enemy;
+          if (bullet.ai) bullet.ai.attacking = enemy;
+        }
       }
     })
   );

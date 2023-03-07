@@ -1,11 +1,11 @@
 import { BlendMode, Cell, Colors, Key } from "wglt";
 import { getEntityLayout, getEntityMidpoint } from "@app/logic/entity";
 
+import CampaignMode from "@app/CampaignMode";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import GameMode from "@app/types/GameMode";
 import { Position } from "@app/components";
-import Sector from "@app/types/Sector";
 import { addSystems } from "@app/systems";
 import { angleMove } from "@app/tools/angle";
 import { drawExamineOverlay } from "@app/logic/examine";
@@ -20,7 +20,7 @@ export default class CombatMode implements GameMode {
   examining: Entity[];
   showOverlay?: string;
 
-  constructor(public g: Engine, public sector: Sector) {
+  constructor(public g: Engine, public campaign: CampaignMode) {
     this.dirty = true;
     this.examining = [];
   }
