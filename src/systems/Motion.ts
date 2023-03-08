@@ -19,7 +19,7 @@ export default function addMotion(g: Engine) {
       let hitEntity: Entity | undefined = undefined;
       for (const pos of line) {
         if (!g.inBounds(pos)) {
-          g.kill(e);
+          g.kill(e, { type: "exitedMap" });
           return;
         }
 
@@ -36,10 +36,10 @@ export default function addMotion(g: Engine) {
       }
 
       if (hitWall) {
-        g.kill(e);
+        g.kill(e, { type: "hitWall" });
       } else if (hitEntity) {
         if (projectile) damage(g, hitEntity, projectile.damage, e);
-        g.kill(e);
+        g.kill(e, { type: "hitEntity", other: hitEntity });
       } else {
         g.move(e, dst);
       }

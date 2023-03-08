@@ -3,7 +3,10 @@ import { angleBetween, angleMove } from "@app/tools/angle";
 
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
+import { PrefabName } from "@app/prefabs";
+import { TurretBullet } from "@app/components/Turret";
 import { addPositions } from "@app/tools/position";
+import { initialiseShip } from "@app/logic/enemy";
 
 export function getState(turret: Turret) {
   if (turret.salvo <= 0) {
@@ -27,9 +30,83 @@ export function advanceTimer(turret: Turret) {
 }
 
 export function canFire(turret: Turret, owner: Entity) {
-  if (turret.bulletAngle === "lastMovement" && !owner.lastMovement)
+  if (
+    turret.bullets.find((b) => b.angle === "lastMovement") &&
+    !owner.lastMovement
+  )
     return false;
   return turret.timer === 0;
+}
+
+function initBullet(
+  g: Engine,
+  prefab: PrefabName,
+  owner: Entity,
+  turret: Turret,
+  start: Position,
+  angle: number,
+  vel: number,
+  ignoreIds: number[]
+) {
+  const bullet = g
+    .spawn(prefab)
+    .setIgnoreSolid({ ids: ignoreIds })
+    .move(start.x, start.y);
+
+  if (vel) bullet.setMotion({ angle, vel });
+
+  if (bullet.ship) initialiseShip(bullet.ship);
+
+  if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
+
+  return bullet;
+}
+
+function fireBullet(
+  g: Engine,
+  b: TurretBullet,
+  turret: Turret,
+  position: Position,
+  target: Position,
+  owner: Entity,
+  ignoreIds: number[]
+) {
+  const { angle: angleCmd, beam, offset, prefab, vel } = b;
+
+  const start = addPositions(position, offset ?? { x: 0.5, y: 0.5 });
+  const angle =
+    angleCmd === "nearestEnemy"
+      ? angleBetween(start, target)
+      : angleCmd === "lastMovement"
+      ? owner.lastMovement!.angle
+      : angleCmd;
+
+  if (beam && vel) {
+    const [dx, dy] = angleMove({ angle, vel });
+    const step = { x: dx, y: dy };
+    let position = addPositions(start, step);
+
+    return beam.appearance.map((patch) => {
+      const bullet = initBullet(
+        g,
+        prefab,
+        owner,
+        turret,
+        position,
+        angle,
+        0,
+        ignoreIds
+      ).setLifetime({ duration: beam.duration });
+      if (bullet.appearance) Object.assign(bullet.appearance, patch);
+      if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
+
+      position = addPositions(position, step);
+
+      return bullet;
+    });
+  }
+
+  return [initBullet(g, prefab, owner, turret, start, angle, vel, ignoreIds)];
 }
 
 export function fire(
@@ -40,55 +117,17 @@ export function fire(
   owner: Entity,
   ignoreIds: number[] = []
 ) {
-  const {
-    beam,
-    bulletAngle,
-    bulletPrefab,
-    bulletVelocity,
-    timeBetweenSalvos,
-    timeBetweenShots,
-  } = turret;
+  const { timeBetweenSalvos, timeBetweenShots } = turret;
 
   if (--turret.salvo <= 0) turret.timer = timeBetweenSalvos;
   else turret.timer = timeBetweenShots;
 
-  const start = { x: position.x + 0.5, y: position.y + 0.5 };
-  const angle =
-    bulletAngle === "nearestEnemy"
-      ? angleBetween(start, target)
-      : bulletAngle === "lastMovement"
-      ? owner.lastMovement!.angle
-      : bulletAngle;
+  const bullets: Entity[] = [];
 
-  if (beam && bulletVelocity) {
-    const [dx, dy] = angleMove({ angle, vel: bulletVelocity });
-    const step = { x: dx, y: dy };
-    let position = addPositions(start, step);
+  for (const bullet of turret.bullets)
+    bullets.push(
+      ...fireBullet(g, bullet, turret, position, target, owner, ignoreIds)
+    );
 
-    return beam.appearance.map((patch) => {
-      const bullet = g
-        .spawn(bulletPrefab)
-        .setIgnoreSolid({ ids: ignoreIds })
-        .setLifetime({ duration: beam.duration })
-        .move(position.x, position.y)
-        .setMotion({ angle, vel: 0 });
-      if (bullet.appearance) Object.assign(bullet.appearance, patch);
-      if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
-
-      position = addPositions(position, step);
-
-      return bullet;
-    });
-  }
-
-  const bullet = g
-    .spawn(bulletPrefab)
-    .setIgnoreSolid({ ids: ignoreIds })
-    .move(start.x, start.y);
-
-  if (bulletVelocity) bullet.setMotion({ angle, vel: bulletVelocity });
-
-  if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
-
-  return [bullet];
+  return bullets;
 }

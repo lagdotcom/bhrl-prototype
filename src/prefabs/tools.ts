@@ -21,22 +21,16 @@ export const ship = (name: string, maxHp: number, maxShield = 0): Ship => ({
 
 export const turret = (
   name: string,
-  bulletAngle: Turret["bulletAngle"],
   {
-    bulletPrefab = "Bullet",
-    bulletVelocity = 1,
     salvoCount = 1,
     timeBetweenShots = 1,
     timeBetweenSalvos = 1,
     ammunition = Infinity,
-    beam,
-  }: Partial<Turret>
+  }: Partial<Turret>,
+  bullets: Turret["bullets"]
 ): Turret => ({
   name,
-  bulletPrefab,
-  bulletAngle,
-  bulletVelocity,
-  beam,
+  bullets,
   salvoCount,
   timeBetweenShots,
   timeBetweenSalvos,

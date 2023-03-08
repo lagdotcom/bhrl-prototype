@@ -27,8 +27,8 @@ export default function addAI(g: Engine) {
       const search = g.getDistanceMap(ai.attacking);
 
       const isPassable = (pos: Position) => {
-        const { solid, wall } = g.getContents(pos, ignoreSolid);
-        return !solid && !wall;
+        const { oob, solid, wall } = g.getContents(pos, ignoreSolid);
+        return !oob && !solid && !wall;
       };
 
       const getPosScore = (pos: Position) =>

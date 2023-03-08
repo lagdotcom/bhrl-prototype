@@ -103,8 +103,11 @@ export function isSpaceFree(
 ) {
   for (let y = 0; y < h; y++)
     for (let x = 0; x < w; x++) {
-      const { wall, solid, other } = g.getContents({ x: sx + x, y: sy + y });
-      if (wall || solid || other.length) return false;
+      const { oob, wall, solid, other } = g.getContents({
+        x: sx + x,
+        y: sy + y,
+      });
+      if (oob || wall || solid || other.length) return false;
     }
 
   return true;

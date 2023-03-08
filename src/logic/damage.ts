@@ -1,4 +1,4 @@
-import { DamageSource } from "@app/events";
+import DamageSource from "@app/types/DamageSource";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 
@@ -34,5 +34,5 @@ export default function damage(
   console.log(inflicter.name, "hits", e.name, "for", amount);
   g.fire("damage", { e, amount, source });
 
-  if (e.ship.hp <= 0) g.kill(e, source);
+  if (e.ship.hp <= 0) g.kill(e, { type: "damage", source });
 }

@@ -1,12 +1,18 @@
 import Appearance from "./Appearance";
+import Position from "./Position";
 import { PrefabName } from "@app/prefabs";
+
+export type TurretBullet = {
+  prefab: PrefabName;
+  offset?: Position;
+  angle: number | "lastMovement" | "nearestEnemy";
+  vel: number;
+  beam?: { duration: number; appearance: Partial<Appearance>[] };
+};
 
 type Turret = {
   name: string;
-  bulletPrefab: PrefabName;
-  bulletAngle: number | "lastMovement" | "nearestEnemy";
-  bulletVelocity: number;
-  beam?: { duration: number; appearance: Partial<Appearance>[] };
+  bullets: TurretBullet[];
   salvoCount: number;
   timeBetweenShots: number;
   timeBetweenSalvos: number;

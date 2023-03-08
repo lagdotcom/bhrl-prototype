@@ -9,6 +9,7 @@ import Grid from "@app/Grid";
 import { PrefabName } from "@app/prefabs";
 import Sector from "@app/types/Sector";
 import StarPilots from "@app/pilots/star";
+import { initialiseShip } from "@app/logic/enemy";
 import oneOf from "@app/tools/oneOf";
 import { putPilotInShip } from "@app/logic/pilot";
 
@@ -88,9 +89,7 @@ export default class CampaignMode implements GameMode {
       );
 
     putPilotInShip(e, pilot);
-
-    e.ship.hp = e.ship.maxHp;
-    e.ship.shield = e.ship.maxShield;
+    initialiseShip(e.ship);
 
     return e;
   }

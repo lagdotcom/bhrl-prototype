@@ -1,4 +1,4 @@
-import { Appearance, Pilot } from "@app/components";
+import { Appearance, Pilot, Ship } from "@app/components";
 import { getEntityLayout, getEntityTree, isSpaceFree } from "@app/logic/entity";
 
 import AttackWave from "@app/types/AttackWave";
@@ -130,8 +130,7 @@ export function makeEnemy(
     putPilotInShip(e, pilot);
   }
 
-  ship.hp = ship.maxHp;
-  ship.shield = ship.maxShield;
+  initialiseShip(ship);
 
   const appearance = PowerAppearancePatch[power];
   for (const part of getEntityTree(g, e)) {
@@ -153,4 +152,9 @@ export function findSpawnPosition(g: Engine, e: Entity) {
   }
 
   throw new Error(`Could not find ${width}x${height} spawn location`);
+}
+
+export function initialiseShip(ship: Ship) {
+  ship.hp = ship.maxHp;
+  ship.shield = ship.maxShield;
 }

@@ -28,7 +28,7 @@ export default function addTurrets(g: Engine) {
           position,
           target,
           root,
-          getEntityTreeIDs(g, e)
+          getEntityTreeIDs(g, root)
         )) {
           if (bullet.homing) bullet.homing.target = enemy;
 

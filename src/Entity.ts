@@ -21,8 +21,8 @@ import {
 } from "@app/components";
 import { clone, keys } from "@app/tools/object";
 
-import { DamageSource } from "@app/events";
 import Engine from "@app/Engine";
+import KillReason from "@app/types/KillReason";
 import Prefab from "@app/types/Prefab";
 import { PrefabName } from "@app/prefabs";
 
@@ -80,9 +80,9 @@ export default class Entity implements Partial<ComponentMap> {
     return this.name;
   }
 
-  kill(source?: DamageSource): this {
+  kill(reason: KillReason): this {
     this.alive = false;
-    this.eachChild((e) => this.g.kill(e, source));
+    this.eachChild((e) => this.g.kill(e, reason));
     return this;
   }
 

@@ -13,7 +13,7 @@ export default function addFields(g: Engine) {
       field.intensity -= field.falloff;
       e.setAppearance(getFieldAppearance(field));
 
-      if (field.intensity <= 0) g.kill(e);
+      if (field.intensity <= 0) g.kill(e, { type: "expired" });
       else
         ships.forEach((_, victim) => {
           const { layout } = getEntityLayout(g, victim);

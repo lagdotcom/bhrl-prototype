@@ -1,67 +1,69 @@
 import Angles from "@app/logic/angles";
-import { Colors } from "wglt";
-import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
 import { turret } from "@app/prefabs/tools";
 
 export const MachineGun: Prefab = {
   components: {
-    appearance: { glyph: "o", layer: Layer.Gun, fg: Colors.WHITE },
-    turret: turret("Machine Gun", Angles.Down, {
-      bulletPrefab: "Bullet",
-      bulletVelocity: 2,
-      salvoCount: 5,
-      timeBetweenShots: 0,
-      timeBetweenSalvos: 12,
-    }),
+    turret: turret(
+      "Machine Gun",
+      { salvoCount: 5, timeBetweenShots: 0, timeBetweenSalvos: 12 },
+      [{ prefab: "Bullet", angle: Angles.Down, vel: 2 }]
+    ),
   },
 };
 
 export const HomingMissileLauncher: Prefab = {
   components: {
-    appearance: { glyph: "o", layer: Layer.Gun, fg: Colors.YELLOW },
-    turret: turret("Homing Missile", "nearestEnemy", {
-      bulletPrefab: "HomingMissile",
-      bulletVelocity: 1,
-      salvoCount: 1,
-      timeBetweenSalvos: 8,
-    }),
+    turret: turret("Homing Missile", { salvoCount: 1, timeBetweenSalvos: 8 }, [
+      { prefab: "HomingMissile", angle: "nearestEnemy", vel: 1 },
+    ]),
   },
 };
 
 export const PeaShooter: Prefab = {
   components: {
-    // appearance: { glyph: "o", layer: Layer.Gun, fg: Colors.LIGHT_GRAY },
-    turret: turret("Pea Shooter", Angles.Down, {
-      bulletPrefab: "Bullet",
-      bulletVelocity: 2,
-      salvoCount: 1,
-      timeBetweenSalvos: 3,
-    }),
+    turret: turret("Pea Shooter", { salvoCount: 1, timeBetweenSalvos: 3 }, [
+      { prefab: "Bullet", angle: Angles.Down, vel: 2 },
+    ]),
   },
 };
 
 export const PlayerGun: Prefab = {
   components: {
-    appearance: { glyph: "o", layer: Layer.Gun, fg: Colors.WHITE },
-    turret: turret("Pew Pew", Angles.Up, {
-      bulletPrefab: "PlayerBullet",
-      bulletVelocity: 2,
-      salvoCount: 2,
-      timeBetweenShots: 0,
-      timeBetweenSalvos: 3,
-    }),
+    turret: turret(
+      "Pew Pew",
+      { salvoCount: 2, timeBetweenShots: 0, timeBetweenSalvos: 3 },
+      [{ prefab: "PlayerBullet", angle: Angles.Up, vel: 2 }]
+    ),
   },
 };
 
 export const DroneGun: Prefab = {
   components: {
-    turret: turret("Stinger", "nearestEnemy", {
-      bulletPrefab: "DroneBullet",
-      bulletVelocity: 1,
-      salvoCount: 1,
-      timeBetweenSalvos: 5,
-      ammunition: 5,
-    }),
+    turret: turret(
+      "Stinger",
+      { salvoCount: 1, timeBetweenSalvos: 5, ammunition: 5 },
+      [{ prefab: "DroneBullet", angle: "nearestEnemy", vel: 1 }]
+    ),
+  },
+};
+
+export const OlmSpray: Prefab = {
+  components: {
+    turret: turret("Deployment", { salvoCount: 1, timeBetweenSalvos: 12 }, [
+      { prefab: "DroneA", angle: Angles.Up, vel: 0, offset: { x: 0, y: -1 } },
+      {
+        prefab: "HomingMissile",
+        angle: Angles.DownLeft,
+        vel: 2,
+        offset: { x: -1, y: 1 },
+      },
+      {
+        prefab: "HomingMissile",
+        angle: Angles.DownRight,
+        vel: 2,
+        offset: { x: 1, y: 1 },
+      },
+    ]),
   },
 };

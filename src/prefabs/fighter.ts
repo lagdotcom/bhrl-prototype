@@ -1,5 +1,6 @@
 import { ship, turret } from "@app/prefabs/tools";
 
+import Angles from "@app/logic/angles";
 import { Colors } from "wglt";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
@@ -7,12 +8,9 @@ import Prefab from "@app/types/Prefab";
 export const FighterLauncher: Prefab = {
   components: {
     appearance: { glyph: "_", layer: Layer.Gun, fg: Colors.DARK_CYAN },
-    turret: turret("Fighter Bay", "nearestEnemy", {
-      bulletPrefab: "Fighter",
-      bulletVelocity: 0,
-      salvoCount: 1,
-      timeBetweenSalvos: 20,
-    }),
+    turret: turret("Fighter Bay", { salvoCount: 1, timeBetweenSalvos: 20 }, [
+      { prefab: "Fighter", angle: Angles.Down, vel: 0 },
+    ]),
   },
 };
 

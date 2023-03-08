@@ -118,6 +118,7 @@ export const Olm: Prefab = {
     child("Hull", 0, 2, {
       appearance: { glyph: Glyphs.BoxDownSingleHorizontalDouble },
     }),
+    child("OlmSpray", 0, 0),
   ],
 };
 

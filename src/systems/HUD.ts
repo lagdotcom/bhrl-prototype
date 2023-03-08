@@ -70,10 +70,9 @@ export default function addHUD(g: Engine) {
         wx += weaponInfo.width + 1;
       }
 
-      const arrayLabel = `${tag} ${pluralise("Weapon", weapons.length)}`;
-      term.drawString(sx, y, arrayLabel, Colors.LIGHT_CYAN);
+      term.drawString(sx, y, tag, Colors.LIGHT_CYAN);
 
-      wx = Math.max(wx, sx + arrayLabel.length + 1);
+      wx = Math.max(wx, sx + tag.length + 1);
     }
   });
 }

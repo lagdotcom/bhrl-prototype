@@ -1,19 +1,19 @@
 import { BlendMode, Cell, Console, Terminal } from "wglt";
+import Entity, { compareEntities } from "@app/Entity";
 import {
-  DamageSource,
   EventCallback,
   EventHandler,
   EventMap,
   EventName,
   EventNames,
 } from "@app/events";
-import Entity, { compareEntities } from "@app/Entity";
 import instantiate, { PrefabName } from "@app/prefabs";
 import { intPosition, isSameCell } from "@app/tools/position";
 
 import EntityList from "@app/EntityList";
 import GameMode from "@app/types/GameMode";
 import HashMap from "@app/HashMap";
+import KillReason from "@app/types/KillReason";
 import MenuMode from "@app/MenuMode";
 import { Position } from "@app/components";
 import bfs from "@app/logic/bfs";
@@ -81,10 +81,10 @@ export default class Engine implements EventHandler {
     return e;
   }
 
-  kill(e: Entity, source?: DamageSource) {
+  kill(e: Entity, reason: KillReason) {
     if (e.alive) {
-      e.kill(source);
-      this.fire("kill", { e, source });
+      e.kill(reason);
+      this.fire("kill", { e, reason });
     }
   }
 
@@ -129,9 +129,9 @@ export default class Engine implements EventHandler {
   getContents(
     pos: Position,
     ignoreSolid: number[] = []
-  ): { wall: boolean; solid?: Entity; other: Entity[] } {
+  ): { oob?: boolean; wall?: boolean; solid?: Entity; other: Entity[] } {
     const square = intPosition(pos);
-    if (!this.inBounds(square)) return { wall: true, other: [] };
+    if (!this.inBounds(square)) return { oob: true, other: [] };
 
     const wall = this.map.isBlocked(square.x, square.y);
     const entities = this.entities
