@@ -17,7 +17,7 @@ const defaultAI: AI = { idealDistance: 8, firingDistance: 14, speed: 1 };
 const tinyGun = child("PeaShooter", 0, 0);
 
 export const ShipA: Prefab = {
-  components: { ai: defaultAI, ship: ship("A", "Escort", 0) },
+  components: { ai: defaultAI, ship: ship("A", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pilcrow } }),
     tinyGun,
@@ -25,7 +25,7 @@ export const ShipA: Prefab = {
 };
 
 export const ShipB: Prefab = {
-  components: { ai: defaultAI, ship: ship("B", "Escort", 0) },
+  components: { ai: defaultAI, ship: ship("B", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Yen } }),
     tinyGun,
@@ -33,12 +33,12 @@ export const ShipB: Prefab = {
 };
 
 export const ShipC: Prefab = {
-  components: { ai: defaultAI, ship: ship("C", "Escort", 0) },
+  components: { ai: defaultAI, ship: ship("C", "Escort", 2) },
   children: [child("Hull", 0, 0, { appearance: { glyph: "W" } }), tinyGun],
 };
 
 export const ShipD: Prefab = {
-  components: { ai: defaultAI, ship: ship("D", "Escort", 0) },
+  components: { ai: defaultAI, ship: ship("D", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Omega } }),
     tinyGun,
@@ -46,7 +46,7 @@ export const ShipD: Prefab = {
 };
 
 export const ShipE: Prefab = {
-  components: { ai: defaultAI, ship: ship("E", "Escort", 0) },
+  components: { ai: defaultAI, ship: ship("E", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.DownWedge } }),
     tinyGun,
@@ -54,7 +54,7 @@ export const ShipE: Prefab = {
 };
 
 export const ShipF: Prefab = {
-  components: { ai: defaultAI, ship: ship("F", "Escort", 0) },
+  components: { ai: defaultAI, ship: ship("F", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pi } }),
     tinyGun,
@@ -62,12 +62,12 @@ export const ShipF: Prefab = {
 };
 
 export const ShipG: Prefab = {
-  components: { ai: defaultAI, ship: ship("G", "Escort", 0) },
+  components: { ai: defaultAI, ship: ship("G", "Escort", 2) },
   children: [child("Hull", 0, 0, { appearance: { glyph: "M" } }), tinyGun],
 };
 
 export const ShipH: Prefab = {
-  components: { ai: defaultAI, ship: ship("H", "Escort", 0) },
+  components: { ai: defaultAI, ship: ship("H", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Female } }),
     tinyGun,
