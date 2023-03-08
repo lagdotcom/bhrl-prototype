@@ -6,10 +6,10 @@ import { turret } from "./tools";
 
 export const SwordBullet: Prefab = {
   components: {
-    projectile: { damage: 5 },
+    projectile: { damage: 5, special: "increasedDropChance" },
     appearance: {
       glyph: Glyphs.Star,
-      layer: Layer.Bullet,
+      layer: Layer.PlayerBullet,
       fg: Colors.LIGHT_GREEN,
     },
   },

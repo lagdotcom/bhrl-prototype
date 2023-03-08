@@ -4,6 +4,7 @@ import Drawable from "@app/types/Drawable";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import FieldInfo from "@app/ui/FieldInfo";
+import ItemInfo from "@app/ui/ItemInfo";
 import PilotInfo from "@app/ui/PilotInfo";
 import { Position } from "@app/components";
 import ShipInfo from "@app/ui/ShipInfo";
@@ -42,6 +43,8 @@ export function drawExamineOverlay(
       add(new BulletInfo(g, e));
 
     if (e.field) add(new FieldInfo(g, e.field));
+
+    if (e.item) add(new ItemInfo(g, e.item));
   }
 
   if (!instructions.length) return;

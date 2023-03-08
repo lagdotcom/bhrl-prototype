@@ -1,2 +1,2 @@
-type Projectile = { damage: number };
+type Projectile = { damage: number; special?: "increasedDropChance" };
 export default Projectile;

@@ -1,10 +1,12 @@
 const Glyphs = {
+  Heart: "\x03",
   Diamond: "\x04",
   Club: "\x05",
   Dot: "\x07",
   Ring: "\x09",
   RingInvert: "\x0a",
   Female: "\x0c",
+  DoubleNote: "\x0e",
   Star: "\x0f",
 
   Pilcrow: "\x14",
@@ -36,11 +38,14 @@ const Glyphs = {
   BoxDownSingleHorizontalDouble: "\xd1",
   BoxVerticalDoubleHorizontalSingle: "\xd7",
 
+  Beta: "\xe1",
   Pi: "\xe3",
   Theta: "\xe9",
   Omega: "\xea",
   SymbolED: "\xed",
+  SetMember: "\xee",
 
   HorizontalDivide: "\xf6",
+  Squared: "\xfd",
 };
 export default Glyphs;

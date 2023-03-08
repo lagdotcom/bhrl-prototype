@@ -17,7 +17,7 @@ const defaultAI: AI = { idealDistance: 8, firingDistance: 14, speed: 1 };
 const tinyGun = child("PeaShooter", 0, 0);
 
 export const ShipA: Prefab = {
-  components: { ai: defaultAI, ship: ship("A", 0) },
+  components: { ai: defaultAI, ship: ship("A", "Escort", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pilcrow } }),
     tinyGun,
@@ -25,7 +25,7 @@ export const ShipA: Prefab = {
 };
 
 export const ShipB: Prefab = {
-  components: { ai: defaultAI, ship: ship("B", 0) },
+  components: { ai: defaultAI, ship: ship("B", "Escort", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Yen } }),
     tinyGun,
@@ -33,12 +33,12 @@ export const ShipB: Prefab = {
 };
 
 export const ShipC: Prefab = {
-  components: { ai: defaultAI, ship: ship("C", 0) },
+  components: { ai: defaultAI, ship: ship("C", "Escort", 0) },
   children: [child("Hull", 0, 0, { appearance: { glyph: "W" } }), tinyGun],
 };
 
 export const ShipD: Prefab = {
-  components: { ai: defaultAI, ship: ship("D", 0) },
+  components: { ai: defaultAI, ship: ship("D", "Escort", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Omega } }),
     tinyGun,
@@ -46,7 +46,7 @@ export const ShipD: Prefab = {
 };
 
 export const ShipE: Prefab = {
-  components: { ai: defaultAI, ship: ship("E", 0) },
+  components: { ai: defaultAI, ship: ship("E", "Escort", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.DownWedge } }),
     tinyGun,
@@ -54,7 +54,7 @@ export const ShipE: Prefab = {
 };
 
 export const ShipF: Prefab = {
-  components: { ai: defaultAI, ship: ship("F", 0) },
+  components: { ai: defaultAI, ship: ship("F", "Escort", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pi } }),
     tinyGun,
@@ -62,12 +62,12 @@ export const ShipF: Prefab = {
 };
 
 export const ShipG: Prefab = {
-  components: { ai: defaultAI, ship: ship("G", 0) },
+  components: { ai: defaultAI, ship: ship("G", "Escort", 0) },
   children: [child("Hull", 0, 0, { appearance: { glyph: "M" } }), tinyGun],
 };
 
 export const ShipH: Prefab = {
-  components: { ai: defaultAI, ship: ship("H", 0) },
+  components: { ai: defaultAI, ship: ship("H", "Escort", 0) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Female } }),
     tinyGun,
@@ -78,7 +78,7 @@ const droneAI: AI = { idealDistance: 5, firingDistance: 6, speed: 1 };
 const droneGun = child("DroneGun", 0, 0);
 
 export const DroneA: Prefab = {
-  components: { ai: droneAI, ship: ship("Drone A", 1) },
+  components: { ai: droneAI, ship: ship("Drone A", "Escort", 1) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Theta } }),
     droneGun,
@@ -86,7 +86,7 @@ export const DroneA: Prefab = {
 };
 
 export const DroneB: Prefab = {
-  components: { ai: droneAI, ship: ship("Drone B", 1) },
+  components: { ai: droneAI, ship: ship("Drone B", "Escort", 1) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.SymbolED } }),
     droneGun,
@@ -94,7 +94,7 @@ export const DroneB: Prefab = {
 };
 
 export const DroneC: Prefab = {
-  components: { ai: droneAI, ship: ship("Drone C", 1) },
+  components: { ai: droneAI, ship: ship("Drone C", "Escort", 1) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Silcrow } }),
     droneGun,
@@ -102,7 +102,10 @@ export const DroneC: Prefab = {
 };
 
 export const CruiseyWing: Prefab = {
-  components: { ai: defaultAI, ship: ship("Cruisey Wing", 10, 5) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Cruisey Wing", "Battleship", 10, 5),
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Not } }),
     child("Hull", 1, 0, { appearance: { glyph: Glyphs.HorizontalDivide } }),
@@ -111,7 +114,7 @@ export const CruiseyWing: Prefab = {
 };
 
 export const Olm: Prefab = {
-  components: { ai: defaultAI, ship: ship("Olm", 15, 4) },
+  components: { ai: defaultAI, ship: ship("Olm", "Battleship", 15, 4) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Cent } }),
     child("Hull", 0, 1, { appearance: { glyph: Glyphs.ResizeVertical } }),
@@ -123,7 +126,10 @@ export const Olm: Prefab = {
 };
 
 export const GoutOFlame: Prefab = {
-  components: { ai: defaultAI, ship: ship("Gout-'o-flame", 5, 20) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Gout-'o-flame", "Battleship", 5, 20),
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pentagon } }),
     child("Hull", 1, 0, {
@@ -137,7 +143,7 @@ export const GoutOFlame: Prefab = {
 };
 
 export const Demigod: Prefab = {
-  components: { ai: defaultAI, ship: ship("Demigod", 30, 15) },
+  components: { ai: defaultAI, ship: ship("Demigod", "Battleship", 30, 15) },
   children: [
     child("Hull", 1, 0, { appearance: { glyph: Glyphs.CapitalUUmlaut } }),
     child("Hull", 0, 1, { appearance: { glyph: "}" } }),

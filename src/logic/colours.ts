@@ -1,4 +1,6 @@
+import { Appearance } from "@app/components";
 import { Colors } from "wglt";
+import ShipPower from "@app/types/ShipPower";
 
 export const StatColours = [
   0,
@@ -9,3 +11,14 @@ export const StatColours = [
   Colors.YELLOW,
   Colors.WHITE,
 ];
+
+export const PowerAppearancePatch: Record<ShipPower, Partial<Appearance>> = {
+  Typical: { fg: Colors.DARK_GRAY },
+  Healthy: { fg: Colors.DARK_GREEN },
+  Double: { fg: Colors.LIGHT_GRAY },
+  Multi: { fg: Colors.DARK_MAGENTA },
+
+  Drain: { fg: Colors.DARK_RED },
+  StarPilot: { fg: Colors.YELLOW },
+  Mega: { fg: Colors.BLACK, bg: Colors.DARK_MAGENTA },
+};

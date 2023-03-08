@@ -1,11 +1,12 @@
-import { Appearance, Pilot, Ship } from "@app/components";
+import { Pilot, Ship } from "@app/components";
 import { getEntityLayout, getEntityTree, isSpaceFree } from "@app/logic/entity";
 
 import AttackWave from "@app/types/AttackWave";
-import { Colors } from "wglt";
+import EnemyFlags from "@app/types/EnemyFlags";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import { PilotClasses } from "@app/types/PilotClass";
+import { PowerAppearancePatch } from "@app/logic/colours";
 import { PrefabName } from "@app/prefabs";
 import ShipPower from "@app/types/ShipPower";
 import { clone } from "@app/tools/object";
@@ -14,26 +15,7 @@ import oneOf from "@app/tools/oneOf";
 import { putPilotInShip } from "@app/logic/pilot";
 import shuffle from "@app/tools/shuffle";
 
-enum EnemyFlags {
-  None = 0,
-  Healthy = 1,
-  Double = 2,
-  Drain = 4,
-  HasPilot = 8,
-}
-
-const PowerAppearancePatch: Record<ShipPower, Partial<Appearance>> = {
-  Typical: { fg: Colors.DARK_GRAY },
-  Healthy: { fg: Colors.DARK_GREEN },
-  Double: { fg: Colors.LIGHT_GRAY },
-  Multi: { fg: Colors.DARK_MAGENTA },
-
-  Drain: { fg: Colors.DARK_RED },
-  StarPilot: { fg: Colors.YELLOW },
-  Mega: { fg: Colors.BLACK, bg: Colors.DARK_MAGENTA },
-};
-
-const PowerToFlags: Record<ShipPower, EnemyFlags> = {
+export const PowerToFlags: Record<ShipPower, EnemyFlags> = {
   Typical: EnemyFlags.None,
   Healthy: EnemyFlags.Healthy,
   Double: EnemyFlags.Double,
@@ -123,6 +105,7 @@ export function makeEnemy(
   if (!ship)
     throw new Error(`Ship prefab ${prefab} doesn't have a ship component!`);
 
+  ship.power = power;
   if (flags & EnemyFlags.Healthy) ship.maxHp = ship.maxHp * 2 + 3;
 
   if (basePilot) {

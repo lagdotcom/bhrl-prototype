@@ -1,3 +1,4 @@
+import { Colors } from "wglt";
 import Drawable from "@app/types/Drawable";
 import Engine from "@app/Engine";
 
@@ -6,6 +7,7 @@ export type LineInstruction = {
   y: number;
   line: string;
   fg: number;
+  bg?: number;
 };
 
 export default abstract class InstructionBasedDrawable implements Drawable {
@@ -24,8 +26,8 @@ export default abstract class InstructionBasedDrawable implements Drawable {
     this.updateBounds();
   }
 
-  protected addLine(line: string, fg: number) {
-    this.add({ x: 0, y: this.instructions.length, line, fg });
+  protected addLine(line: string, fg: number = Colors.WHITE, bg?: number) {
+    this.add({ x: 0, y: this.instructions.length, line, fg, bg });
   }
 
   private updateBounds() {
@@ -37,7 +39,7 @@ export default abstract class InstructionBasedDrawable implements Drawable {
   }
 
   draw(sx: number, sy: number) {
-    for (const { x, y, line, fg } of this.instructions)
-      this.g.term.drawString(sx + x, sy + y, line, fg);
+    for (const { x, y, line, fg, bg } of this.instructions)
+      this.g.term.drawString(sx + x, sy + y, line, fg, bg);
   }
 }

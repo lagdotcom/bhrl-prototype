@@ -27,7 +27,7 @@ export default class BulletInfo extends InstructionBasedDrawable {
 
     this.instructions = [];
 
-    if (e.name) this.addLine(e.name, Colors.WHITE);
+    if (e.name) this.addLine(e.name);
     if (e.projectile)
       this.addLine(`${e.projectile.damage} damage`, Colors.LIGHT_RED);
     if (e.motion)

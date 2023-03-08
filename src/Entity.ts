@@ -7,6 +7,7 @@ import {
   Field,
   Homing,
   IgnoreSolid,
+  Item,
   LastMovement,
   Lifetime,
   Motion,
@@ -39,6 +40,7 @@ export default class Entity implements Partial<ComponentMap> {
   field?: Field;
   homing?: Homing;
   ignoreSolid?: IgnoreSolid;
+  item?: Item;
   lastMovement?: LastMovement;
   lifetime?: Lifetime;
   motion?: Motion;
@@ -125,6 +127,11 @@ export default class Entity implements Partial<ComponentMap> {
 
   setIgnoreSolid(c?: IgnoreSolid): this {
     this.ignoreSolid = c;
+    return this;
+  }
+
+  setItem(c?: Item): this {
+    this.item = c;
     return this;
   }
 

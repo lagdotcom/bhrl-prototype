@@ -1,6 +1,7 @@
 import Engine from "@app/Engine";
 import addAI from "./AI";
 import addDisplay from "./Display";
+import addDrops from "./Drops";
 import addExplosives from "./Explosives";
 import addFields from "./Fields";
 import addHUD from "./HUD";
@@ -29,6 +30,7 @@ export function addSystems(g: Engine) {
   addTrails(g);
 
   addExplosives(g);
+  addDrops(g);
 
   addPlayer(g);
 }

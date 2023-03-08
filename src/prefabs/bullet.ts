@@ -34,6 +34,6 @@ export const HomingMissile: Prefab = {
 export const PlayerBullet: Prefab = {
   components: {
     projectile: { damage: 3 },
-    appearance: { glyph: "!", layer: Layer.Bullet, fg: Colors.YELLOW },
+    appearance: { glyph: "!", layer: Layer.PlayerBullet, fg: Colors.YELLOW },
   },
 };

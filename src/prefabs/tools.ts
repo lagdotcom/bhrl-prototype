@@ -11,8 +11,14 @@ export const child = (
   tags?: PrefabChild["tags"]
 ): PrefabChild => ({ name, x, y, overlay, tags });
 
-export const ship = (name: string, maxHp: number, maxShield = 0): Ship => ({
+export const ship = (
+  name: string,
+  type: Ship["type"],
+  maxHp: number,
+  maxShield = 0
+): Ship => ({
   name,
+  type,
   maxHp,
   hp: 0,
   maxShield,

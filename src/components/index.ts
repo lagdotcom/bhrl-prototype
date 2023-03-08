@@ -5,6 +5,7 @@ import Explodes from "./Explodes";
 import Field from "./Field";
 import Homing from "./Homing";
 import IgnoreSolid from "./IgnoreSolid";
+import Item from "./Item";
 import LastMovement from "./LastMovement";
 import Lifetime from "./Lifetime";
 import Motion from "./Motion";
@@ -25,6 +26,7 @@ export type ComponentMap = {
   field: Field;
   homing: Homing;
   ignoreSolid: IgnoreSolid;
+  item: Item;
   lastMovement: LastMovement;
   lifetime: Lifetime;
   motion: Motion;
@@ -49,6 +51,7 @@ export {
   Field,
   Homing,
   IgnoreSolid,
+  Item,
   LastMovement,
   Lifetime,
   Motion,

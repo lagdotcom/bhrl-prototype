@@ -27,13 +27,14 @@ export function getLayoutBlockers(
   layout: LayoutEntry[],
   topLeft: Position,
   ignoreSolid: number[] = []
-): LayoutEntry<Entity | "wall">[] {
-  const blockers: LayoutEntry<Entity | "wall">[] = [];
+): LayoutEntry<Entity | "wall" | "oob">[] {
+  const blockers: LayoutEntry<Entity | "wall" | "oob">[] = [];
 
   for (const { offset } of layout) {
     const pos = addPositions(topLeft, offset);
-    const { wall, solid } = g.getContents(pos, ignoreSolid);
-    if (wall) blockers.push({ absolute: pos, offset, entity: "wall" });
+    const { oob, wall, solid } = g.getContents(pos, ignoreSolid);
+    if (oob) blockers.push({ absolute: pos, offset, entity: "oob" });
+    else if (wall) blockers.push({ absolute: pos, offset, entity: "wall" });
     else if (solid) blockers.push({ absolute: pos, offset, entity: solid });
   }
 

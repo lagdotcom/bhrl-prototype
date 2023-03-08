@@ -11,7 +11,7 @@ import { addSystems } from "@app/systems";
 import { angleMove } from "@app/tools/angle";
 import { drawExamineOverlay } from "@app/logic/examine";
 import { fireAirFist } from "@app/logic/airFist";
-import { getWaves } from "./logic/enemy";
+import { getWaves } from "@app/logic/enemy";
 import int from "@app/tools/int";
 import { intPosition } from "@app/tools/position";
 import { walkGrid } from "@app/logic/geometry";

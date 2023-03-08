@@ -96,7 +96,9 @@ function fireBullet(
         angle,
         0,
         ignoreIds
-      ).setLifetime({ duration: beam.duration });
+      )
+        .setMotion({ angle, vel: 0 })
+        .setLifetime({ duration: beam.duration });
       if (bullet.appearance) Object.assign(bullet.appearance, patch);
       if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
 
