@@ -9,7 +9,7 @@ import distance from "@app/tools/distance";
 export type FieldCell = { x: number; y: number; intensity: number };
 
 const fieldGradients: Record<FieldType, GradientRun> = {
-  fire: new GradientRun([
+  Fire: new GradientRun([
     [0, [0, 0, 0, 0]],
     [2, [255, 0, 0, 150]],
     [4, [255, 255, 0, 150]],
@@ -29,7 +29,6 @@ export function getFieldAppearance(field: Field): Appearance | undefined {
   };
 }
 
-// TODO shape around walls lol
 export function generateField(centre: Position, size: number) {
   const parts: FieldCell[] = [];
 

@@ -3,6 +3,7 @@ import { Colors } from "wglt";
 import Drawable from "@app/types/Drawable";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
+import FieldInfo from "@app/ui/FieldInfo";
 import PilotInfo from "@app/ui/PilotInfo";
 import { Position } from "@app/components";
 import ShipInfo from "@app/ui/ShipInfo";
@@ -39,6 +40,8 @@ export function drawExamineOverlay(
 
     if (e.motion || e.projectile || e.homing || e.lifetime)
       add(new BulletInfo(g, e));
+
+    if (e.field) add(new FieldInfo(g, e.field));
   }
 
   if (!instructions.length) return;

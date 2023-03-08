@@ -1,2 +1,2 @@
-type FieldType = "fire";
+type FieldType = "Fire";
 export default FieldType;

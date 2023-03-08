@@ -13,14 +13,14 @@ export default function addFields(g: Engine) {
       field.intensity -= field.falloff;
       e.setAppearance(getFieldAppearance(field));
 
-      if (field.intensity <= 0) g.kill(e, { type: "expired" });
+      if (field.intensity < 1) g.kill(e, { type: "expired" });
       else
         ships.forEach((_, victim) => {
           const { layout } = getEntityLayout(g, victim);
           const hit = layout.find(({ absolute }) =>
             isSameCell(absolute, position)
           );
-          if (hit) damage(g, victim, field.intensity, e);
+          if (hit) damage(g, victim, Math.floor(field.intensity), e);
         });
     });
   });
