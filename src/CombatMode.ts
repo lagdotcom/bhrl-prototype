@@ -1,5 +1,9 @@
 import { Colors, Key } from "wglt";
-import { getEntityLayout, getEntityMidpoint } from "@app/logic/entity";
+import {
+  getEntityLayout,
+  getEntityMidpoint,
+  getEntityTreeIDs,
+} from "@app/logic/entity";
 import { intPosition, pos } from "@app/tools/position";
 
 import AttackWave from "@app/types/AttackWave";
@@ -41,12 +45,15 @@ export default class CombatMode implements GameMode {
     this.waves = getWaves();
 
     g.blankMap();
+    g.entities.clearExceptFor(getEntityTreeIDs(g, g.player));
 
     const { width, height } = getEntityLayout(g, g.player);
     g.player.move(int(g.mapWidth / 2 - width / 2), g.mapHeight - height - 4);
 
     addSystems(g);
     this.nextWave();
+
+    g.on("waveNext", this.nextWave.bind(this));
   }
 
   nextWave() {
@@ -59,9 +66,11 @@ export default class CombatMode implements GameMode {
         difficulty: this.campaign.difficulty,
         pilot,
       });
+      return;
     }
 
-    // TODO out of waves?
+    // TODO star pilot escape?
+    this.campaign.currentSector.completed = true;
   }
 
   draw() {
@@ -107,6 +116,23 @@ export default class CombatMode implements GameMode {
         }
       }
     }
+
+    if (this.campaign.currentSector.completed) {
+      term.drawCenteredString(
+        term.width / 2,
+        5,
+        "SECTOR COMPLETE",
+        Colors.WHITE,
+        Colors.BLACK
+      );
+      term.drawCenteredString(
+        term.width / 2,
+        7,
+        "Hit Enter to continue",
+        Colors.WHITE,
+        Colors.BLACK
+      );
+    }
   }
 
   update() {
@@ -140,6 +166,15 @@ export default class CombatMode implements GameMode {
 
   handleKeys() {
     const { player, term } = this.g;
+
+    if (
+      this.campaign.currentSector.completed &&
+      (term.isKeyPressed(Key.VK_ENTER) ||
+        term.isKeyPressed(Key.VK_NUMPAD_ENTER))
+    ) {
+      this.campaign.endCombat();
+      return;
+    }
 
     const move = term.getMovementKey();
     if (move) {

@@ -111,7 +111,7 @@ export const BellowMissile: Prefab = {
     projectile: { damage: 20, scaling: { stat: "mind", multiplier: 1 } },
     homing: { strength: 0.15, duration: 30 },
     trail: { effectPrefab: "SmokePuff" },
-    explodes: { size: 10, type: "Fire", falloff: 1 },
+    explodes: { size: 6, type: "Fire", falloff: 1 },
     appearance: {
       glyph: Glyphs.CurlyF,
       layer: Layer.Bullet,

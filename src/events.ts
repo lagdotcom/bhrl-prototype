@@ -16,6 +16,7 @@ export const EventNames = [
   "spawn",
   "tick",
   "waveBegin",
+  "waveNext",
 ] as const;
 export type EventName = (typeof EventNames)[number];
 
@@ -30,6 +31,7 @@ export type EventMap = {
   spawn: { e: Entity };
   tick: undefined;
   waveBegin: { wave: AttackWave; difficulty: number; pilot?: Pilot };
+  waveNext: undefined;
 };
 
 export type EventCallback<T extends EventName> = (data: EventMap[T]) => void;

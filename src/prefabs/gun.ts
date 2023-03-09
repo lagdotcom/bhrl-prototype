@@ -150,7 +150,7 @@ export const TheDragonWakes: Prefab = {
 export const Bellow: Prefab = {
   components: {
     turret: turret("Bellow", { salvoCount: 1, timeBetweenSalvos: 17 }, [
-      bullet("Missile", "BellowMissile", Angles.DownLeft, 1),
+      bullet("Bellow", "BellowMissile", Angles.DownLeft, 1),
       array("Primary"),
       array("Primary", { delay: 1 }),
       array("Primary", { delay: 2 }),

@@ -18,9 +18,27 @@ export default function addSpawns(g: Engine) {
       const prefab = prefabs[i];
       const power = getShipPower(specialChance, hasStarPilot);
 
-      const e = makeEnemy(g, prefab, power);
+      const e = makeEnemy(g, prefab, power, hasStarPilot ? pilot : undefined);
       const position = findSpawnPosition(g, e);
       e.move(position.x, position.y);
+    }
+  });
+
+  let nextWaveTimer = Infinity;
+  g.on("kill", ({ e }) => {
+    if (!e.ship) return;
+
+    const enemies = g.entities
+      .get()
+      .filter((x) => x.alive && x.ship && x.ship.type !== "Player");
+
+    if (!enemies.length) nextWaveTimer = 5;
+  });
+
+  g.on("tick", () => {
+    if (--nextWaveTimer <= 0) {
+      nextWaveTimer = Infinity;
+      g.fire("waveNext", undefined);
     }
   });
 }

@@ -24,7 +24,7 @@ export default function addDelayedShots(g: Engine) {
           const turretEntity = tree.find((te) => te.turret === turret);
           if (!turretEntity) continue;
 
-          const target = ai?.attacking
+          const target = ai?.attacking?.alive
             ? getEntityMidpoint(g, ai.attacking)
             : pos(0, 0);
 

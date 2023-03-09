@@ -15,6 +15,14 @@ export default class EntityList {
     this.dirty = false;
   }
 
+  clearExceptFor(ids: number[]) {
+    for (const e of this.entities) {
+      if (!ids.includes(e.id)) e.alive = false;
+    }
+
+    this.clearDead();
+  }
+
   add(e: Entity) {
     this.entities.push(e);
     this.dirty = true;

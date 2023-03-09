@@ -71,6 +71,7 @@ export default class CampaignMode implements GameMode {
   }
 
   endCombat() {
+    this.g.clearEventHandlers();
     this.currentSector.completed = true;
     this.difficulty++;
 
@@ -97,15 +98,32 @@ export default class CampaignMode implements GameMode {
   draw() {
     const { term } = this.g;
 
-    term.clear();
+    term.fillRect(
+      0,
+      0,
+      term.width,
+      term.height,
+      " ",
+      Colors.WHITE,
+      Colors.BLACK
+    );
 
     const current = this.space.get(this.position);
     const cx = term.width / 2;
 
     term.drawCenteredString(cx, 2, "Known Space", Colors.WHITE);
 
-    if (!current.completed)
+    if (!current.completed) {
       term.drawCenteredString(cx, 4, "Hit Enter to fight!", Colors.WHITE);
+
+      if (current.star)
+        term.drawCenteredString(
+          cx,
+          34,
+          `You will face: ${current.star.name}!`,
+          Colors.YELLOW
+        );
+    }
 
     const gridX = (term.width - 25) / 2;
     const gridY = (term.height - 25) / 2;
