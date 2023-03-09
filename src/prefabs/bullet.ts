@@ -26,7 +26,7 @@ export const HomingMissile: Prefab = {
     projectile: { damage: 1 },
     homing: { strength: 0.15, duration: 10 },
     trail: { effectPrefab: "SmokePuff" },
-    explodes: { size: 5, falloff: 1 },
+    explodes: { size: 5, type: "Fire", falloff: 1 },
     appearance: { glyph: "*", layer: Layer.Bullet, fg: Colors.DARK_RED },
   },
 };

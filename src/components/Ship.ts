@@ -7,6 +7,7 @@ type Ship = {
   maxHp: number;
   shield: number;
   maxShield: number;
+  shieldTimer: number;
   power?: ShipPower;
 };
 export default Ship;

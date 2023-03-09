@@ -3,6 +3,7 @@ import Position from "./Position";
 import { PrefabName } from "@app/prefabs";
 
 export type TurretBullet = {
+  name: string;
   prefab: PrefabName;
   offset?: Position;
   angle: number | "lastMovement" | "nearestEnemy";

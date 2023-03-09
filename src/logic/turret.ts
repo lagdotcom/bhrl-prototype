@@ -40,6 +40,7 @@ export function canFire(turret: Turret, owner: Entity) {
 
 function initBullet(
   g: Engine,
+  name: string,
   prefab: PrefabName,
   owner: Entity,
   turret: Turret,
@@ -52,6 +53,7 @@ function initBullet(
     .spawn(prefab)
     .setIgnoreSolid({ ids: ignoreIds })
     .move(start.x, start.y);
+  bullet.name = name;
 
   if (vel) bullet.setMotion({ angle, vel });
 
@@ -71,7 +73,7 @@ function fireBullet(
   owner: Entity,
   ignoreIds: number[]
 ) {
-  const { angle: angleCmd, beam, offset, prefab, vel } = b;
+  const { angle: angleCmd, beam, name, offset, prefab, vel } = b;
 
   const start = addPositions(position, offset ?? { x: 0.5, y: 0.5 });
   const angle =
@@ -89,6 +91,7 @@ function fireBullet(
     return beam.appearance.map((patch) => {
       const bullet = initBullet(
         g,
+        name,
         prefab,
         owner,
         turret,
@@ -108,7 +111,9 @@ function fireBullet(
     });
   }
 
-  return [initBullet(g, prefab, owner, turret, start, angle, vel, ignoreIds)];
+  return [
+    initBullet(g, name, prefab, owner, turret, start, angle, vel, ignoreIds),
+  ];
 }
 
 export function fire(

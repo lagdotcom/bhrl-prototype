@@ -1,3 +1,4 @@
+import Angles from "@app/logic/angles";
 import EnemyFlags from "@app/types/EnemyFlags";
 import Engine from "@app/Engine";
 import { PowerToFlags } from "@app/logic/enemy";
@@ -22,15 +23,6 @@ export default function addDrops(g: Engine) {
           ? 0.32
           : 0.02;
       const roll = (mul = 1) => Math.random() * mul < chance;
-
-      console.log("calculating drops", {
-        position,
-        reason,
-        ship,
-        flags,
-        lucky,
-        chance,
-      });
 
       const items: PrefabName[] = [];
 
@@ -58,9 +50,9 @@ export default function addDrops(g: Engine) {
 
         // TODO money amount etc.
 
-        console.log("spawning", item, "at", pos);
-
-        g.spawn(item).move(pos.x, pos.y);
+        g.spawn(item)
+          .move(pos.x, pos.y)
+          .setMotion({ angle: Angles.Down, vel: 1 });
       }
     }
   });
