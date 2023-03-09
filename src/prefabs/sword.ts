@@ -7,7 +7,11 @@ import Prefab from "@app/types/Prefab";
 
 export const SwordBullet: Prefab = {
   components: {
-    projectile: { damage: 5, special: "increasedDropChance" },
+    projectile: {
+      damage: 5,
+      special: "increasedDropChance",
+      scaling: { stat: "spirit", multiplier: 1 },
+    },
     appearance: {
       glyph: Glyphs.Star,
       layer: Layer.PlayerBullet,

@@ -7,6 +7,7 @@ import Entity from "@app/Entity";
 import { PrefabName } from "@app/prefabs";
 import { TurretBullet } from "@app/components/Turret";
 import { clone } from "@app/tools/object";
+import { getStat } from "@app/logic/pilot";
 import { initialiseShip } from "@app/logic/enemy";
 
 export function getState(turret: Turret) {
@@ -61,6 +62,12 @@ function initBullet(
   if (bullet.ship) initialiseShip(bullet.ship);
 
   if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
+
+  if (bullet.projectile?.scaling)
+    bullet.projectile.damage += Math.floor(
+      getStat(owner, bullet.projectile.scaling.stat) *
+        bullet.projectile.scaling.multiplier
+    );
 
   return bullet;
 }

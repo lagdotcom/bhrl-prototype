@@ -1,4 +1,4 @@
-import { Position, Ship, Turret } from "@app/components";
+import { Ship, Turret } from "@app/components";
 
 import { PrefabChild } from "@app/types/Prefab";
 import { PrefabName } from ".";

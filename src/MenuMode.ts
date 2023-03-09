@@ -152,7 +152,7 @@ export default class MenuMode implements GameMode {
   changeStat(stat: PilotStat, value: number) {
     const newValue = this.pilot[stat] + value;
 
-    if (newValue < 1 || newValue > 6) return false;
+    if (newValue < 1 || newValue > 4) return false;
 
     this.points -= value;
     this.pilot[stat] = newValue;

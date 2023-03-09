@@ -5,7 +5,6 @@ import PilotInfo from "@app/ui/PilotInfo";
 import ShipInfo from "@app/ui/ShipInfo";
 import WeaponInfo from "@app/ui/WeaponInfo";
 import { getEntityTree } from "@app/logic/entity";
-import pluralise from "@app/tools/pluralise";
 
 export const HUD_HEIGHT = 6;
 
