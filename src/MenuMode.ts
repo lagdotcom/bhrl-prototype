@@ -41,7 +41,7 @@ export default class MenuMode implements GameMode {
     this.dirty = true;
     this.pilot = {
       name: "Player",
-      difficulty: NaN,
+      player: true,
       body: 1,
       mind: 1,
       spirit: 1,

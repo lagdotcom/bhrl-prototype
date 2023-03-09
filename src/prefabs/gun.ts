@@ -1,4 +1,4 @@
-import { bullet, turret } from "@app/prefabs/tools";
+import { array, bullet, turret } from "@app/prefabs/tools";
 
 import Angles from "@app/logic/angles";
 import Offsets from "@app/logic/offsets";
@@ -6,7 +6,7 @@ import Prefab from "@app/types/Prefab";
 
 export const PeaShooter: Prefab = {
   components: {
-    turret: turret("Pea Shooter", { salvoCount: 1, timeBetweenSalvos: 3 }, [
+    turret: turret("Main Gun", { salvoCount: 1, timeBetweenSalvos: 3 }, [
       bullet("Bullet", "Bullet", Angles.Down, 2),
     ]),
   },
@@ -15,7 +15,7 @@ export const PeaShooter: Prefab = {
 export const PlayerGun: Prefab = {
   components: {
     turret: turret(
-      "Pew Pew",
+      "Main Gun",
       { salvoCount: 2, timeBetweenShots: 0, timeBetweenSalvos: 3 },
       [bullet("Your Bullet", "PlayerBullet", Angles.Up, 2)]
     ),
@@ -25,7 +25,7 @@ export const PlayerGun: Prefab = {
 export const Cleave: Prefab = {
   components: {
     turret: turret("Cleave", { salvoCount: 5, timeBetweenSalvos: 11 }, [
-      bullet("Bullet", "Bullet", Angles.Down, 2),
+      array("Primary"),
     ]),
   },
 };
@@ -151,10 +151,10 @@ export const Bellow: Prefab = {
   components: {
     turret: turret("Bellow", { salvoCount: 1, timeBetweenSalvos: 17 }, [
       bullet("Missile", "BellowMissile", Angles.DownLeft, 1),
-      bullet("Bullet", "Bullet", Angles.Down, 2),
-      bullet("Bullet", "Bullet", Angles.Down, 2, { delay: 1 }),
-      bullet("Bullet", "Bullet", Angles.Down, 2, { delay: 2 }),
-      bullet("Bullet", "Bullet", Angles.Down, 2, { delay: 3 }),
+      array("Primary"),
+      array("Primary", { delay: 1 }),
+      array("Primary", { delay: 2 }),
+      array("Primary", { delay: 3 }),
     ]),
   },
 };

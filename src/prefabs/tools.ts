@@ -1,8 +1,12 @@
 import { Ship, Turret } from "@app/components";
+import {
+  TurretArrayFire,
+  TurretBullet,
+  TurretShot,
+} from "@app/components/Turret";
 
 import { PrefabChild } from "@app/types/Prefab";
 import { PrefabName } from ".";
-import { TurretBullet } from "@app/components/Turret";
 
 export const child = (
   name: PrefabName,
@@ -35,10 +39,10 @@ export const turret = (
     timeBetweenSalvos = 1,
     ammunition = Infinity,
   }: Partial<Turret>,
-  bullets: TurretBullet[]
+  shots: TurretShot[]
 ): Turret => ({
   name,
-  bullets,
+  shots,
   salvoCount,
   timeBetweenShots,
   timeBetweenSalvos,
@@ -53,4 +57,18 @@ export const bullet = (
   angle: TurretBullet["angle"],
   vel: number,
   { delay, offset, beam }: Partial<TurretBullet> = {}
-): TurretBullet => ({ name, prefab, angle, vel, delay, offset, beam });
+): TurretBullet => ({
+  type: "bullet",
+  name,
+  prefab,
+  angle,
+  vel,
+  delay,
+  offset,
+  beam,
+});
+
+export const array = (
+  tag: string,
+  { delay, offset }: Partial<TurretArrayFire> = {}
+): TurretArrayFire => ({ type: "array", tag, delay, offset });

@@ -39,7 +39,7 @@ export function drawExamineOverlay(
     for (const weapon of tree.filter((x) => x.turret))
       add(new WeaponInfo(g, weapon.turret!));
 
-    if (e.motion || e.projectile || e.homing || e.lifetime)
+    if (e.motion || e.projectile || e.homing || e.lifetime || e.explodes)
       add(new BulletInfo(g, e));
 
     if (e.field) add(new FieldInfo(g, e.field));

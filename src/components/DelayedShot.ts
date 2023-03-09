@@ -1,4 +1,4 @@
-import Turret, { TurretBullet } from "./Turret";
+import Turret, { TurretShot } from "./Turret";
 
-type DelayedShot = { shots: { turret: Turret; bullet: TurretBullet }[] };
+type DelayedShot = { shots: { turret: Turret; shot: TurretShot }[] };
 export default DelayedShot;

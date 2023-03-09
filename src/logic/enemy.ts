@@ -198,7 +198,7 @@ export function makeEnemy(
 
   if (basePilot) {
     const pilot = makePilot(basePilot);
-    putPilotInShip(e, pilot);
+    putPilotInShip(g, e, pilot);
   }
 
   initialiseShip(ship);

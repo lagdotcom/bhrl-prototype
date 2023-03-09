@@ -5,8 +5,9 @@ import { angleBetween, angleMove } from "@app/tools/angle";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import { PrefabName } from "@app/prefabs";
-import { TurretBullet } from "@app/components/Turret";
+import { TurretShot } from "@app/components/Turret";
 import { clone } from "@app/tools/object";
+import { getEntityTree } from "@app/logic/entity";
 import { getStat } from "@app/logic/pilot";
 import { initialiseShip } from "@app/logic/enemy";
 
@@ -33,11 +34,19 @@ export function advanceTimer(turret: Turret) {
 
 export function canFire(turret: Turret, owner: Entity) {
   if (
-    turret.bullets.find((b) => b.angle === "lastMovement") &&
+    turret.shots.find(
+      (b) => b.type === "bullet" && b.angle === "lastMovement"
+    ) &&
     !owner.lastMovement
   )
     return false;
   return turret.timer === 0;
+}
+
+function addDelayedShot(e: Entity, shot: { turret: Turret; shot: TurretShot }) {
+  const delayed = e.delayedShot ?? { shots: [] };
+  delayed.shots.push(shot);
+  e.setDelayedShot(delayed);
 }
 
 function initBullet(
@@ -74,21 +83,40 @@ function initBullet(
 
 export function fireBullet(
   g: Engine,
-  b: TurretBullet,
+  shot: TurretShot,
   turret: Turret,
   position: Position,
   target: Position,
   owner: Entity,
   ignoreIds: number[]
 ) {
-  const { angle: angleCmd, beam, name, offset, prefab, vel, delay } = b;
-
-  if (delay) {
-    const delayed = owner.delayedShot ?? { shots: [] };
-    delayed.shots.push({ turret, bullet: clone(b) });
-    owner.setDelayedShot(delayed);
+  if (shot.delay) {
+    addDelayedShot(owner, { turret, shot: clone(shot) });
     return [];
   }
+
+  if (shot.type === "array") {
+    const bullets: Entity[] = [];
+    for (const tagged of getEntityTree(g, owner).filter((e) =>
+      e.tags.has(shot.tag)
+    )) {
+      if (tagged.position && tagged.turret)
+        bullets.push(
+          ...fire(
+            g,
+            tagged.turret,
+            addPositions(tagged.position, shot.offset ?? pos(0, 0)),
+            target,
+            owner,
+            ignoreIds
+          )
+        );
+    }
+
+    return bullets;
+  }
+
+  const { angle: angleCmd, beam, name, offset, prefab, vel } = shot;
 
   const start = addPositions(position, offset ?? pos(0.5, 0.5));
   const angle =
@@ -137,7 +165,7 @@ export function fire(
   position: Position,
   target: Position,
   owner: Entity,
-  ignoreIds: number[] = []
+  ignoreIds: number[]
 ) {
   const { timeBetweenSalvos, timeBetweenShots } = turret;
 
@@ -146,9 +174,9 @@ export function fire(
 
   const bullets: Entity[] = [];
 
-  for (const bullet of turret.bullets)
+  for (const shot of turret.shots)
     bullets.push(
-      ...fireBullet(g, bullet, turret, position, target, owner, ignoreIds)
+      ...fireBullet(g, shot, turret, position, target, owner, ignoreIds)
     );
 
   return bullets;

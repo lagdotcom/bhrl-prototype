@@ -3,29 +3,28 @@ import { Pilot } from "@app/components";
 export const Bodini: Pilot = {
   name: "Bodini",
   star: true,
-  difficulty: 4,
-  body: 3,
+  body: 4,
   mind: 2,
   spirit: 3,
   talent: 2,
-  class: ["Psychic"],
+  class: [],
+  special: "Multiball",
 };
 
-export const StarPilotB: Pilot = {
-  name: "Star Pilot B",
+export const Splintertooth: Pilot = {
+  name: "Splintertooth",
   star: true,
-  difficulty: 2,
-  body: 2,
-  mind: 2,
-  spirit: 2,
+  body: 3,
+  mind: 3,
+  spirit: 3,
   talent: 2,
   class: [],
+  special: "StubbornDescent",
 };
 
 export const StarPilotC: Pilot = {
   name: "Star Pilot C",
   star: true,
-  difficulty: 2,
   body: 2,
   mind: 2,
   spirit: 2,
@@ -36,7 +35,6 @@ export const StarPilotC: Pilot = {
 export const StarPilotD: Pilot = {
   name: "Star Pilot D",
   star: true,
-  difficulty: 2,
   body: 2,
   mind: 2,
   spirit: 2,
@@ -47,7 +45,6 @@ export const StarPilotD: Pilot = {
 export const StarPilotE: Pilot = {
   name: "Star Pilot E",
   star: true,
-  difficulty: 2,
   body: 2,
   mind: 2,
   spirit: 2,
@@ -58,7 +55,6 @@ export const StarPilotE: Pilot = {
 export const StarPilotF: Pilot = {
   name: "Star Pilot F",
   star: true,
-  difficulty: 2,
   body: 2,
   mind: 2,
   spirit: 2,
@@ -68,7 +64,7 @@ export const StarPilotF: Pilot = {
 
 const StarPilots = [
   Bodini,
-  StarPilotB,
+  Splintertooth,
   StarPilotC,
   StarPilotD,
   StarPilotE,

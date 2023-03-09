@@ -88,7 +88,7 @@ export default class CampaignMode implements GameMode {
         `Ship prefab ${shipPrefab} doesn't have a ship component!`
       );
 
-    putPilotInShip(e, pilot);
+    putPilotInShip(g, e, pilot);
     initialiseShip(e.ship);
 
     return e;

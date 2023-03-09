@@ -14,14 +14,14 @@ export const Hull: Prefab = {
 };
 
 const defaultAI: AI = { idealDistance: 8, firingDistance: 14, speed: 1 };
-const escortGun = child("PeaShooter", 0, 0);
+const escortGun = child("PeaShooter", 0, 0, undefined, ["Primary"]);
 
 export const ShipA: Prefab = {
   components: { ai: defaultAI, ship: ship("Axle", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pilcrow } }),
     escortGun,
-    child("Cleave", 0, 0),
+    child("Cleave", 0, 0, undefined, ["Special"]),
   ],
 };
 
@@ -30,7 +30,7 @@ export const ShipB: Prefab = {
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Yen } }),
     escortGun,
-    child("Outcry", 0, 0),
+    child("Outcry", 0, 0, undefined, ["Special"]),
   ],
 };
 
@@ -39,7 +39,7 @@ export const ShipC: Prefab = {
   children: [
     child("Hull", 0, 0, { appearance: { glyph: "W" } }),
     escortGun,
-    child("AcidSplash", 0, 0),
+    child("AcidSplash", 0, 0, undefined, ["Special"]),
   ],
 };
 
@@ -48,7 +48,7 @@ export const ShipD: Prefab = {
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Omega } }),
     escortGun,
-    child("ShuttleLaunch", 0, 0),
+    child("ShuttleLaunch", 0, 0, undefined, ["Special"]),
   ],
 };
 
@@ -57,7 +57,7 @@ export const ShipE: Prefab = {
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.DownWedge } }),
     escortGun,
-    child("Veto", 0, 0),
+    child("Veto", 0, 0, undefined, ["Special"]),
   ],
 };
 
@@ -66,7 +66,7 @@ export const ShipF: Prefab = {
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pi } }),
     escortGun,
-    child("TalonSwipe", 0, 0),
+    child("TalonSwipe", 0, 0, undefined, ["Special"]),
   ],
 };
 
@@ -75,7 +75,7 @@ export const ShipG: Prefab = {
   children: [
     child("Hull", 0, 0, { appearance: { glyph: "M" } }),
     escortGun,
-    child("CrushPattern", 0, 0),
+    child("CrushPattern", 0, 0, undefined, ["Special"]),
   ],
 };
 
@@ -84,18 +84,18 @@ export const ShipH: Prefab = {
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Female } }),
     escortGun,
-    child("Smite", 0, 0),
+    child("Smite", 0, 0, undefined, ["Special"]),
   ],
 };
 
 const droneAI: AI = { idealDistance: 5, firingDistance: 6, speed: 1 };
-const droneGun = child("DroneGun", 0, 0);
+const droneGun = child("DroneGun", 0, 0, undefined, ["Primary"]);
 
 export const DroneA: Prefab = {
   components: { ai: droneAI, ship: ship("Runabout", "Escort", 1) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Theta } }),
-    droneGun,
+    escortGun,
   ],
 };
 
@@ -103,6 +103,7 @@ export const DroneB: Prefab = {
   components: { ai: droneAI, ship: ship("Wasp", "Escort", 1) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.SymbolED } }),
+    // TODO tries to ram you
     droneGun,
   ],
 };
@@ -111,6 +112,7 @@ export const DroneC: Prefab = {
   components: { ai: droneAI, ship: ship("Pulsar", "Escort", 1) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Silcrow } }),
+    // TODO tries to orbit you and fire homing bullets dir D
     droneGun,
   ],
 };
@@ -125,10 +127,10 @@ export const CruiseyWing: Prefab = {
     child("Hull", 1, 0, { appearance: { glyph: Glyphs.HorizontalDivide } }),
     child("Hull", 2, 0, { appearance: { glyph: Glyphs.NotFlip } }),
 
-    child("PeaShooter", 0, 0),
-    child("PeaShooter", 1, 0),
-    child("PeaShooter", 2, 0),
-    child("Salvo", 1, 0),
+    child("PeaShooter", 0, 0, undefined, ["Primary"]),
+    child("PeaShooter", 1, 0, undefined, ["Primary"]),
+    child("PeaShooter", 2, 0, undefined, ["Primary"]),
+    child("Salvo", 1, 0, undefined, ["Special"]),
   ],
 };
 
@@ -140,7 +142,8 @@ export const Olm: Prefab = {
     child("Hull", 0, 2, {
       appearance: { glyph: Glyphs.BoxDownSingleHorizontalDouble },
     }),
-    child("TheDragonWakes", 0, 0),
+    child("PeaShooter", 0, 2, undefined, ["Primary"]),
+    child("TheDragonWakes", 0, 0, undefined, ["Special"]),
   ],
 };
 
@@ -159,8 +162,8 @@ export const GoutOFlame: Prefab = {
       appearance: { glyph: Glyphs.BoxUpDoubleHorizontalSingle },
     }),
 
-    child("PeaShooter", 1, 1),
-    child("Bellow", 1, 1),
+    child("PeaShooter", 1, 1, undefined, ["Primary"]),
+    child("Bellow", 1, 1, undefined, ["Special"]),
   ],
 };
 
@@ -173,8 +176,8 @@ export const Demigod: Prefab = {
     child("Hull", 2, 1, { appearance: { glyph: "{" } }),
     child("Hull", 1, 2, { appearance: { glyph: "Y" } }),
 
-    child("PeaShooter", 1, 2),
-    child("DemandHomage", 1, 1),
+    child("PeaShooter", 1, 2, undefined, ["Primary"]),
+    child("DemandHomage", 1, 1, undefined, ["Special"]),
   ],
 };
 
@@ -194,8 +197,8 @@ export const Gremlin: Prefab = {
     child("Hull", 1, 2, { appearance: { glyph: Glyphs.BoxVerticalSingle } }),
     child("Hull", 2, 2, { appearance: { glyph: Glyphs.Gamma } }),
 
-    child("PeaShooter", 1, 2),
-    child("PeaShooter", 2, 2),
+    child("PeaShooter", 1, 2, undefined, ["Primary"]),
+    child("PeaShooter", 2, 2, undefined, ["Primary"]),
   ],
 };
 
@@ -214,10 +217,10 @@ export const AtomSmasher: Prefab = {
     child("Hull", 3, 1, { appearance: { glyph: Glyphs.Fill3 } }),
     child("Hull", 4, 1, { appearance: { glyph: Glyphs.Filled } }),
 
-    child("PeaShooter", 0, 1),
-    child("PeaShooter", 1, 1),
-    child("PeaShooter", 2, 1),
-    child("PeaShooter", 3, 1),
-    child("PeaShooter", 4, 1),
+    child("PeaShooter", 0, 1, undefined, ["Primary"]),
+    child("PeaShooter", 1, 1, undefined, ["Primary"]),
+    child("PeaShooter", 2, 1, undefined, ["Primary"]),
+    child("PeaShooter", 3, 1, undefined, ["Primary"]),
+    child("PeaShooter", 4, 1, undefined, ["Primary"]),
   ],
 };

@@ -15,7 +15,7 @@ export default class PilotInfo implements Drawable {
   }
 
   get isPlayer() {
-    return isNaN(this.pilot.difficulty);
+    return this.pilot.player;
   }
 
   draw(x: number, y: number) {

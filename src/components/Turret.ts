@@ -3,6 +3,7 @@ import Position from "./Position";
 import { PrefabName } from "@app/prefabs";
 
 export type TurretBullet = {
+  type: "bullet";
   name: string;
   prefab: PrefabName;
   angle: number | "lastMovement" | "nearestEnemy";
@@ -12,9 +13,18 @@ export type TurretBullet = {
   delay?: number;
 };
 
+export type TurretArrayFire = {
+  type: "array";
+  tag: string;
+  offset?: Position;
+  delay?: number;
+};
+
+export type TurretShot = TurretBullet | TurretArrayFire;
+
 type Turret = {
   name: string;
-  bullets: TurretBullet[];
+  shots: TurretShot[];
   salvoCount: number;
   timeBetweenShots: number;
   timeBetweenSalvos: number;

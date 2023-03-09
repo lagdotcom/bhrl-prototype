@@ -4,6 +4,7 @@ import * as gun from "./gun";
 import * as items from "./items";
 import * as player from "./player";
 import * as ships from "./ships";
+import * as starSpecial from "./starSpecial";
 import * as sword from "./sword";
 
 import Engine from "@app/Engine";
@@ -16,6 +17,7 @@ const AllPrefabs = {
   ...gun,
   ...player,
   ...ships,
+  ...starSpecial,
   ...sword,
 };
 

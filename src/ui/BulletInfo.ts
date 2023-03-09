@@ -44,5 +44,6 @@ export default class BulletInfo extends InstructionBasedDrawable {
       );
     if (e.lifetime)
       this.addLine(`(lasts ${e.lifetime.duration})`, Colors.DARK_GRAY);
+    if (e.explodes) this.addLine(`explosion ${e.explodes.size}`, Colors.ORANGE);
   }
 }
