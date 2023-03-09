@@ -1,4 +1,5 @@
-import { Colors } from "wglt";
+import { Colors, fromRgb } from "wglt";
+
 import Glyphs from "@app/logic/glyphs";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
@@ -18,6 +19,27 @@ export const DroneBullet: Prefab = {
   components: {
     projectile: { damage: 1 },
     appearance: { glyph: ".", layer: Layer.Bullet, fg: Colors.ORANGE },
+  },
+};
+
+export const HomingBullet: Prefab = {
+  components: {
+    projectile: { damage: 6 },
+    homing: { strength: 1, duration: 3 },
+    appearance: {
+      glyph: Glyphs.Ring,
+      layer: Layer.Bullet,
+      fg: fromRgb(175, 175, 0),
+    },
+  },
+};
+
+export const SmiteMissile: Prefab = {
+  components: {
+    projectile: { damage: 2 },
+    homing: { strength: 10, duration: 1 },
+    explodes: { size: 7, type: "Fire", falloff: 1 },
+    appearance: { glyph: "*", layer: Layer.Bullet, fg: Colors.ORANGE },
   },
 };
 

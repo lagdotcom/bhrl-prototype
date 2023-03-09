@@ -1,6 +1,7 @@
 import AI from "./AI";
 import Appearance from "./Appearance";
 import Attachment from "./Attachment";
+import DelayedShot from "./DelayedShot";
 import Explodes from "./Explodes";
 import Field from "./Field";
 import Homing from "./Homing";
@@ -22,6 +23,7 @@ export type ComponentMap = {
   ai: AI;
   appearance: Appearance;
   attachment: Attachment;
+  delayedShot: DelayedShot;
   explodes: Explodes;
   field: Field;
   homing: Homing;
@@ -47,6 +49,7 @@ export {
   AI,
   Appearance,
   Attachment,
+  DelayedShot,
   Explodes,
   Field,
   Homing,

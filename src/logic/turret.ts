@@ -6,6 +6,7 @@ import Entity from "@app/Entity";
 import { PrefabName } from "@app/prefabs";
 import { TurretBullet } from "@app/components/Turret";
 import { addPositions } from "@app/tools/position";
+import { clone } from "@app/tools/object";
 import { initialiseShip } from "@app/logic/enemy";
 
 export function getState(turret: Turret) {
@@ -64,7 +65,7 @@ function initBullet(
   return bullet;
 }
 
-function fireBullet(
+export function fireBullet(
   g: Engine,
   b: TurretBullet,
   turret: Turret,
@@ -73,7 +74,14 @@ function fireBullet(
   owner: Entity,
   ignoreIds: number[]
 ) {
-  const { angle: angleCmd, beam, name, offset, prefab, vel } = b;
+  const { angle: angleCmd, beam, name, offset, prefab, vel, delay } = b;
+
+  if (delay) {
+    const delayed = owner.delayedShot ?? { shots: [] };
+    delayed.shots.push({ turret, bullet: clone(b) });
+    owner.setDelayedShot(delayed);
+    return [];
+  }
 
   const start = addPositions(position, offset ?? { x: 0.5, y: 0.5 });
   const angle =

@@ -5,10 +5,11 @@ import { PrefabName } from "@app/prefabs";
 export type TurretBullet = {
   name: string;
   prefab: PrefabName;
-  offset?: Position;
   angle: number | "lastMovement" | "nearestEnemy";
   vel: number;
+  offset?: Position;
   beam?: { duration: number; appearance: Partial<Appearance>[] };
+  delay?: number;
 };
 
 type Turret = {

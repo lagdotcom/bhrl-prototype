@@ -52,6 +52,5 @@ export const bullet = (
   prefab: PrefabName,
   angle: TurretBullet["angle"],
   vel: number,
-  offset?: Position,
-  beam?: TurretBullet["beam"]
-): TurretBullet => ({ name, prefab, angle, vel, offset, beam });
+  { delay, offset, beam }: Partial<TurretBullet> = {}
+): TurretBullet => ({ name, prefab, angle, vel, delay, offset, beam });

@@ -1,5 +1,6 @@
 import Engine from "@app/Engine";
 import addAI from "./AI";
+import addDelayedShots from "./DelayedShots";
 import addDisplay from "./Display";
 import addDrops from "./Drops";
 import addExplosives from "./Explosives";
@@ -17,6 +18,7 @@ import addTurrets from "./Turrets";
 export function addSystems(g: Engine) {
   addLifetime(g);
   addHoming(g);
+  addDelayedShots(g);
   addTurrets(g);
   addFields(g);
   addShields(g);

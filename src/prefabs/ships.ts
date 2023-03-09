@@ -14,13 +14,14 @@ export const Hull: Prefab = {
 };
 
 const defaultAI: AI = { idealDistance: 8, firingDistance: 14, speed: 1 };
-const tinyGun = child("PeaShooter", 0, 0);
+const escortGun = child("PeaShooter", 0, 0);
 
 export const ShipA: Prefab = {
   components: { ai: defaultAI, ship: ship("Axle", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pilcrow } }),
-    tinyGun,
+    escortGun,
+    child("Cleave", 0, 0),
   ],
 };
 
@@ -28,20 +29,26 @@ export const ShipB: Prefab = {
   components: { ai: defaultAI, ship: ship("Baying Hound", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Yen } }),
-    tinyGun,
+    escortGun,
+    child("Outcry", 0, 0),
   ],
 };
 
 export const ShipC: Prefab = {
   components: { ai: defaultAI, ship: ship("Caustic", "Escort", 2) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: "W" } }), tinyGun],
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: "W" } }),
+    escortGun,
+    child("AcidSplash", 0, 0),
+  ],
 };
 
 export const ShipD: Prefab = {
   components: { ai: defaultAI, ship: ship("Defiant", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Omega } }),
-    tinyGun,
+    escortGun,
+    child("ShuttleLaunch", 0, 0),
   ],
 };
 
@@ -49,7 +56,8 @@ export const ShipE: Prefab = {
   components: { ai: defaultAI, ship: ship("Executor", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.DownWedge } }),
-    tinyGun,
+    escortGun,
+    child("Veto", 0, 0),
   ],
 };
 
@@ -57,20 +65,26 @@ export const ShipF: Prefab = {
   components: { ai: defaultAI, ship: ship("Falcon", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pi } }),
-    tinyGun,
+    escortGun,
+    child("TalonSwipe", 0, 0),
   ],
 };
 
 export const ShipG: Prefab = {
   components: { ai: defaultAI, ship: ship("Gauntlet", "Escort", 2) },
-  children: [child("Hull", 0, 0, { appearance: { glyph: "M" } }), tinyGun],
+  children: [
+    child("Hull", 0, 0, { appearance: { glyph: "M" } }),
+    escortGun,
+    child("CrushPattern", 0, 0),
+  ],
 };
 
 export const ShipH: Prefab = {
   components: { ai: defaultAI, ship: ship("Halo", "Escort", 2) },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Female } }),
-    tinyGun,
+    escortGun,
+    child("Smite", 0, 0),
   ],
 };
 
