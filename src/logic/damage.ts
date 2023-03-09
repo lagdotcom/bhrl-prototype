@@ -35,7 +35,13 @@ export default function damage(
     source.turret = inflicter.origin.turret;
   }
 
-  console.log(inflicter.name, "hits", e.name, "for", amount);
+  console.log(
+    `${inflicter.name}${
+      inflicter.origin
+        ? ` (${inflicter.origin.owner.name} #${inflicter.origin.owner.id})`
+        : ""
+    } hits ${e.name} for ${amount}`
+  );
   g.fire("damage", { e, amount, source });
 
   if (e.ship.hp <= 0) g.kill(e, { type: "damage", source });

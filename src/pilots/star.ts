@@ -22,14 +22,15 @@ export const Splintertooth: Pilot = {
   special: "StubbornDescent",
 };
 
-export const StarPilotC: Pilot = {
-  name: "Star Pilot C",
+export const Gruff: Pilot = {
+  name: "Gruff",
   star: true,
   body: 2,
-  mind: 2,
-  spirit: 2,
+  mind: 3,
+  spirit: 4,
   talent: 2,
   class: [],
+  special: "LaserBeam",
 };
 
 export const StarPilotD: Pilot = {
@@ -65,7 +66,7 @@ export const StarPilotF: Pilot = {
 const StarPilots = [
   Bodini,
   Splintertooth,
-  StarPilotC,
+  Gruff,
   StarPilotD,
   StarPilotE,
   StarPilotF,

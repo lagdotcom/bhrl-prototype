@@ -150,7 +150,7 @@ export const Olm: Prefab = {
 export const GoutOFlame: Prefab = {
   components: {
     ai: defaultAI,
-    ship: ship("Gout-'o-flame", "Battleship", 5, 20),
+    ship: ship("Gout-o'-flame", "Battleship", 5, 20),
   },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pentagon } }),

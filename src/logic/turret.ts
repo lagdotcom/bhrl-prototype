@@ -162,9 +162,10 @@ export function fireBullet(
       )
         .setMotion({ angle, vel: 0 })
         .setLifetime({ duration: beam.duration });
-      if (bullet.appearance) Object.assign(bullet.appearance, patch);
+      if (bullet.appearance && patch) Object.assign(bullet.appearance, patch);
       if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
 
+      if (!g.inBounds(position)) bullet.kill({ type: "exitedMap" });
       position = addPositions(position, step);
 
       return bullet;
