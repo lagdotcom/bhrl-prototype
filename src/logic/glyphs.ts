@@ -27,6 +27,7 @@ const Glyphs = {
   CapitalUUmlaut: "\x9a",
   Cent: "\x9b",
   Yen: "\x9d",
+  CurlyF: "\x9f",
 
   NotFlip: "\xa9",
   Not: "\xaa",
@@ -57,6 +58,8 @@ const Glyphs = {
   SetMember: "\xee",
 
   HorizontalDivide: "\xf6",
+  Approximates: "\xf7",
   Squared: "\xfd",
+  Square: "\xfe",
 };
 export default Glyphs;

@@ -25,7 +25,7 @@ export const PlayerGun: Prefab = {
 export const Cleave: Prefab = {
   components: {
     turret: turret("Cleave", { salvoCount: 5, timeBetweenSalvos: 11 }, [
-      bullet("Cleave", "Bullet", Angles.Down, 2),
+      bullet("Bullet", "Bullet", Angles.Down, 2),
     ]),
   },
 };
@@ -33,13 +33,13 @@ export const Cleave: Prefab = {
 export const Outcry: Prefab = {
   components: {
     turret: turret("Outcry", { salvoCount: 1, timeBetweenSalvos: 8 }, [
-      bullet("Outcry", "Bullet", Angles.DownLeft, 2),
-      bullet("Outcry", "Bullet", Angles.Left, 2),
-      bullet("Outcry", "Bullet", Angles.UpLeft, 2),
-      bullet("Outcry", "Bullet", Angles.Up, 2),
-      bullet("Outcry", "Bullet", Angles.UpRight, 2),
-      bullet("Outcry", "Bullet", Angles.Right, 2),
-      bullet("Outcry", "Bullet", Angles.DownRight, 2),
+      bullet("Outcry", "OutcryBullet", Angles.DownLeft, 2),
+      bullet("Outcry", "OutcryBullet", Angles.Left, 2),
+      bullet("Outcry", "OutcryBullet", Angles.UpLeft, 2),
+      bullet("Outcry", "OutcryBullet", Angles.Up, 2),
+      bullet("Outcry", "OutcryBullet", Angles.UpRight, 2),
+      bullet("Outcry", "OutcryBullet", Angles.Right, 2),
+      bullet("Outcry", "OutcryBullet", Angles.DownRight, 2),
     ]),
   },
 };
@@ -47,16 +47,16 @@ export const Outcry: Prefab = {
 export const AcidSplash: Prefab = {
   components: {
     turret: turret("Acid Splash", { salvoCount: 1, timeBetweenSalvos: 13 }, [
-      bullet("Acid Splash", "Bullet", Angles.UpLeft, 2),
-      bullet("Acid Splash", "Bullet", Angles.UpRight, 2),
-      bullet("Acid Splash", "Bullet", Angles.Left, 2, { delay: 1 }),
-      bullet("Acid Splash", "Bullet", Angles.Right, 2, { delay: 1 }),
-      bullet("Acid Splash", "Bullet", Angles.DownLeft, 2, { delay: 2 }),
-      bullet("Acid Splash", "Bullet", Angles.DownRight, 2, { delay: 2 }),
-      bullet("Acid Splash", "Bullet", Angles.Left, 2, { delay: 3 }),
-      bullet("Acid Splash", "Bullet", Angles.Right, 2, { delay: 3 }),
-      bullet("Acid Splash", "Bullet", Angles.UpLeft, 2, { delay: 4 }),
-      bullet("Acid Splash", "Bullet", Angles.UpRight, 2, { delay: 4 }),
+      bullet("Acid Splash", "AcidBullet", Angles.UpLeft, 2),
+      bullet("Acid Splash", "AcidBullet", Angles.UpRight, 2),
+      bullet("Acid Splash", "AcidBullet", Angles.Left, 2, { delay: 1 }),
+      bullet("Acid Splash", "AcidBullet", Angles.Right, 2, { delay: 1 }),
+      bullet("Acid Splash", "AcidBullet", Angles.DownLeft, 2, { delay: 2 }),
+      bullet("Acid Splash", "AcidBullet", Angles.DownRight, 2, { delay: 2 }),
+      bullet("Acid Splash", "AcidBullet", Angles.Left, 2, { delay: 3 }),
+      bullet("Acid Splash", "AcidBullet", Angles.Right, 2, { delay: 3 }),
+      bullet("Acid Splash", "AcidBullet", Angles.UpLeft, 2, { delay: 4 }),
+      bullet("Acid Splash", "AcidBullet", Angles.UpRight, 2, { delay: 4 }),
     ]),
   },
 };
@@ -84,8 +84,8 @@ export const Veto: Prefab = {
 export const TalonSwipe: Prefab = {
   components: {
     turret: turret("Talon Swipe", { salvoCount: 3, timeBetweenSalvos: 10 }, [
-      bullet("Talon Swipe", "Bullet", Angles.Left, 2),
-      bullet("Talon Swipe", "Bullet", Angles.Right, 2),
+      bullet("Talon Swipe", "TalonBullet", Angles.Left, 2),
+      bullet("Talon Swipe", "TalonBullet", Angles.Right, 2),
     ]),
   },
 };
@@ -93,10 +93,10 @@ export const TalonSwipe: Prefab = {
 export const CrushPattern: Prefab = {
   components: {
     turret: turret("Crush Pattern", { salvoCount: 1, timeBetweenSalvos: 15 }, [
-      bullet("Crush Pattern", "HomingBullet", Angles.Left, 1),
-      bullet("Crush Pattern", "HomingBullet", Angles.UpLeft, 1),
-      bullet("Crush Pattern", "HomingBullet", Angles.UpRight, 1),
-      bullet("Crush Pattern", "HomingBullet", Angles.Right, 1),
+      bullet("Crush Pattern", "CrushBullet", Angles.Left, 1),
+      bullet("Crush Pattern", "CrushBullet", Angles.UpLeft, 1),
+      bullet("Crush Pattern", "CrushBullet", Angles.UpRight, 1),
+      bullet("Crush Pattern", "CrushBullet", Angles.Right, 1),
     ]),
   },
 };

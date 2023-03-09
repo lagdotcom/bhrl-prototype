@@ -22,12 +22,37 @@ export const DroneBullet: Prefab = {
   },
 };
 
-export const HomingBullet: Prefab = {
+export const OutcryBullet: Prefab = {
+  components: {
+    projectile: { damage: 6 },
+    appearance: { glyph: "o", layer: Layer.Bullet, fg: fromRgb(255, 55, 135) },
+  },
+};
+
+export const AcidBullet: Prefab = {
+  components: {
+    projectile: { damage: 6 },
+    appearance: {
+      glyph: Glyphs.Approximates,
+      layer: Layer.Bullet,
+      fg: fromRgb(55, 55, 215),
+    },
+  },
+};
+
+export const TalonBullet: Prefab = {
+  components: {
+    projectile: { damage: 6 },
+    appearance: { glyph: "`", layer: Layer.Bullet, fg: fromRgb(135, 255, 55) },
+  },
+};
+
+export const CrushBullet: Prefab = {
   components: {
     projectile: { damage: 6 },
     homing: { strength: 1, duration: 3 },
     appearance: {
-      glyph: Glyphs.Ring,
+      glyph: Glyphs.Square,
       layer: Layer.Bullet,
       fg: fromRgb(175, 175, 0),
     },
@@ -87,7 +112,11 @@ export const BellowMissile: Prefab = {
     homing: { strength: 0.15, duration: 30 },
     trail: { effectPrefab: "SmokePuff" },
     explodes: { size: 10, type: "Fire", falloff: 1 },
-    appearance: { glyph: "*", layer: Layer.Bullet, fg: Colors.LIGHT_RED },
+    appearance: {
+      glyph: Glyphs.CurlyF,
+      layer: Layer.Bullet,
+      fg: Colors.LIGHT_RED,
+    },
   },
 };
 
