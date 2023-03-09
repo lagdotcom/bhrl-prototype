@@ -39,6 +39,7 @@ export default function addMotion(g: Engine) {
         g.kill(e, { type: "hitWall" });
       } else if (hitEntity) {
         if (projectile) damage(g, hitEntity, projectile.damage, e);
+        // TODO item
         g.kill(e, { type: "hitEntity", other: hitEntity });
       } else {
         g.move(e, dst);

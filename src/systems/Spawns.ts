@@ -1,30 +1,24 @@
 import { findSpawnPosition, getShipPower, makeEnemy } from "@app/logic/enemy";
 
 import Engine from "@app/Engine";
-import Entity from "@app/Entity";
+import { PrefabName } from "@app/prefabs";
 import oneOf from "@app/tools/oneOf";
 
 export default function addSpawns(g: Engine) {
   g.on("waveBegin", function SpawnNextWave({ wave, difficulty, pilot }) {
-    const entities: Entity[] = [];
-
     const specialChance = (difficulty + wave.difficulty) * 3;
 
-    for (let i = 0; i < wave.escorts; i++) {
-      const power = getShipPower(specialChance, false);
-      const prefab = oneOf(wave.escortTypes);
-      entities.push(makeEnemy(g, prefab, power));
-    }
+    const prefabs: PrefabName[] = [];
+    for (const group of wave.groups)
+      for (let i = 0; i < group.count; i++) prefabs.push(oneOf(group.prefabs));
 
-    const pilotAtIndex = Math.floor(Math.random() * wave.flagships);
-    for (let i = 0; i < wave.flagships; i++) {
+    const pilotAtIndex = Math.floor(Math.random() * prefabs.length);
+    for (let i = 0; i < prefabs.length; i++) {
       const hasStarPilot = i === pilotAtIndex && pilot !== undefined;
+      const prefab = prefabs[i];
       const power = getShipPower(specialChance, hasStarPilot);
-      const prefab = oneOf(wave.flagshipTypes);
-      entities.push(makeEnemy(g, prefab, power));
-    }
 
-    for (const e of entities) {
+      const e = makeEnemy(g, prefab, power);
       const position = findSpawnPosition(g, e);
       e.move(position.x, position.y);
     }

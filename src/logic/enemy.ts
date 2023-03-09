@@ -14,6 +14,7 @@ import enumerate from "@app/tools/enumerate";
 import oneOf from "@app/tools/oneOf";
 import { putPilotInShip } from "@app/logic/pilot";
 import shuffle from "@app/tools/shuffle";
+import without from "@app/tools/without";
 
 export const PowerToFlags: Record<ShipPower, EnemyFlags> = {
   Typical: EnemyFlags.None,
@@ -30,33 +31,120 @@ export const PowerToFlags: Record<ShipPower, EnemyFlags> = {
     EnemyFlags.HasPilot,
 };
 
-const typeA: PrefabName[] = ["ShipA", "ShipB", "ShipC"];
+const escorts: PrefabName[] = [
+  "ShipA",
+  "ShipB",
+  "ShipC",
+  "ShipD",
+  "ShipE",
+  "ShipF",
+  "ShipG",
+  "ShipH",
+];
 
-const typeB: PrefabName[] = ["ShipD", "DroneA"];
-
-const typeC: PrefabName[] = ["ShipB", "ShipD"];
+const battleships: PrefabName[] = [
+  "CruiseyWing",
+  "Olm",
+  "GoutOFlame",
+  "Demigod",
+  "Gremlin",
+  "AtomSmasher",
+];
 
 const waves: AttackWave[] = [
   {
+    name: "Let Fate Decide",
     difficulty: 1,
-    escorts: 5,
-    escortTypes: typeA,
-    flagships: 1,
-    flagshipTypes: ["Olm"],
+    groups: [
+      { count: 7, prefabs: escorts },
+      { count: 1, prefabs: battleships },
+    ],
   },
   {
+    name: "Court Martial",
     difficulty: 2,
-    escorts: 6,
-    escortTypes: typeB,
-    flagships: 1,
-    flagshipTypes: ["CruiseyWing"],
+    groups: [
+      { count: 5, prefabs: ["ShipA", "ShipE"] },
+      { count: 1, prefabs: ["CruiseyWing"] },
+    ],
   },
   {
+    name: "Hellhounds",
     difficulty: 3,
-    escorts: 7,
-    escortTypes: typeC,
-    flagships: 2,
-    flagshipTypes: ["Olm"],
+    groups: [
+      { count: 2, prefabs: ["ShipB"] },
+      { count: 2, prefabs: ["GoutOFlame"] },
+    ],
+  },
+  {
+    name: "Chaos",
+    difficulty: 4,
+    groups: [
+      { count: 4, prefabs: ["ShipC"] },
+      {
+        count: 4,
+        prefabs: without(escorts, "ShipC"),
+      },
+      { count: 1, prefabs: ["Demigod"] },
+    ],
+  },
+  {
+    name: "Fly in Formation",
+    difficulty: 4,
+    groups: [
+      { count: 7, prefabs: ["ShipF"] },
+      { count: 1, prefabs: battleships },
+    ],
+  },
+  {
+    name: "Hark!",
+    difficulty: 6,
+    groups: [
+      { count: 3, prefabs: ["ShipH"] },
+      { count: 3, prefabs: without(escorts, "ShipH") },
+      { count: 1, prefabs: ["Demigod"] },
+    ],
+  },
+  {
+    name: "Caverns.com",
+    difficulty: 7,
+    groups: [
+      { count: 1, prefabs: ["ShipA", "ShipG"] },
+      { count: 3, prefabs: ["Olm"] },
+    ],
+  },
+  {
+    name: "Humanity to the Rescue",
+    difficulty: 8,
+    groups: [
+      { count: 7, prefabs: ["ShipA", "ShipD", "ShipE", "ShipG"] },
+      { count: 1, prefabs: ["GoutOFlame"] },
+    ],
+  },
+  {
+    name: "Wild Hunt",
+    difficulty: 9,
+    groups: [
+      { count: 15, prefabs: ["ShipB", "ShipF"] },
+      { count: 1, prefabs: ["Olm"] },
+    ],
+  },
+  {
+    name: "Arm Wrestling",
+    difficulty: 10,
+    groups: [
+      { count: 9, prefabs: ["ShipG"] },
+      { count: 2, prefabs: ["CruiseyWing"] },
+    ],
+  },
+  {
+    name: "Valis",
+    difficulty: 11,
+    groups: [
+      { count: 4, prefabs: ["ShipC"] },
+      { count: 4, prefabs: ["ShipH"] },
+      { count: 1, prefabs: battleships },
+    ],
   },
 ];
 

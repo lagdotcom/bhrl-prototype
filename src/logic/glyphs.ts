@@ -5,6 +5,7 @@ const Glyphs = {
   Dot: "\x07",
   Ring: "\x09",
   RingInvert: "\x0a",
+  Male: "\x0b",
   Female: "\x0c",
   DoubleNote: "\x0e",
   Star: "\x0f",
@@ -20,6 +21,9 @@ const Glyphs = {
 
   Pentagon: "\x7f",
 
+  AHat: "\x83",
+  EHat: "\x88",
+
   CapitalUUmlaut: "\x9a",
   Cent: "\x9b",
   Yen: "\x9d",
@@ -28,7 +32,11 @@ const Glyphs = {
   Not: "\xaa",
   InvertedExclamation: "\xad",
 
+  Fill1: "\xb0",
+  Fill2: "\xb1",
+  Fill3: "\xb2",
   BoxVerticalSingle: "\xb3",
+  BoxLeftSingleUpDouble: "\xbd",
 
   BoxUpSingleHorizontalSingle: "\xc1",
   BoxDownSingleHorizontalSingle: "\xc2",
@@ -36,9 +44,12 @@ const Glyphs = {
 
   BoxUpDoubleHorizontalSingle: "\xd0",
   BoxDownSingleHorizontalDouble: "\xd1",
+  BoxRightSingleUpDouble: "\xd3",
   BoxVerticalDoubleHorizontalSingle: "\xd7",
+  Filled: "\xdb",
 
   Beta: "\xe1",
+  Gamma: "\xe2",
   Pi: "\xe3",
   Theta: "\xe9",
   Omega: "\xea",

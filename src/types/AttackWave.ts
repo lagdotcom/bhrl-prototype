@@ -1,10 +1,8 @@
 import { PrefabName } from "@app/prefabs";
 
 type AttackWave = {
+  name: string;
   difficulty: number;
-  escorts: number;
-  escortTypes: PrefabName[];
-  flagships: number;
-  flagshipTypes: PrefabName[];
+  groups: { count: number; prefabs: PrefabName[] }[];
 };
 export default AttackWave;
