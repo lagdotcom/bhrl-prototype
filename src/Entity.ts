@@ -4,6 +4,7 @@ import {
   Attachment,
   ComponentMap,
   DelayedShot,
+  DoubleShot,
   Explodes,
   Field,
   Homing,
@@ -38,6 +39,7 @@ export default class Entity implements Partial<ComponentMap> {
   appearance?: Appearance;
   attachment?: Attachment;
   delayedShot?: DelayedShot;
+  doubleShot?: DoubleShot;
   explodes?: Explodes;
   field?: Field;
   homing?: Homing;
@@ -114,6 +116,11 @@ export default class Entity implements Partial<ComponentMap> {
 
   setDelayedShot(c?: DelayedShot): this {
     this.delayedShot = c;
+    return this;
+  }
+
+  setDoubleShot(c?: DoubleShot): this {
+    this.doubleShot = c;
     return this;
   }
 

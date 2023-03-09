@@ -33,6 +33,9 @@ export default function addDrops(g: Engine) {
 
       if (roll()) items.push("MoneyItem");
       if (roll()) items.push("JunkItem");
+      if (roll()) items.push("RechargeItem");
+
+      // TODO BombItems
 
       const distribution = shuffle([
         pos(-1, -1),

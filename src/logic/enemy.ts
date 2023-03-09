@@ -208,6 +208,8 @@ export function makeEnemy(
     if (part.appearance) Object.assign(part.appearance, appearance);
   }
 
+  if (flags & EnemyFlags.Double) e.setDoubleShot({ duration: Infinity });
+
   return e;
 }
 

@@ -4,6 +4,7 @@ import { PrefabName } from "@app/prefabs";
 
 export type TurretBullet = {
   type: "bullet";
+  canDouble?: boolean;
   name: string;
   prefab: PrefabName;
   angle: number | "lastMovement" | "nearestEnemy";
@@ -11,10 +12,12 @@ export type TurretBullet = {
   offset?: Position;
   beam?: { duration: number; appearance: Partial<Appearance>[] };
   delay?: number;
+  appearance?: Partial<Appearance>;
 };
 
 export type TurretArrayFire = {
   type: "array";
+  canDouble: false;
   tag: string;
   offset?: Position;
   delay?: number;

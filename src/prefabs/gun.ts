@@ -7,7 +7,7 @@ import Prefab from "@app/types/Prefab";
 export const PeaShooter: Prefab = {
   components: {
     turret: turret("Main Gun", { salvoCount: 1, timeBetweenSalvos: 3 }, [
-      bullet("Bullet", "Bullet", Angles.Down, 2),
+      bullet("Bullet", "Bullet", Angles.Down, 2, { canDouble: true }),
     ]),
   },
 };
@@ -17,7 +17,7 @@ export const PlayerGun: Prefab = {
     turret: turret(
       "Main Gun",
       { salvoCount: 2, timeBetweenShots: 0, timeBetweenSalvos: 3 },
-      [bullet("Your Bullet", "PlayerBullet", Angles.Up, 2)]
+      [bullet("Your Bullet", "PlayerBullet", Angles.Up, 2, { canDouble: true })]
     ),
   },
 };
@@ -114,7 +114,7 @@ export const DroneGun: Prefab = {
     turret: turret(
       "Stinger",
       { salvoCount: 1, timeBetweenSalvos: 5, ammunition: 5 },
-      [bullet("Bullet", "DroneBullet", "nearestEnemy", 1)]
+      [bullet("Bullet", "DroneBullet", "nearestEnemy", 1, { canDouble: true })]
     ),
   },
 };

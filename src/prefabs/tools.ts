@@ -56,9 +56,10 @@ export const bullet = (
   prefab: PrefabName,
   angle: TurretBullet["angle"],
   vel: number,
-  { delay, offset, beam }: Partial<TurretBullet> = {}
+  { canDouble, delay, offset, beam }: Partial<TurretBullet> = {}
 ): TurretBullet => ({
   type: "bullet",
+  canDouble,
   name,
   prefab,
   angle,
@@ -71,4 +72,4 @@ export const bullet = (
 export const array = (
   tag: string,
   { delay, offset }: Partial<TurretArrayFire> = {}
-): TurretArrayFire => ({ type: "array", tag, delay, offset });
+): TurretArrayFire => ({ type: "array", canDouble: false, tag, delay, offset });

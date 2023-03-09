@@ -5,12 +5,13 @@ import Entity from "@app/Entity";
 import Query from "@app/Query";
 import { angleMove } from "@app/tools/angle";
 import damage from "@app/logic/damage";
+import { giveItem } from "@app/logic/items";
 import { walkGrid } from "@app/logic/geometry";
 
 export default function addMotion(g: Engine) {
   const query = new Query(g.entities, ["motion", "position"]);
   g.on("tick", function MoveProjectiles() {
-    query.forEach(({ motion, position, projectile, ignoreSolid }, e) => {
+    query.forEach(({ motion, position, projectile, ignoreSolid, item }, e) => {
       const [dx, dy] = angleMove(motion);
       const dst = pos(position.x + dx, position.y + dy);
 
@@ -40,7 +41,7 @@ export default function addMotion(g: Engine) {
         g.kill(e, { type: "hitWall" });
       } else if (hitEntity) {
         if (projectile) damage(g, hitEntity, projectile.damage, e);
-        // TODO item
+        if (item) giveItem(g, g.getRoot(hitEntity), item);
         g.kill(e, { type: "hitEntity", other: hitEntity });
       } else {
         g.move(e, dst);

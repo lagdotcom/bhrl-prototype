@@ -10,6 +10,7 @@ import addHoming from "./Homing";
 import addLifetime from "./Lifetime";
 import addMotion from "./Motion";
 import addPlayer from "./Player";
+import addPowerUps from "./PowerUps";
 import addShields from "./Shields";
 import addSpawns from "./Spawns";
 import addTrails from "./Trails";
@@ -33,6 +34,7 @@ export function addSystems(g: Engine) {
 
   addExplosives(g);
   addDrops(g);
+  addPowerUps(g);
 
   addPlayer(g);
 }

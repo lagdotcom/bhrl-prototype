@@ -1,4 +1,4 @@
-import { BlendMode, Cell, Colors, Key } from "wglt";
+import { Colors, Key } from "wglt";
 import { getEntityLayout, getEntityMidpoint } from "@app/logic/entity";
 import { intPosition, pos } from "@app/tools/position";
 
@@ -103,13 +103,7 @@ export default class CombatMode implements GameMode {
 
           const line = walkGrid(intPosition(position), intPosition(dst));
 
-          for (const pos of line)
-            term.drawCell(
-              pos.x,
-              pos.y,
-              { bg: Colors.DARK_RED } as Cell,
-              BlendMode.Add
-            );
+          for (const pos of line) this.g.blend(pos.x, pos.y, Colors.DARK_RED);
         }
       }
     }

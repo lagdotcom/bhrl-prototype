@@ -11,6 +11,10 @@ export default function damage(
   const e = g.getRoot(hit);
   if (!e.ship) return;
 
+  // friendly fire!
+  if (e.ship.type !== "Player" && inflicter.origin?.ship.type !== "Player")
+    amount = Math.ceil(amount / 2);
+
   let damageToHp = amount;
 
   if (e.ship.shield > 0) {

@@ -1,7 +1,8 @@
-import { Position, Turret } from "@app/components";
+import { Appearance, Position, Turret } from "@app/components";
 import { addPositions, pos } from "@app/tools/position";
 import { angleBetween, angleMove } from "@app/tools/angle";
 
+import { Colors } from "wglt";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import { PrefabName } from "@app/prefabs";
@@ -43,7 +44,10 @@ export function canFire(turret: Turret, owner: Entity) {
   return turret.timer === 0;
 }
 
-function addDelayedShot(e: Entity, shot: { turret: Turret; shot: TurretShot }) {
+export function addDelayedShot(
+  e: Entity,
+  shot: { turret: Turret; shot: TurretShot }
+) {
   const delayed = e.delayedShot ?? { shots: [] };
   delayed.shots.push(shot);
   e.setDelayedShot(delayed);
@@ -58,7 +62,8 @@ function initBullet(
   start: Position,
   angle: number,
   vel: number,
-  ignoreIds: number[]
+  ignoreIds: number[],
+  appearance?: Partial<Appearance>
 ) {
   const bullet = g
     .spawn(prefab)
@@ -78,6 +83,9 @@ function initBullet(
         bullet.projectile.scaling.multiplier
     );
 
+  if (bullet.appearance && appearance)
+    Object.assign(bullet.appearance, appearance);
+
   return bullet;
 }
 
@@ -90,6 +98,14 @@ export function fireBullet(
   owner: Entity,
   ignoreIds: number[]
 ) {
+  if (owner.doubleShot && shot.canDouble) {
+    const doubled = clone(shot);
+    doubled.canDouble = false;
+    doubled.delay = owner.player ? 2 : 1; // this is due to the turn order...
+    doubled.appearance = { fg: Colors.LIGHT_GRAY };
+    addDelayedShot(owner, { turret, shot: doubled });
+  }
+
   if (shot.delay) {
     addDelayedShot(owner, { turret, shot: clone(shot) });
     return [];
@@ -141,7 +157,8 @@ export function fireBullet(
         position,
         angle,
         0,
-        ignoreIds
+        ignoreIds,
+        shot.appearance
       )
         .setMotion({ angle, vel: 0 })
         .setLifetime({ duration: beam.duration });
@@ -155,7 +172,18 @@ export function fireBullet(
   }
 
   return [
-    initBullet(g, name, prefab, owner, turret, start, angle, vel, ignoreIds),
+    initBullet(
+      g,
+      name,
+      prefab,
+      owner,
+      turret,
+      start,
+      angle,
+      vel,
+      ignoreIds,
+      shot.appearance
+    ),
   ];
 }
 

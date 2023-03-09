@@ -7,6 +7,7 @@ import FieldInfo from "@app/ui/FieldInfo";
 import ItemInfo from "@app/ui/ItemInfo";
 import PilotInfo from "@app/ui/PilotInfo";
 import { Position } from "@app/components";
+import PowerUpInfo from "@app/ui/PowerUpInfo";
 import ShipInfo from "@app/ui/ShipInfo";
 import WeaponInfo from "@app/ui/WeaponInfo";
 import { getEntityTree } from "@app/logic/entity";
@@ -33,6 +34,8 @@ export function drawExamineOverlay(
   for (const e of entities) {
     if (e.ship) add(new ShipInfo(g, e.ship));
     if (e.pilot) add(new PilotInfo(g, e.pilot, true));
+
+    if (e.doubleShot) add(new PowerUpInfo(g, e));
 
     const tree = getEntityTree(g, e);
 

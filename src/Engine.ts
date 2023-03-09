@@ -122,6 +122,10 @@ export default class Engine implements EventHandler {
     }
   }
 
+  blend(x: number, y: number, bg: number) {
+    this.term.drawCell(x, y, { bg } as Cell, BlendMode.Add);
+  }
+
   getRoot(e: Entity): Entity {
     return e.attachment ? this.getRoot(e.attachment.parent) : e;
   }

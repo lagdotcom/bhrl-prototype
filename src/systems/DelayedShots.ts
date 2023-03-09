@@ -3,11 +3,17 @@ import { getEntityMidpoint, getEntityTree } from "@app/logic/entity";
 import Engine from "@app/Engine";
 import Query from "@app/Query";
 import { fireBullet } from "@app/logic/turret";
+import { pos } from "@app/tools/position";
 
 export default function addDelayedShots(g: Engine) {
-  const query = new Query(g.entities, ["ai", "delayedShot"]);
+  const query = new Query(g.entities, ["delayedShot"]);
   g.on("tick", function FireDelayedShots() {
     query.forEach(({ ai, delayedShot }, e) => {
+      if (!e.alive) {
+        e.setDelayedShot();
+        return;
+      }
+
       for (let i = delayedShot.shots.length - 1; i >= 0; i--) {
         const { turret, shot } = delayedShot.shots[i];
         if (--shot.delay! <= 0) {
@@ -18,8 +24,9 @@ export default function addDelayedShots(g: Engine) {
           const turretEntity = tree.find((te) => te.turret === turret);
           if (!turretEntity) continue;
 
-          if (!ai.attacking) continue;
-          const target = getEntityMidpoint(g, ai.attacking);
+          const target = ai?.attacking
+            ? getEntityMidpoint(g, ai.attacking)
+            : pos(0, 0);
 
           fireBullet(
             g,
