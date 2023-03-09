@@ -1,9 +1,10 @@
+import { addPositions, pos } from "@app/tools/position";
+
 import Angles from "@app/logic/angles";
 import EnemyFlags from "@app/types/EnemyFlags";
 import Engine from "@app/Engine";
 import { PowerToFlags } from "@app/logic/enemy";
 import { PrefabName } from "@app/prefabs";
-import { addPositions } from "@app/tools/position";
 import shuffle from "@app/tools/shuffle";
 
 export default function addDrops(g: Engine) {
@@ -34,15 +35,15 @@ export default function addDrops(g: Engine) {
       if (roll()) items.push("JunkItem");
 
       const distribution = shuffle([
-        { x: -1, y: -1 },
-        { x: 0, y: -1 },
-        { x: 1, y: -1 },
-        { x: -1, y: 0 },
-        { x: 0, y: 0 },
-        { x: 1, y: 0 },
-        { x: -1, y: 1 },
-        { x: 0, y: 1 },
-        { x: 1, y: 1 },
+        pos(-1, -1),
+        pos(0, -1),
+        pos(1, -1),
+        pos(-1, 0),
+        pos(0, 0),
+        pos(1, 0),
+        pos(-1, 1),
+        pos(0, 1),
+        pos(1, 1),
       ]);
 
       for (const item of items) {

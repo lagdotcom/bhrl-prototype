@@ -1,17 +1,18 @@
+import { addPositions, pos } from "@app/tools/position";
+
 import { Position } from "@app/components";
-import { addPositions } from "@app/tools/position";
 
 export const neighbourOffsets: Position[] = [
-  { x: -1, y: -1 },
-  { x: -1, y: 0 },
-  { x: -1, y: 1 },
-  { x: 0, y: 1 },
-  { x: 1, y: 1 },
-  { x: 1, y: 0 },
-  { x: 1, y: -1 },
-  { x: 0, y: -1 },
+  pos(-1, -1),
+  pos(-1, 0),
+  pos(-1, 1),
+  pos(0, 1),
+  pos(1, 1),
+  pos(1, 0),
+  pos(1, -1),
+  pos(0, -1),
 ];
 
 export default function neighbours(pos: Position): Position[] {
-  return neighbourOffsets.map((o) => addPositions(pos, o));
+  return neighbourOffsets.map((offset) => addPositions(pos, offset));
 }

@@ -128,6 +128,7 @@ export const CruiseyWing: Prefab = {
     child("PeaShooter", 0, 0),
     child("PeaShooter", 1, 0),
     child("PeaShooter", 2, 0),
+    child("Salvo", 1, 0),
   ],
 };
 
@@ -139,7 +140,7 @@ export const Olm: Prefab = {
     child("Hull", 0, 2, {
       appearance: { glyph: Glyphs.BoxDownSingleHorizontalDouble },
     }),
-    child("OlmSpray", 0, 0),
+    child("TheDragonWakes", 0, 0),
   ],
 };
 
@@ -159,6 +160,7 @@ export const GoutOFlame: Prefab = {
     }),
 
     child("PeaShooter", 1, 1),
+    child("Bellow", 1, 1),
   ],
 };
 
@@ -172,6 +174,7 @@ export const Demigod: Prefab = {
     child("Hull", 1, 2, { appearance: { glyph: "Y" } }),
 
     child("PeaShooter", 1, 2),
+    child("DemandHomage", 1, 1),
   ],
 };
 

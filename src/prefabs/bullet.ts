@@ -53,6 +53,44 @@ export const HomingMissile: Prefab = {
   },
 };
 
+export const SalvoMissileA: Prefab = {
+  components: {
+    projectile: { damage: 1 },
+    homing: { strength: 0.15, duration: 4 },
+    trail: { effectPrefab: "SmokePuff" },
+    explodes: { size: 8, type: "Fire", falloff: 1 },
+    appearance: { glyph: "*", layer: Layer.Bullet, fg: Colors.DARK_RED },
+  },
+};
+export const SalvoMissileB: Prefab = {
+  components: {
+    projectile: { damage: 1 },
+    homing: { strength: 0.25, duration: 5 },
+    trail: { effectPrefab: "SmokePuff" },
+    explodes: { size: 5, type: "Fire", falloff: 1 },
+    appearance: { glyph: "*", layer: Layer.Bullet, fg: Colors.DARK_RED },
+  },
+};
+export const SalvoMissileC: Prefab = {
+  components: {
+    projectile: { damage: 1 },
+    homing: { strength: 0.35, duration: 8 },
+    trail: { effectPrefab: "SmokePuff" },
+    explodes: { size: 4, type: "Fire", falloff: 1 },
+    appearance: { glyph: "*", layer: Layer.Bullet, fg: Colors.DARK_RED },
+  },
+};
+
+export const BellowMissile: Prefab = {
+  components: {
+    projectile: { damage: 20 },
+    homing: { strength: 0.15, duration: 30 },
+    trail: { effectPrefab: "SmokePuff" },
+    explodes: { size: 10, type: "Fire", falloff: 1 },
+    appearance: { glyph: "*", layer: Layer.Bullet, fg: Colors.LIGHT_RED },
+  },
+};
+
 export const PlayerBullet: Prefab = {
   components: {
     projectile: { damage: 3 },

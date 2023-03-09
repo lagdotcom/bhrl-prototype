@@ -1,7 +1,8 @@
+import { addPositions, pos } from "@app/tools/position";
+
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import { Position } from "@app/components";
-import { addPositions } from "@app/tools/position";
 
 type LayoutEntry<T = Entity> = {
   absolute: Position;
@@ -19,7 +20,7 @@ export function getLayoutMidpoint(
     layout.reduce((total, { offset }) => total + offset[key], 0) /
     layout.length;
 
-  return { x: topLeft.x + avg("x"), y: topLeft.y + avg("y") };
+  return pos(topLeft.x + avg("x"), topLeft.y + avg("y"));
 }
 
 export function getLayoutBlockers(
@@ -51,7 +52,7 @@ export function getEntityTreeIDs(g: Engine, e: Entity) {
 }
 
 export function getEntityLayout(g: Engine, e: Entity) {
-  const topLeft = g.getRoot(e).position ?? { x: 0, y: 0 };
+  const topLeft = g.getRoot(e).position ?? pos(0, 0);
 
   const parts = getEntityTree(g, e);
   const layout: LayoutEntry[] = [];

@@ -1,5 +1,6 @@
 import { BlendMode, Cell, Colors, Key } from "wglt";
 import { getEntityLayout, getEntityMidpoint } from "@app/logic/entity";
+import { intPosition, pos } from "@app/tools/position";
 
 import AttackWave from "@app/types/AttackWave";
 import CampaignMode from "@app/CampaignMode";
@@ -13,7 +14,6 @@ import { drawExamineOverlay } from "@app/logic/examine";
 import { fireAirFist } from "@app/logic/airFist";
 import { getWaves } from "@app/logic/enemy";
 import int from "@app/tools/int";
-import { intPosition } from "@app/tools/position";
 import { walkGrid } from "@app/logic/geometry";
 
 export default class CombatMode implements GameMode {
@@ -99,7 +99,7 @@ export default class CombatMode implements GameMode {
         const { motion, position } = e;
         if (motion && position) {
           const [dx, dy] = angleMove(motion);
-          const dst = { x: position.x + dx, y: position.y + dy };
+          const dst = pos(position.x + dx, position.y + dy);
 
           const line = walkGrid(intPosition(position), intPosition(dst));
 

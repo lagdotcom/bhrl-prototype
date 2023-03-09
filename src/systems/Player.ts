@@ -1,8 +1,8 @@
+import { addPositions, pos } from "@app/tools/position";
 import { canFire, fire } from "@app/logic/turret";
 import { getEntityBlockers, getEntityTree } from "@app/logic/entity";
 
 import Engine from "@app/Engine";
-import { addPositions } from "@app/tools/position";
 import { angleBetween } from "@app/tools/angle";
 
 export default function addPlayer(g: Engine) {
@@ -33,7 +33,7 @@ export default function addPlayer(g: Engine) {
           g,
           weapon.turret,
           weapon.position!,
-          { x: 0, y: 0 },
+          pos(0, 0),
           player,
           tree.map((e) => e.id)
         );

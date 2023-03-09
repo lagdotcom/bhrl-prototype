@@ -1,11 +1,11 @@
 import { Position, Turret } from "@app/components";
+import { addPositions, pos } from "@app/tools/position";
 import { angleBetween, angleMove } from "@app/tools/angle";
 
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import { PrefabName } from "@app/prefabs";
 import { TurretBullet } from "@app/components/Turret";
-import { addPositions } from "@app/tools/position";
 import { clone } from "@app/tools/object";
 import { initialiseShip } from "@app/logic/enemy";
 
@@ -83,7 +83,7 @@ export function fireBullet(
     return [];
   }
 
-  const start = addPositions(position, offset ?? { x: 0.5, y: 0.5 });
+  const start = addPositions(position, offset ?? pos(0.5, 0.5));
   const angle =
     angleCmd === "nearestEnemy"
       ? angleBetween(start, target)
@@ -93,7 +93,7 @@ export function fireBullet(
 
   if (beam && vel) {
     const [dx, dy] = angleMove({ angle, vel });
-    const step = { x: dx, y: dy };
+    const step = pos(dx, dy);
     let position = addPositions(start, step);
 
     return beam.appearance.map((patch) => {

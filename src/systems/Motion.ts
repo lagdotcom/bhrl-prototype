@@ -1,9 +1,10 @@
+import { intPosition, pos } from "@app/tools/position";
+
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import Query from "@app/Query";
 import { angleMove } from "@app/tools/angle";
 import damage from "@app/logic/damage";
-import { intPosition } from "@app/tools/position";
 import { walkGrid } from "@app/logic/geometry";
 
 export default function addMotion(g: Engine) {
@@ -11,7 +12,7 @@ export default function addMotion(g: Engine) {
   g.on("tick", function MoveProjectiles() {
     query.forEach(({ motion, position, projectile, ignoreSolid }, e) => {
       const [dx, dy] = angleMove(motion);
-      const dst = { x: position.x + dx, y: position.y + dy };
+      const dst = pos(position.x + dx, position.y + dy);
 
       const line = walkGrid(intPosition(position), intPosition(dst));
 

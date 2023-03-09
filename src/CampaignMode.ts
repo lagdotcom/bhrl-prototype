@@ -1,6 +1,6 @@
 import { Colors, Key } from "wglt";
 import { Pilot, Position } from "@app/components";
-import { addPositions, isSameCell } from "@app/tools/position";
+import { addPositions, isSameCell, pos } from "@app/tools/position";
 
 import CombatMode from "@app/CombatMode";
 import Engine from "@app/Engine";
@@ -43,7 +43,7 @@ export default class CampaignMode implements GameMode {
     g.player = this.makePlayer();
 
     this.difficulty = 0;
-    this.position = { x: 2, y: 2 };
+    this.position = pos(2, 2);
     this.space = new Grid(5, 5, () => ({ completed: false }));
     const stars = new Set<Pilot>();
     const freePositions = this.space
