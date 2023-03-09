@@ -69,8 +69,10 @@ export default class CombatMode implements GameMode {
       return;
     }
 
-    // TODO star pilot escape?
-    this.campaign.currentSector.completed = true;
+    if (this.g.player.alive) {
+      // TODO star pilot escape?
+      this.campaign.currentSector.completed = true;
+    }
   }
 
   draw() {

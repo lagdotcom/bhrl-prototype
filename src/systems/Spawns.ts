@@ -12,6 +12,13 @@ export default function addSpawns(g: Engine) {
     for (const group of wave.groups)
       for (let i = 0; i < group.count; i++) prefabs.push(oneOf(group.prefabs));
 
+    // +1 escort per cleared sector
+    const escortGroups = wave.groups.filter((g) => g.type === "Escort");
+    for (let i = 0; i < difficulty; i++) {
+      const group = oneOf(escortGroups);
+      prefabs.push(oneOf(group.prefabs));
+    }
+
     const pilotAtIndex = Math.floor(Math.random() * prefabs.length);
     for (let i = 0; i < prefabs.length; i++) {
       const hasStarPilot = i === pilotAtIndex && pilot !== undefined;

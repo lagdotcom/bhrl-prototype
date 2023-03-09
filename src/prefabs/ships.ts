@@ -1,6 +1,6 @@
+import { AI, Explodes } from "@app/components";
 import { child, ship } from "@app/prefabs/tools";
 
-import { AI } from "@app/components";
 import { Colors } from "wglt";
 import Glyphs from "@app/logic/glyphs";
 import Layer from "@app/types/Layer";
@@ -15,9 +15,14 @@ export const Hull: Prefab = {
 
 const defaultAI: AI = { idealDistance: 8, firingDistance: 14, speed: 1 };
 const escortGun = child("PeaShooter", 0, 0, undefined, ["Primary"]);
+const escortExplodes: Explodes = { type: "Fire", size: 4, falloff: 1 };
 
 export const ShipA: Prefab = {
-  components: { ai: defaultAI, ship: ship("Axle", "Escort", 2) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Axle", "Escort", 2),
+    explodes: escortExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pilcrow } }),
     escortGun,
@@ -26,7 +31,11 @@ export const ShipA: Prefab = {
 };
 
 export const ShipB: Prefab = {
-  components: { ai: defaultAI, ship: ship("Baying Hound", "Escort", 2) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Baying Hound", "Escort", 2),
+    explodes: escortExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Yen } }),
     escortGun,
@@ -35,7 +44,11 @@ export const ShipB: Prefab = {
 };
 
 export const ShipC: Prefab = {
-  components: { ai: defaultAI, ship: ship("Caustic", "Escort", 2) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Caustic", "Escort", 2),
+    explodes: escortExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: "W" } }),
     escortGun,
@@ -44,7 +57,11 @@ export const ShipC: Prefab = {
 };
 
 export const ShipD: Prefab = {
-  components: { ai: defaultAI, ship: ship("Defiant", "Escort", 2) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Defiant", "Escort", 2),
+    explodes: escortExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Omega } }),
     escortGun,
@@ -53,7 +70,11 @@ export const ShipD: Prefab = {
 };
 
 export const ShipE: Prefab = {
-  components: { ai: defaultAI, ship: ship("Executor", "Escort", 2) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Executor", "Escort", 2),
+    explodes: escortExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.DownWedge } }),
     escortGun,
@@ -62,7 +83,11 @@ export const ShipE: Prefab = {
 };
 
 export const ShipF: Prefab = {
-  components: { ai: defaultAI, ship: ship("Falcon", "Escort", 2) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Falcon", "Escort", 2),
+    explodes: escortExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pi } }),
     escortGun,
@@ -71,7 +96,11 @@ export const ShipF: Prefab = {
 };
 
 export const ShipG: Prefab = {
-  components: { ai: defaultAI, ship: ship("Gauntlet", "Escort", 2) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Gauntlet", "Escort", 2),
+    explodes: escortExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: "M" } }),
     escortGun,
@@ -80,7 +109,11 @@ export const ShipG: Prefab = {
 };
 
 export const ShipH: Prefab = {
-  components: { ai: defaultAI, ship: ship("Halo", "Escort", 2) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Halo", "Escort", 2),
+    explodes: escortExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Female } }),
     escortGun,
@@ -90,9 +123,14 @@ export const ShipH: Prefab = {
 
 const droneAI: AI = { idealDistance: 5, firingDistance: 6, speed: 1 };
 const droneGun = child("DroneGun", 0, 0, undefined, ["Primary"]);
+const droneExplodes: Explodes = { type: "Fire", size: 3, falloff: 1 };
 
 export const DroneA: Prefab = {
-  components: { ai: droneAI, ship: ship("Runabout", "Escort", 1) },
+  components: {
+    ai: droneAI,
+    ship: ship("Runabout", "Escort", 1),
+    explodes: droneExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Theta } }),
     escortGun,
@@ -100,7 +138,11 @@ export const DroneA: Prefab = {
 };
 
 export const DroneB: Prefab = {
-  components: { ai: droneAI, ship: ship("Wasp", "Escort", 1) },
+  components: {
+    ai: droneAI,
+    ship: ship("Wasp", "Escort", 1),
+    explodes: droneExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.SymbolED } }),
     // TODO tries to ram you
@@ -109,7 +151,11 @@ export const DroneB: Prefab = {
 };
 
 export const DroneC: Prefab = {
-  components: { ai: droneAI, ship: ship("Pulsar", "Escort", 1) },
+  components: {
+    ai: droneAI,
+    ship: ship("Pulsar", "Escort", 1),
+    explodes: droneExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Silcrow } }),
     // TODO tries to orbit you and fire homing bullets dir D
@@ -117,10 +163,13 @@ export const DroneC: Prefab = {
   ],
 };
 
+const battleshipExplodes: Explodes = { type: "Fire", size: 6, falloff: 1 };
+
 export const CruiseyWing: Prefab = {
   components: {
     ai: defaultAI,
     ship: ship("Cruisey Wing", "Battleship", 10, 5),
+    explodes: battleshipExplodes,
   },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Not } }),
@@ -135,7 +184,11 @@ export const CruiseyWing: Prefab = {
 };
 
 export const Olm: Prefab = {
-  components: { ai: defaultAI, ship: ship("Olm", "Battleship", 15, 4) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Olm", "Battleship", 15, 4),
+    explodes: battleshipExplodes,
+  },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Cent } }),
     child("Hull", 0, 1, { appearance: { glyph: Glyphs.ResizeVertical } }),
@@ -151,6 +204,7 @@ export const GoutOFlame: Prefab = {
   components: {
     ai: defaultAI,
     ship: ship("Gout-o'-flame", "Battleship", 5, 20),
+    explodes: battleshipExplodes,
   },
   children: [
     child("Hull", 0, 0, { appearance: { glyph: Glyphs.Pentagon } }),
@@ -168,7 +222,11 @@ export const GoutOFlame: Prefab = {
 };
 
 export const Demigod: Prefab = {
-  components: { ai: defaultAI, ship: ship("Demigod", "Battleship", 30, 15) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Demigod", "Battleship", 30, 15),
+    explodes: battleshipExplodes,
+  },
   children: [
     child("Hull", 1, 0, { appearance: { glyph: Glyphs.CapitalUUmlaut } }),
     child("Hull", 0, 1, { appearance: { glyph: "}" } }),
@@ -182,7 +240,11 @@ export const Demigod: Prefab = {
 };
 
 export const Gremlin: Prefab = {
-  components: { ai: defaultAI, ship: ship("Gremlin", "Battleship", 30, 15) },
+  components: {
+    ai: defaultAI,
+    ship: ship("Gremlin", "Battleship", 30, 15),
+    explodes: battleshipExplodes,
+  },
   children: [
     child("Hull", 1, 0, { appearance: { glyph: Glyphs.ResizeVertical } }),
     child("Hull", 2, 0, { appearance: { glyph: Glyphs.ResizeVertical } }),
@@ -206,6 +268,7 @@ export const AtomSmasher: Prefab = {
   components: {
     ai: defaultAI,
     ship: ship("Atom Smasher", "Battleship", 10, 20),
+    explodes: battleshipExplodes,
   },
   children: [
     child("Hull", 1, 0, { appearance: { glyph: Glyphs.EHat } }),

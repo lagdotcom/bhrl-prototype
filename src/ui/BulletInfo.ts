@@ -25,11 +25,10 @@ export default class BulletInfo extends InstructionBasedDrawable {
   constructor(g: Engine, public e: Entity) {
     super(g);
 
-    this.instructions = [];
-
-    if (e.name) this.addLine(e.name);
-    if (e.projectile)
+    if (e.name && !e.ship) this.addLine(e.name);
+    if (e.projectile) {
       this.addLine(`${e.projectile.damage} damage`, Colors.LIGHT_RED);
+    }
     if (e.motion)
       this.addLine(
         `${getDirection(e.motion.angle)}, vel ${e.motion.vel}`,

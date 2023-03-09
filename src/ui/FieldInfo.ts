@@ -7,7 +7,7 @@ export default class FieldInfo extends InstructionBasedDrawable {
   constructor(g: Engine, public field: Field) {
     super(g);
 
-    this.addLine(`${field.type} Field`);
+    this.addLine("Explosion");
     this.add({ x: 0, y: 1, fg: Colors.LIGHT_GRAY, line: "intensity" });
     this.add({
       x: 10,

@@ -5,6 +5,7 @@ import AttackWave from "@app/types/AttackWave";
 import EnemyFlags from "@app/types/EnemyFlags";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
+import FieldType from "@app/types/FieldType";
 import { PilotClasses } from "@app/types/PilotClass";
 import { PowerAppearancePatch } from "@app/logic/colours";
 import { PrefabName } from "@app/prefabs";
@@ -29,6 +30,16 @@ export const PowerToFlags: Record<ShipPower, EnemyFlags> = {
     EnemyFlags.Double |
     EnemyFlags.Drain |
     EnemyFlags.HasPilot,
+};
+
+export const PowerToFieldType: Record<ShipPower, FieldType> = {
+  Typical: "Fire",
+  Healthy: "Green",
+  Double: "Fire",
+  Multi: "Magenta",
+  Drain: "Fire",
+  StarPilot: "Yellow",
+  Mega: "Magenta",
 };
 
 const escorts: PrefabName[] = [
@@ -56,94 +67,99 @@ const waves: AttackWave[] = [
     name: "Let Fate Decide",
     difficulty: 1,
     groups: [
-      { count: 7, prefabs: escorts },
-      { count: 1, prefabs: battleships },
+      { count: 7, type: "Escort", prefabs: escorts },
+      { count: 1, type: "Battleship", prefabs: battleships },
     ],
   },
   {
     name: "Court Martial",
     difficulty: 2,
     groups: [
-      { count: 5, prefabs: ["ShipA", "ShipE"] },
-      { count: 1, prefabs: ["CruiseyWing"] },
+      { count: 5, type: "Escort", prefabs: ["ShipA", "ShipE"] },
+      { count: 1, type: "Battleship", prefabs: ["CruiseyWing"] },
     ],
   },
   {
     name: "Hellhounds",
     difficulty: 3,
     groups: [
-      { count: 2, prefabs: ["ShipB"] },
-      { count: 2, prefabs: ["GoutOFlame"] },
+      { count: 2, type: "Escort", prefabs: ["ShipB"] },
+      { count: 2, type: "Battleship", prefabs: ["GoutOFlame"] },
     ],
   },
   {
     name: "Chaos",
     difficulty: 4,
     groups: [
-      { count: 4, prefabs: ["ShipC"] },
+      { count: 4, type: "Escort", prefabs: ["ShipC"] },
       {
         count: 4,
+        type: "Escort",
         prefabs: without(escorts, "ShipC"),
       },
-      { count: 1, prefabs: ["Demigod"] },
+      { count: 1, type: "Battleship", prefabs: ["Demigod"] },
     ],
   },
   {
     name: "Fly in Formation",
     difficulty: 4,
     groups: [
-      { count: 7, prefabs: ["ShipF"] },
-      { count: 1, prefabs: battleships },
+      { count: 7, type: "Escort", prefabs: ["ShipF"] },
+      { count: 1, type: "Battleship", prefabs: battleships },
     ],
   },
   {
     name: "Hark!",
     difficulty: 6,
     groups: [
-      { count: 3, prefabs: ["ShipH"] },
-      { count: 3, prefabs: without(escorts, "ShipH") },
-      { count: 1, prefabs: ["Demigod"] },
+      { count: 3, type: "Escort", prefabs: ["ShipH"] },
+      { count: 3, type: "Escort", prefabs: without(escorts, "ShipH") },
+      { count: 1, type: "Battleship", prefabs: ["Demigod"] },
     ],
   },
   {
     name: "Caverns.com",
     difficulty: 7,
     groups: [
-      { count: 1, prefabs: ["ShipA", "ShipG"] },
-      { count: 3, prefabs: ["Olm"] },
+      { count: 1, type: "Escort", prefabs: ["ShipA", "ShipG"] },
+      { count: 3, type: "Battleship", prefabs: ["Olm"] },
     ],
   },
   {
     name: "Humanity to the Rescue",
     difficulty: 8,
     groups: [
-      { count: 7, prefabs: ["ShipA", "ShipD", "ShipE", "ShipG"] },
-      { count: 1, prefabs: ["GoutOFlame"] },
+      {
+        count: 7,
+        type: "Escort",
+        prefabs: ["ShipA", "ShipD", "ShipE", "ShipG"],
+      },
+      { count: 1, type: "Battleship", prefabs: ["GoutOFlame"] },
     ],
   },
   {
     name: "Wild Hunt",
     difficulty: 9,
     groups: [
-      { count: 15, prefabs: ["ShipB", "ShipF"] },
-      { count: 1, prefabs: ["Olm"] },
+      { count: 15, type: "Escort", prefabs: ["ShipB", "ShipF"] },
+      { count: 1, type: "Battleship", prefabs: ["Olm"] },
     ],
   },
   {
     name: "Arm Wrestling",
     difficulty: 10,
     groups: [
-      { count: 9, prefabs: ["ShipG"] },
-      { count: 2, prefabs: ["CruiseyWing"] },
+      { count: 9, type: "Escort", prefabs: ["ShipG"] },
+      { count: 2, type: "Battleship", prefabs: ["CruiseyWing"] },
     ],
   },
   {
     name: "Valis",
     difficulty: 11,
     groups: [
-      { count: 4, prefabs: ["ShipC"] },
-      { count: 4, prefabs: ["ShipH"] },
-      { count: 1, prefabs: battleships },
+      { count: 4, type: "Escort", prefabs: ["ShipC"] },
+      { count: 4, type: "Escort", prefabs: ["ShipH"] },
+      { count: 1, type: "Battleship", prefabs: battleships },
     ],
   },
 ];
@@ -209,6 +225,8 @@ export function makeEnemy(
   }
 
   if (flags & EnemyFlags.Double) e.setDoubleShot({ duration: Infinity });
+
+  if (e.explodes) e.explodes.type = PowerToFieldType[power];
 
   return e;
 }

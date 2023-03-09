@@ -90,8 +90,11 @@ export function getEntityBlockers(g: Engine, e: Entity, origin?: Position) {
 export function getEntityMidpoint(g: Engine, e: Entity): Position {
   const { layout, topLeft } = getEntityLayout(g, e);
 
-  if (!topLeft || !layout.length)
+  if (!topLeft || !layout.length) {
+    if (e.position) return e.position;
+
     throw new Error(`Could not get midpoint of entity#${e.id}`);
+  }
 
   return getLayoutMidpoint(layout, topLeft);
 }
