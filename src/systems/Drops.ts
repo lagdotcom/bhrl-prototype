@@ -5,6 +5,8 @@ import EnemyFlags from "@app/types/EnemyFlags";
 import Engine from "@app/Engine";
 import { PowerToFlags } from "@app/logic/enemy";
 import { PrefabName } from "@app/prefabs";
+import { getEntityTree } from "@app/logic/entity";
+import oneOf from "@app/tools/oneOf";
 import shuffle from "@app/tools/shuffle";
 
 export default function addDrops(g: Engine) {
@@ -25,17 +27,28 @@ export default function addDrops(g: Engine) {
           : 0.02;
       const roll = (mul = 1) => Math.random() * mul < chance;
 
-      const items: PrefabName[] = [];
+      const itemPrefabs: PrefabName[] = [];
 
-      if (flags & EnemyFlags.Double && roll()) items.push("DoubleItem");
-      if (flags & EnemyFlags.Drain && roll()) items.push("DrainItem");
-      if (flags & EnemyFlags.Healthy && roll()) items.push("HealItem");
+      if (flags & EnemyFlags.Double && roll()) itemPrefabs.push("DoubleItem");
+      if (flags & EnemyFlags.Drain && roll()) itemPrefabs.push("DrainItem");
+      if (flags & EnemyFlags.Healthy && roll()) itemPrefabs.push("HealItem");
 
-      if (roll()) items.push("MoneyItem");
-      if (roll()) items.push("JunkItem");
-      if (roll()) items.push("RechargeItem");
+      if (roll()) itemPrefabs.push("MoneyItem");
+      if (roll()) itemPrefabs.push("JunkItem");
+      if (roll()) itemPrefabs.push("RechargeItem");
 
-      // TODO BombItems
+      let bombPrefab: PrefabName | undefined = undefined;
+      if (roll()) {
+        const specials = getEntityTree(g, e).filter(
+          (e) => e.tags.has("Special") && e.prefab && e.turret
+        );
+
+        if (specials.length) {
+          const special = oneOf(specials);
+          bombPrefab = special.prefab!;
+          itemPrefabs.push("BombItem");
+        }
+      }
 
       const distribution = shuffle([
         pos(-1, -1),
@@ -49,14 +62,18 @@ export default function addDrops(g: Engine) {
         pos(1, 1),
       ]);
 
-      for (const item of items) {
+      for (const prefab of itemPrefabs) {
         const pos = addPositions(position, distribution.pop()!);
+
+        const item = g
+          .spawn(prefab)
+          .move(pos.x, pos.y)
+          .setMotion({ angle: Angles.Down, vel: 1 });
 
         // TODO money amount etc.
 
-        g.spawn(item)
-          .move(pos.x, pos.y)
-          .setMotion({ angle: Angles.Down, vel: 1 });
+        if (prefab === "BombItem")
+          item.setItem({ type: "bomb", prefab: bombPrefab! });
       }
     }
   });

@@ -5,7 +5,7 @@ import Prefab from "@app/types/Prefab";
 export const BombItem: Prefab = {
   components: {
     appearance: { glyph: Glyphs.DoubleNote, layer: Layer.Item },
-    item: { type: "bomb" },
+    item: { type: "bomb", prefab: "BombItem" },
   },
 };
 
