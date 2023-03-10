@@ -1,11 +1,35 @@
+import { getJunkBombChance, getMaxBombCount } from "./pilot";
+
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import { Item } from "@app/components";
+import { PrefabName } from "@app/prefabs";
 import { advanceTimer } from "./turret";
+import chance from "@app/tools/chance";
 import { getEntityTree } from "./entity";
-import { getMaxBombCount } from "./pilot";
+import oneOf from "@app/tools/oneOf";
 
-export function giveItem(g: Engine, e: Entity, item: Item) {
+const smartBombs: PrefabName[] = [
+  "Cleave",
+  "Outcry",
+  "AcidSplash",
+  "ShuttleLaunch",
+  "Veto",
+  "TalonSwipe",
+  "CrushPattern",
+  "Smite",
+
+  "Salvo",
+  "TheDragonWakes",
+  "Bellow",
+  "DemandHomage",
+
+  "Multiball",
+  "StubbornDescent",
+  // FIXME "LaserBeam",
+];
+
+export function giveItem(g: Engine, e: Entity, item: Item): void {
   if (!e.ship || !e.player) return;
 
   switch (item.type) {
@@ -32,6 +56,11 @@ export function giveItem(g: Engine, e: Entity, item: Item) {
     case "bomb":
       e.player.bombs.push(item.prefab);
       while (e.player.bombs.length > getMaxBombCount(e)) e.player.bombs.shift();
+      break;
+
+    case "junk":
+      if (chance(getJunkBombChance(e)))
+        return giveItem(g, e, { type: "bomb", prefab: oneOf(smartBombs) });
       break;
   }
 }

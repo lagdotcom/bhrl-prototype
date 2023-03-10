@@ -24,8 +24,12 @@ export const PlayerGun: Prefab = {
 
 export const Cleave: Prefab = {
   components: {
-    turret: turret("Cleave", { salvoCount: 5, timeBetweenSalvos: 11 }, [
+    turret: turret("Cleave", { salvoCount: 1, timeBetweenSalvos: 11 }, [
       array("Primary"),
+      array("Primary", { delay: 1 }),
+      array("Primary", { delay: 2 }),
+      array("Primary", { delay: 3 }),
+      array("Primary", { delay: 4 }),
     ]),
   },
 };
@@ -83,9 +87,13 @@ export const Veto: Prefab = {
 
 export const TalonSwipe: Prefab = {
   components: {
-    turret: turret("Talon Swipe", { salvoCount: 3, timeBetweenSalvos: 10 }, [
+    turret: turret("Talon Swipe", { salvoCount: 1, timeBetweenSalvos: 10 }, [
       bullet("Talon Swipe", "TalonBullet", Angles.Left, 2),
       bullet("Talon Swipe", "TalonBullet", Angles.Right, 2),
+      bullet("Talon Swipe", "TalonBullet", Angles.Left, 2, { delay: 1 }),
+      bullet("Talon Swipe", "TalonBullet", Angles.Right, 2, { delay: 1 }),
+      bullet("Talon Swipe", "TalonBullet", Angles.Left, 2, { delay: 2 }),
+      bullet("Talon Swipe", "TalonBullet", Angles.Right, 2, { delay: 2 }),
     ]),
   },
 };
@@ -103,8 +111,9 @@ export const CrushPattern: Prefab = {
 
 export const Smite: Prefab = {
   components: {
-    turret: turret("Smite", { salvoCount: 2, timeBetweenSalvos: 16 }, [
+    turret: turret("Smite", { salvoCount: 1, timeBetweenSalvos: 16 }, [
       bullet("Smite", "SmiteMissile", Angles.Right, 1),
+      bullet("Smite", "SmiteMissile", Angles.Right, 1, { delay: 1 }),
     ]),
   },
 };

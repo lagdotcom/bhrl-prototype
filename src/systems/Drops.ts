@@ -19,7 +19,7 @@ export default function addDrops(g: Engine) {
         reason.source.e.projectile?.special === "increasedDropChance";
 
       const percentage =
-        ship.type === "Battleship" ? (lucky ? 92 : 0.42) : lucky ? 32 : 2;
+        ship.type === "Battleship" ? (lucky ? 92 : 42) : lucky ? 32 : 2;
       const roll = (mul = 1) => chance(percentage * mul);
       // const roll = () => true;
 
