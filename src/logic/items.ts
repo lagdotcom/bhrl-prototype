@@ -3,31 +3,11 @@ import { getJunkBombChance, getMaxBombCount } from "./pilot";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import { Item } from "@app/components";
-import { PrefabName } from "@app/prefabs";
 import { advanceTimer } from "./turret";
 import chance from "@app/tools/chance";
 import { getEntityTree } from "./entity";
 import oneOf from "@app/tools/oneOf";
-
-const smartBombs: PrefabName[] = [
-  "Cleave",
-  "Outcry",
-  "AcidSplash",
-  "ShuttleLaunch",
-  "Veto",
-  "TalonSwipe",
-  "CrushPattern",
-  "Smite",
-
-  "Salvo",
-  "TheDragonWakes",
-  "Bellow",
-  "DemandHomage",
-
-  "Multiball",
-  "StubbornDescent",
-  // FIXME "LaserBeam",
-];
+import { smartBombs } from "@app/prefabs";
 
 export function giveItem(g: Engine, e: Entity, item: Item): void {
   if (!e.ship || !e.player) return;

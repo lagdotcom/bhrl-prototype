@@ -76,6 +76,7 @@ export default class CampaignMode implements GameMode {
   endCombat() {
     this.g.clearEventHandlers();
     this.currentSector.completed = true;
+    this.currentSector.star = undefined;
     this.difficulty++;
 
     // don't call setMode or we'll get initialised again

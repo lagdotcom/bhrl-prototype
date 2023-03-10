@@ -1,4 +1,5 @@
 const Glyphs = {
+  Smiley: "\x02",
   Heart: "\x03",
   Diamond: "\x04",
   Club: "\x05",
@@ -17,6 +18,7 @@ const Glyphs = {
   DownArrow: "\x19",
   RightArrow: "\x1a",
   LeftArrow: "\x1b",
+  ResizeHorizontal: "\x1d",
   DownWedge: "\x1f",
 
   Pentagon: "\x7f",

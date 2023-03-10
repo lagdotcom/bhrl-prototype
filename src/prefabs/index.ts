@@ -30,3 +30,26 @@ export function getPrefab(name: PrefabName) {
 export default function instantiate(g: Engine, name: PrefabName) {
   return g.add(new Entity(g, name).applyPrefab(name, AllPrefabs[name]));
 }
+
+export const smartBombs: PrefabName[] = [
+  "Cleave",
+  "Outcry",
+  "AcidSplash",
+  "ShuttleLaunch",
+  "Veto",
+  "TalonSwipe",
+  "CrushPattern",
+  "Smite",
+
+  "Salvo",
+  "TheDragonWakes",
+  "Bellow",
+  "DemandHomage",
+
+  "Multiball",
+  "StubbornDescent",
+  // FIXME "LaserBeam",
+  "Switchblades",
+  "Triangulate",
+  "Overload",
+];

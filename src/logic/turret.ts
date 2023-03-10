@@ -3,6 +3,7 @@ import { addPositions, pos } from "@app/tools/position";
 import { angleBetween, angleMove } from "@app/tools/angle";
 import { getEntityMidpoint, getEntityTree } from "@app/logic/entity";
 
+import Angles from "./angles";
 import { Colors } from "wglt";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
@@ -13,6 +14,7 @@ import { clone } from "@app/tools/object";
 import distance from "@app/tools/distance";
 import { getStat } from "@app/logic/pilot";
 import { initialiseShip } from "@app/logic/enemy";
+import oneOf from "@app/tools/oneOf";
 
 export function getState(turret: Turret) {
   if (turret.salvo <= 0) {
@@ -144,6 +146,16 @@ export function fireBullet(
       ? angleBetween(start, target)
       : angleCmd === "lastMovement"
       ? owner.lastMovement!.angle
+      : angleCmd === "random"
+      ? oneOf([
+          Angles.DownLeft,
+          Angles.Left,
+          Angles.UpLeft,
+          Angles.Up,
+          Angles.UpRight,
+          Angles.Right,
+          Angles.DownRight,
+        ])
       : angleCmd;
 
   if (beam && vel) {

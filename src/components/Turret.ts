@@ -7,7 +7,7 @@ export type TurretBullet = {
   canDouble?: boolean;
   name: string;
   prefab: PrefabName;
-  angle: number | "lastMovement" | "nearestEnemy";
+  angle: number | "lastMovement" | "nearestEnemy" | "random";
   vel: number;
   offset?: Position;
   beam?: { duration: number; appearance: Partial<Appearance>[] };
