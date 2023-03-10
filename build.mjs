@@ -8,6 +8,7 @@ const result = await esbuild.build({
   sourcemap: true,
   outfile: "docs/bundle.js",
   plugins: [CDNModule],
+  loader: { ".mp3": "file" },
 });
 console.log(
   `build ended with ${result.errors.length} errors and ${result.warnings.length} warnings`

@@ -67,7 +67,7 @@ export default class MenuMode implements GameMode {
 
     const cx = term.width / 2;
 
-    term.drawCenteredString(cx, 2, "Bullet Hell Roguelike", Colors.WHITE);
+    term.drawCenteredString(cx, 2, "CRAVESPACE", Colors.WHITE);
 
     term.drawCenteredString(cx, 9, "Create your Pilot", Colors.WHITE);
 

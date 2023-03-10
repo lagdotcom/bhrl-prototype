@@ -12,6 +12,7 @@ import Sector from "@app/types/Sector";
 import StarPilots from "@app/pilots/star";
 import { initialiseShip } from "@app/logic/enemy";
 import oneOf from "@app/tools/oneOf";
+import playTheMusic from "./music";
 import { putPilotInShip } from "@app/logic/pilot";
 
 export default class CampaignMode implements GameMode {
@@ -64,7 +65,8 @@ export default class CampaignMode implements GameMode {
       }
     }
 
-    // this.startCombat();
+    playTheMusic();
+    this.startCombat();
   }
 
   startCombat() {

@@ -7,6 +7,7 @@ import CampaignMode from "@app/CampaignMode";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import GameMode from "@app/types/GameMode";
+import MenuMode from "./MenuMode";
 import { Position } from "@app/components";
 import { addSystems } from "@app/systems";
 import { angleMove } from "@app/tools/angle";
@@ -44,6 +45,7 @@ export default class CombatMode implements GameMode {
 
     const { width, height } = getEntityLayout(g, g.player);
     g.player.move(int(g.mapWidth / 2 - width / 2), g.mapHeight - height - 4);
+    g.player.ship.shield = g.player.ship.maxShield;
 
     addSystems(g);
     this.nextWave();
@@ -71,7 +73,7 @@ export default class CombatMode implements GameMode {
   }
 
   draw() {
-    const { map, mapWidth, mapHeight, overlays, term } = this.g;
+    const { map, mapWidth, mapHeight, overlays, player, term } = this.g;
 
     for (let y = 0; y < mapHeight; y++) {
       for (let x = 0; x < mapWidth; x++) {
@@ -114,7 +116,22 @@ export default class CombatMode implements GameMode {
       }
     }
 
-    if (this.campaign.currentSector.completed) {
+    if (!player.alive) {
+      term.drawCenteredString(
+        term.width / 2,
+        5,
+        "YOU HAVE PERISHED!",
+        Colors.LIGHT_RED,
+        Colors.BLACK
+      );
+      term.drawCenteredString(
+        term.width / 2,
+        7,
+        "Hit Escape to try again",
+        Colors.LIGHT_RED,
+        Colors.BLACK
+      );
+    } else if (this.campaign.currentSector.completed) {
       term.drawCenteredString(
         term.width / 2,
         5,
@@ -162,7 +179,24 @@ export default class CombatMode implements GameMode {
   }
 
   handleKeys() {
-    const { term } = this.g;
+    const { player, term } = this.g;
+
+    if (!player.alive) {
+      if (term.isKeyPressed(Key.VK_ESCAPE)) {
+        this.g.setMode(new MenuMode(this.g));
+        term.fillRect(
+          0,
+          0,
+          term.width,
+          term.height,
+          " ",
+          Colors.WHITE,
+          Colors.BLACK
+        );
+      }
+
+      return;
+    }
 
     if (
       this.campaign.currentSector.completed &&

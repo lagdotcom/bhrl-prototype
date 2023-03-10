@@ -7,6 +7,7 @@ const ctx = await esbuild.context({
   bundle: true,
   sourcemap: "inline",
   outfile: "watch/bundle.js",
+  loader: { ".mp3": "file" },
   plugins: [
     {
       name: "Watcher",
