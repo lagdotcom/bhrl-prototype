@@ -10,6 +10,7 @@ import { PilotClasses } from "@app/types/PilotClass";
 import { PowerAppearancePatch } from "@app/logic/colours";
 import { PrefabName } from "@app/prefabs";
 import ShipPower from "@app/types/ShipPower";
+import chance from "@app/tools/chance";
 import { clone } from "@app/tools/object";
 import enumerate from "@app/tools/enumerate";
 import oneOf from "@app/tools/oneOf";
@@ -174,8 +175,7 @@ export function getShipPower(
   specialChance: number,
   starPilot: boolean
 ): ShipPower {
-  if (Math.random() * 100 >= specialChance)
-    return starPilot ? "StarPilot" : "Typical";
+  if (!chance(specialChance)) return starPilot ? "StarPilot" : "Typical";
 
   if (starPilot) return "Mega";
 

@@ -12,7 +12,7 @@ export function putPilotInShip(g: Engine, e: Entity, pilot: Pilot) {
     throw new Error(`Cannot put pilot into entity ${e.name} (no ship)`);
 
   e.setPilot(pilot);
-  ship.maxHp += pilot.body * 4;
+  ship.maxHp += getHPBonus(e);
 
   if (pilot.special) {
     const pos = getEntityMidpoint(g, e);
@@ -25,4 +25,20 @@ export function putPilotInShip(g: Engine, e: Entity, pilot: Pilot) {
 
 export function getStat(e: Entity, stat: PilotStat) {
   return e.pilot ? e.pilot[stat] : 0;
+}
+
+export function getShieldRechargeDelay(e: Entity) {
+  return 7 - getStat(e, "body");
+}
+
+export function getHPBonus(e: Entity) {
+  return getStat(e, "body") * 4;
+}
+
+export function getMaxBombCount(e: Entity) {
+  return getStat(e, "mind");
+}
+
+export function getJunkBombChance(e: Entity) {
+  return (getStat(e, "mind") - 1) * 5;
 }

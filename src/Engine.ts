@@ -11,6 +11,7 @@ import instantiate, { PrefabName } from "@app/prefabs";
 import { intPosition, isSameCell } from "@app/tools/position";
 
 import EntityList from "@app/EntityList";
+import { EntityWithComponents } from "@app/Query";
 import GameMode from "@app/types/GameMode";
 import HashMap from "@app/HashMap";
 import KillReason from "@app/types/KillReason";
@@ -30,7 +31,7 @@ export default class Engine implements EventHandler {
   entities: EntityList;
   eventCallbacks!: Record<EventName, EventCallback<any>[]>;
   overlays: Map<string, Overlay>;
-  player!: Entity; // be careful of this !
+  player!: EntityWithComponents<["pilot", "player", "position", "ship"]>;
   mode!: GameMode;
 
   constructor(

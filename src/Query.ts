@@ -9,9 +9,12 @@ export type HasComponents<T extends EntityAttribute[]> = Pick<
 > &
   Partial<ComponentMap>;
 
+export type EntityWithComponents<T extends EntityAttribute[]> = Entity &
+  HasComponents<T>;
+
 export type QueryCallback<T extends EntityAttribute[]> = (
   components: HasComponents<T>,
-  e: Entity
+  e: EntityWithComponents<T>
 ) => void;
 
 export default class Query<T extends EntityAttribute[]> {
@@ -29,7 +32,8 @@ export default class Query<T extends EntityAttribute[]> {
 
   forEach(cb: QueryCallback<T>) {
     for (const e of this.list.get()) {
-      if (this.matches(e)) cb(e as HasComponents<T>, e);
+      if (this.matches(e))
+        cb(e as HasComponents<T>, e as EntityWithComponents<T>);
     }
   }
 }

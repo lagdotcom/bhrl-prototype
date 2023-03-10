@@ -1,6 +1,6 @@
 import Engine from "@app/Engine";
 import Query from "@app/Query";
-import { getStat } from "@app/logic/pilot";
+import { getShieldRechargeDelay } from "@app/logic/pilot";
 
 export default function addShields(g: Engine) {
   const query = new Query(g.entities, ["ship"]);
@@ -11,8 +11,8 @@ export default function addShields(g: Engine) {
         return;
       }
 
-      const threshold = 6 - getStat(e, "body");
-      if (++ship.shieldTimer >= threshold) {
+      const delay = getShieldRechargeDelay(e);
+      if (++ship.shieldTimer >= delay) {
         ship.shield++;
         ship.shieldTimer = 0;
       }

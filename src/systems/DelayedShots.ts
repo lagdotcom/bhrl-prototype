@@ -22,7 +22,9 @@ export default function addDelayedShots(g: Engine) {
 
           const tree = getEntityTree(g, e);
           const turretEntity = tree.find((te) => te.turret === turret);
-          if (!turretEntity) continue;
+
+          // this happens with smart bombs
+          const position = turretEntity?.position ?? getEntityMidpoint(g, e);
 
           const target = ai?.attacking?.alive
             ? getEntityMidpoint(g, ai.attacking)
@@ -32,7 +34,7 @@ export default function addDelayedShots(g: Engine) {
             g,
             shot,
             turret,
-            turretEntity.position!,
+            position,
             target,
             e,
             tree.map((te) => te.id)

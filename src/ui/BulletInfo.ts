@@ -36,9 +36,11 @@ export default class BulletInfo extends InstructionBasedDrawable {
       );
     if (e.homing)
       this.addLine(
-        `chasing ${e.homing.target === this.g.player ? "you " : ""}${
-          e.homing.duration < Infinity ? `(${e.homing.duration})` : ""
-        }`,
+        `chasing ${
+          e.homing.target === this.g.player
+            ? "you"
+            : e.homing.target?.ship?.name
+        } ${e.homing.duration < Infinity ? `(${e.homing.duration})` : ""}`,
         Colors.DARK_RED
       );
     if (e.lifetime)

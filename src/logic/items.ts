@@ -3,9 +3,10 @@ import Entity from "@app/Entity";
 import { Item } from "@app/components";
 import { advanceTimer } from "./turret";
 import { getEntityTree } from "./entity";
+import { getMaxBombCount } from "./pilot";
 
 export function giveItem(g: Engine, e: Entity, item: Item) {
-  if (!e.ship) return;
+  if (!e.ship || !e.player) return;
 
   switch (item.type) {
     case "double":
@@ -27,5 +28,10 @@ export function giveItem(g: Engine, e: Entity, item: Item) {
       }
       return;
     }
+
+    case "bomb":
+      e.player.bombs.push(item.prefab);
+      while (e.player.bombs.length > getMaxBombCount(e)) e.player.bombs.shift();
+      break;
   }
 }

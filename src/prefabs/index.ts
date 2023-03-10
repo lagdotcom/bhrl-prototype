@@ -23,6 +23,10 @@ const AllPrefabs = {
 
 export type PrefabName = keyof typeof AllPrefabs;
 
+export function getPrefab(name: PrefabName) {
+  return AllPrefabs[name];
+}
+
 export default function instantiate(g: Engine, name: PrefabName) {
   return g.add(new Entity(g, name).applyPrefab(name, AllPrefabs[name]));
 }

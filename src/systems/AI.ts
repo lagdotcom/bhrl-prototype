@@ -5,19 +5,22 @@ import Engine from "@app/Engine";
 import { Position } from "@app/components";
 import Query from "@app/Query";
 import { angleBetween } from "@app/tools/angle";
+import { getNearestEnemy } from "@app/logic/turret";
 import { neighbourOffsets } from "@app/logic/neighbours";
 import oneOf from "@app/tools/oneOf";
 
 export default function addAI(g: Engine) {
-  const query = new Query(g.entities, ["ai", "position"]);
+  const query = new Query(g.entities, ["ai", "position", "ship"]);
   g.on("tick", function MoveEnemies() {
     query.forEach(({ ai, position: rawPosition }, e) => {
       e.setLastMovement();
 
-      // TODO something better than this?
-      if (!ai.attacking) {
-        ai.attacking = g.player;
-        g.fire("notice", { e, noticed: g.player });
+      if (!ai.attacking || !ai.attacking.alive) {
+        const enemy = getNearestEnemy(g, e);
+        if (enemy) {
+          ai.attacking = enemy;
+          g.fire("notice", { e, noticed: enemy });
+        } else return;
       }
 
       const ignoreSolid = getEntityTreeIDs(g, e);

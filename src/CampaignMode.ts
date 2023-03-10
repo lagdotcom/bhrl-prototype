@@ -4,6 +4,7 @@ import { addPositions, isSameCell, pos } from "@app/tools/position";
 
 import CombatMode from "@app/CombatMode";
 import Engine from "@app/Engine";
+import { EntityWithComponents } from "@app/Query";
 import GameMode from "@app/types/GameMode";
 import Grid from "@app/Grid";
 import { PrefabName } from "@app/prefabs";
@@ -80,7 +81,9 @@ export default class CampaignMode implements GameMode {
     this.refresh();
   }
 
-  makePlayer() {
+  makePlayer(): EntityWithComponents<
+    ["pilot" | "position" | "player" | "ship"]
+  > {
     const { g, shipPrefab, pilot } = this;
 
     const e = g.spawn(shipPrefab);
@@ -92,7 +95,10 @@ export default class CampaignMode implements GameMode {
     putPilotInShip(g, e, pilot);
     initialiseShip(e.ship);
 
-    return e;
+    // OK, doesn't technically have a position yet...
+    return e as EntityWithComponents<
+      ["pilot" | "position" | "player" | "ship"]
+    >;
   }
 
   draw() {

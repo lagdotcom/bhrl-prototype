@@ -1,9 +1,5 @@
 import { Colors, Key } from "wglt";
-import {
-  getEntityLayout,
-  getEntityMidpoint,
-  getEntityTreeIDs,
-} from "@app/logic/entity";
+import { getEntityLayout, getEntityTreeIDs } from "@app/logic/entity";
 import { intPosition, pos } from "@app/tools/position";
 
 import AttackWave from "@app/types/AttackWave";
@@ -15,7 +11,6 @@ import { Position } from "@app/components";
 import { addSystems } from "@app/systems";
 import { angleMove } from "@app/tools/angle";
 import { drawExamineOverlay } from "@app/logic/examine";
-import { fireAirFist } from "@app/logic/airFist";
 import { getWaves } from "@app/logic/enemy";
 import int from "@app/tools/int";
 import { walkGrid } from "@app/logic/geometry";
@@ -167,7 +162,7 @@ export default class CombatMode implements GameMode {
   }
 
   handleKeys() {
-    const { player, term } = this.g;
+    const { term } = this.g;
 
     if (
       this.campaign.currentSector.completed &&
@@ -193,9 +188,8 @@ export default class CombatMode implements GameMode {
       return;
     }
 
-    if (term.isKeyPressed(Key.VK_F)) {
-      fireAirFist(this.g, getEntityMidpoint(this.g, player), 4.5);
-      this.g.tick();
+    if (term.isKeyPressed(Key.VK_SPACE)) {
+      this.g.fire("playerBomb", undefined);
       return;
     }
   }

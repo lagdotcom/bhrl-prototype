@@ -1,14 +1,16 @@
-import { Appearance, Position, Turret } from "@app/components";
+import { Appearance, Position, Ship, Turret } from "@app/components";
 import { addPositions, pos } from "@app/tools/position";
 import { angleBetween, angleMove } from "@app/tools/angle";
+import { getEntityMidpoint, getEntityTree } from "@app/logic/entity";
 
 import { Colors } from "wglt";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
+import { EntityWithComponents } from "@app/Query";
 import { PrefabName } from "@app/prefabs";
 import { TurretShot } from "@app/components/Turret";
 import { clone } from "@app/tools/object";
-import { getEntityTree } from "@app/logic/entity";
+import distance from "@app/tools/distance";
 import { getStat } from "@app/logic/pilot";
 import { initialiseShip } from "@app/logic/enemy";
 
@@ -107,7 +109,9 @@ export function fireBullet(
   }
 
   if (shot.delay) {
-    addDelayedShot(owner, { turret, shot: clone(shot) });
+    const cloned = clone(shot);
+    if (owner.player) cloned.delay!++; // this is due to the turn order...
+    addDelayedShot(owner, { turret, shot: cloned });
     return [];
   }
 
@@ -209,4 +213,30 @@ export function fire(
     );
 
   return bullets;
+}
+
+function isPlayer(ship?: Ship) {
+  return ship?.type === "Player";
+}
+
+export function getNearestEnemy(g: Engine, e: EntityWithComponents<["ship"]>) {
+  const player = isPlayer(e.ship);
+  const middle = getEntityMidpoint(g, e);
+  const ships = g.entities
+    .get()
+    .filter((x) => x.ship && isPlayer(x.ship) !== player);
+
+  if (!ships.length) return;
+  let best = Infinity;
+  let enemy: Entity | undefined = undefined;
+  for (const ship of ships) {
+    const pos = getEntityMidpoint(g, ship);
+    const d = distance(middle, pos);
+    if (d < best) {
+      best = d;
+      enemy = ship;
+    }
+  }
+
+  return enemy;
 }

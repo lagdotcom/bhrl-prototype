@@ -14,7 +14,7 @@ export const PlayerHull: Prefab = {
 
 export const PlayerShip: Prefab = {
   components: {
-    player: { weaponArrays: ["Primary", "Secondary"] },
+    player: { weaponArrays: ["Primary", "Secondary"], bombs: [] },
     ship: ship("Ace of Clubs", "Player", 20, 10),
     explodes: { type: "Fire", size: 6, falloff: 1 },
   },

@@ -5,6 +5,7 @@ import EnemyFlags from "@app/types/EnemyFlags";
 import Engine from "@app/Engine";
 import { PowerToFlags } from "@app/logic/enemy";
 import { PrefabName } from "@app/prefabs";
+import chance from "@app/tools/chance";
 import { getEntityTree } from "@app/logic/entity";
 import oneOf from "@app/tools/oneOf";
 import shuffle from "@app/tools/shuffle";
@@ -17,15 +18,10 @@ export default function addDrops(g: Engine) {
       const lucky =
         reason.source.e.projectile?.special === "increasedDropChance";
 
-      const chance =
-        ship.type === "Battleship"
-          ? lucky
-            ? 0.92
-            : 0.42
-          : lucky
-          ? 0.32
-          : 0.02;
-      const roll = (mul = 1) => Math.random() * mul < chance;
+      const percentage =
+        ship.type === "Battleship" ? (lucky ? 92 : 0.42) : lucky ? 32 : 2;
+      const roll = (mul = 1) => chance(percentage * mul);
+      // const roll = () => true;
 
       const itemPrefabs: PrefabName[] = [];
 
