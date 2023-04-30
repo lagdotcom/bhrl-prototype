@@ -1,7 +1,7 @@
 {
-  "name": "bhrl-prototype",
+  "name": "cravespace",
   "version": "1.0.0",
-  "description": "Prototype for Bullet Hell Roguelike 7DRL",
+  "description": "Sad Folks Interactive's entry to 7DRL 2023. A Bullet Hell Roguelike.",
   "main": "index.js",
   "author": "Paul Davies <lagdotcom@gmail.com>",
   "license": "MIT",
@@ -17,14 +17,14 @@
     "wglt": "^0.5.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.54.0",
-    "@typescript-eslint/parser": "^5.54.0",
-    "esbuild": "^0.17.6",
-    "eslint": "^8.35.0",
-    "eslint-config-prettier": "^8.6.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "esbuild": "^0.17.18",
+    "eslint": "^8.39.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "http-server": "^14.1.1",
-    "prettier": "^2.8.4",
-    "typescript": "^4.9.5"
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.4"
   }
 }
