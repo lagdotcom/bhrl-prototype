@@ -15,6 +15,7 @@ const directions = [
   Glyphs.UpArrow + Glyphs.LeftArrow,
   Glyphs.UpArrow,
   Glyphs.UpArrow + Glyphs.RightArrow,
+  Glyphs.RightArrow,
 ];
 function getDirection(ang: number) {
   const octant = Math.floor(angleWrap(ang) / circleEighth + circleEighth / 2);
@@ -34,12 +35,10 @@ export default class BulletInfo extends InstructionBasedDrawable {
         `${getDirection(e.motion.angle)}, vel ${e.motion.vel}`,
         Colors.LIGHT_GRAY
       );
-    if (e.homing)
+    if (e.homing?.target)
       this.addLine(
         `chasing ${
-          e.homing.target === this.g.player
-            ? "you"
-            : e.homing.target?.ship?.name
+          e.homing.target === this.g.player ? "you" : e.homing.target.ship?.name
         } ${e.homing.duration < Infinity ? `(${e.homing.duration})` : ""}`,
         Colors.DARK_RED
       );

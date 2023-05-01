@@ -61,6 +61,7 @@ export default function addDrops(g: Engine) {
       for (const prefab of itemPrefabs) {
         const pos = addPositions(position, distribution.pop()!);
 
+        // TODO cleverer motion pattern
         const item = g
           .spawn(prefab)
           .move(pos.x, pos.y)

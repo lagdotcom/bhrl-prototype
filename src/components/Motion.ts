@@ -1,2 +1,4 @@
-type Motion = { angle: number; vel: number };
+import Angle from "@app/types/Angle";
+
+type Motion = { angle: Angle; vel: number };
 export default Motion;

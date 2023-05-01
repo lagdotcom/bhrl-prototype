@@ -21,7 +21,7 @@ export default function addTurrets(g: Engine) {
       if (distance(position, target) > (root.ai.firingDistance ?? Infinity))
         return;
 
-      if (canFire(turret, root)) {
+      if (canFire(turret)) {
         for (const bullet of fire(
           g,
           turret,

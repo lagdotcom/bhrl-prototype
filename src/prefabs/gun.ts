@@ -1,13 +1,12 @@
-import { array, bullet, turret } from "@app/prefabs/tools";
+import { aim, array, bullet, rel, turret } from "@app/prefabs/tools";
 
-import Angles from "@app/logic/angles";
 import Offsets from "@app/logic/offsets";
 import Prefab from "@app/types/Prefab";
 
 export const PeaShooter: Prefab = {
   components: {
     turret: turret("Main Gun", { salvoCount: 1, timeBetweenSalvos: 3 }, [
-      bullet("Bullet", "Bullet", Angles.Down, 2, { canDouble: true }),
+      bullet("Bullet", "Bullet", rel("F"), 2, { canDouble: true }),
     ]),
   },
 };
@@ -17,7 +16,7 @@ export const PlayerGun: Prefab = {
     turret: turret(
       "Main Gun",
       { salvoCount: 2, timeBetweenShots: 0, timeBetweenSalvos: 3 },
-      [bullet("Your Bullet", "PlayerBullet", Angles.Up, 2, { canDouble: true })]
+      [bullet("Your Bullet", "PlayerBullet", rel("F"), 2, { canDouble: true })]
     ),
   },
 };
@@ -37,13 +36,13 @@ export const Cleave: Prefab = {
 export const Outcry: Prefab = {
   components: {
     turret: turret("Outcry", { salvoCount: 1, timeBetweenSalvos: 8 }, [
-      bullet("Outcry", "OutcryBullet", Angles.DownLeft, 2),
-      bullet("Outcry", "OutcryBullet", Angles.Left, 2),
-      bullet("Outcry", "OutcryBullet", Angles.UpLeft, 2),
-      bullet("Outcry", "OutcryBullet", Angles.Up, 2),
-      bullet("Outcry", "OutcryBullet", Angles.UpRight, 2),
-      bullet("Outcry", "OutcryBullet", Angles.Right, 2),
-      bullet("Outcry", "OutcryBullet", Angles.DownRight, 2),
+      bullet("Outcry", "OutcryBullet", rel("FR"), 2),
+      bullet("Outcry", "OutcryBullet", rel("R"), 2),
+      bullet("Outcry", "OutcryBullet", rel("BR"), 2),
+      bullet("Outcry", "OutcryBullet", rel("B"), 2),
+      bullet("Outcry", "OutcryBullet", rel("BL"), 2),
+      bullet("Outcry", "OutcryBullet", rel("L"), 2),
+      bullet("Outcry", "OutcryBullet", rel("FL"), 2),
     ]),
   },
 };
@@ -51,16 +50,16 @@ export const Outcry: Prefab = {
 export const AcidSplash: Prefab = {
   components: {
     turret: turret("Acid Splash", { salvoCount: 1, timeBetweenSalvos: 13 }, [
-      bullet("Acid Splash", "AcidBullet", Angles.UpLeft, 2),
-      bullet("Acid Splash", "AcidBullet", Angles.UpRight, 2),
-      bullet("Acid Splash", "AcidBullet", Angles.Left, 2, { delay: 1 }),
-      bullet("Acid Splash", "AcidBullet", Angles.Right, 2, { delay: 1 }),
-      bullet("Acid Splash", "AcidBullet", Angles.DownLeft, 2, { delay: 2 }),
-      bullet("Acid Splash", "AcidBullet", Angles.DownRight, 2, { delay: 2 }),
-      bullet("Acid Splash", "AcidBullet", Angles.Left, 2, { delay: 3 }),
-      bullet("Acid Splash", "AcidBullet", Angles.Right, 2, { delay: 3 }),
-      bullet("Acid Splash", "AcidBullet", Angles.UpLeft, 2, { delay: 4 }),
-      bullet("Acid Splash", "AcidBullet", Angles.UpRight, 2, { delay: 4 }),
+      bullet("Acid Splash", "AcidBullet", rel("BR"), 2),
+      bullet("Acid Splash", "AcidBullet", rel("BL"), 2),
+      bullet("Acid Splash", "AcidBullet", rel("R"), 2, { delay: 1 }),
+      bullet("Acid Splash", "AcidBullet", rel("L"), 2, { delay: 1 }),
+      bullet("Acid Splash", "AcidBullet", rel("FR"), 2, { delay: 2 }),
+      bullet("Acid Splash", "AcidBullet", rel("FL"), 2, { delay: 2 }),
+      bullet("Acid Splash", "AcidBullet", rel("R"), 2, { delay: 3 }),
+      bullet("Acid Splash", "AcidBullet", rel("L"), 2, { delay: 3 }),
+      bullet("Acid Splash", "AcidBullet", rel("BR"), 2, { delay: 4 }),
+      bullet("Acid Splash", "AcidBullet", rel("BL"), 2, { delay: 4 }),
     ]),
   },
 };
@@ -68,8 +67,8 @@ export const AcidSplash: Prefab = {
 export const ShuttleLaunch: Prefab = {
   components: {
     turret: turret("Shuttle Launch", { salvoCount: 1, timeBetweenSalvos: 27 }, [
-      bullet("Runabout", "DroneA", Angles.Left, 0, { offset: Offsets.Left }),
-      bullet("Runabout", "DroneA", Angles.Right, 0, { offset: Offsets.Right }),
+      bullet("Runabout", "DroneA", rel("R"), 0, { offset: Offsets.Left }),
+      bullet("Runabout", "DroneA", rel("L"), 0, { offset: Offsets.Right }),
     ]),
   },
 };
@@ -77,8 +76,8 @@ export const ShuttleLaunch: Prefab = {
 export const Veto: Prefab = {
   components: {
     turret: turret("Veto", { salvoCount: 1, timeBetweenSalvos: 21 }, [
-      bullet("Veto", "HomingMissile", Angles.Up, 1),
-      bullet("Wasp", "DroneB", Angles.DownRight, 0, {
+      bullet("Veto", "HomingMissile", rel("B"), 1),
+      bullet("Wasp", "DroneB", rel("FL"), 0, {
         offset: Offsets.DownRight,
       }),
     ]),
@@ -88,12 +87,12 @@ export const Veto: Prefab = {
 export const TalonSwipe: Prefab = {
   components: {
     turret: turret("Talon Swipe", { salvoCount: 1, timeBetweenSalvos: 10 }, [
-      bullet("Talon Swipe", "TalonBullet", Angles.Left, 2),
-      bullet("Talon Swipe", "TalonBullet", Angles.Right, 2),
-      bullet("Talon Swipe", "TalonBullet", Angles.Left, 2, { delay: 1 }),
-      bullet("Talon Swipe", "TalonBullet", Angles.Right, 2, { delay: 1 }),
-      bullet("Talon Swipe", "TalonBullet", Angles.Left, 2, { delay: 2 }),
-      bullet("Talon Swipe", "TalonBullet", Angles.Right, 2, { delay: 2 }),
+      bullet("Talon Swipe", "TalonBullet", rel("R"), 2),
+      bullet("Talon Swipe", "TalonBullet", rel("L"), 2),
+      bullet("Talon Swipe", "TalonBullet", rel("R"), 2, { delay: 1 }),
+      bullet("Talon Swipe", "TalonBullet", rel("L"), 2, { delay: 1 }),
+      bullet("Talon Swipe", "TalonBullet", rel("R"), 2, { delay: 2 }),
+      bullet("Talon Swipe", "TalonBullet", rel("L"), 2, { delay: 2 }),
     ]),
   },
 };
@@ -101,10 +100,10 @@ export const TalonSwipe: Prefab = {
 export const CrushPattern: Prefab = {
   components: {
     turret: turret("Crush Pattern", { salvoCount: 1, timeBetweenSalvos: 15 }, [
-      bullet("Crush Pattern", "CrushBullet", Angles.Left, 1),
-      bullet("Crush Pattern", "CrushBullet", Angles.UpLeft, 1),
-      bullet("Crush Pattern", "CrushBullet", Angles.UpRight, 1),
-      bullet("Crush Pattern", "CrushBullet", Angles.Right, 1),
+      bullet("Crush Pattern", "CrushBullet", rel("R"), 1),
+      bullet("Crush Pattern", "CrushBullet", rel("BR"), 1),
+      bullet("Crush Pattern", "CrushBullet", rel("BL"), 1),
+      bullet("Crush Pattern", "CrushBullet", rel("L"), 1),
     ]),
   },
 };
@@ -112,8 +111,8 @@ export const CrushPattern: Prefab = {
 export const Smite: Prefab = {
   components: {
     turret: turret("Smite", { salvoCount: 1, timeBetweenSalvos: 16 }, [
-      bullet("Smite", "SmiteMissile", Angles.Right, 1),
-      bullet("Smite", "SmiteMissile", Angles.Right, 1, { delay: 1 }),
+      bullet("Smite", "SmiteMissile", rel("L"), 1),
+      bullet("Smite", "SmiteMissile", rel("L"), 1, { delay: 1 }),
     ]),
   },
 };
@@ -123,7 +122,7 @@ export const DroneGun: Prefab = {
     turret: turret(
       "Stinger",
       { salvoCount: 1, timeBetweenSalvos: 5, ammunition: 5 },
-      [bullet("Bullet", "DroneBullet", "nearestEnemy", 1, { canDouble: true })]
+      [bullet("Bullet", "DroneBullet", aim, 1, { canDouble: true })]
     ),
   },
 };
@@ -131,9 +130,9 @@ export const DroneGun: Prefab = {
 export const Salvo: Prefab = {
   components: {
     turret: turret("Salvo", { salvoCount: 1, timeBetweenSalvos: 10 }, [
-      bullet("Missile", "SalvoMissileA", Angles.UpLeft, 1),
-      bullet("Missile", "SalvoMissileB", Angles.UpLeft, 1),
-      bullet("Missile", "SalvoMissileC", Angles.UpLeft, 1),
+      bullet("Missile", "SalvoMissileA", rel("BR"), 1),
+      bullet("Missile", "SalvoMissileB", rel("BR"), 1),
+      bullet("Missile", "SalvoMissileC", rel("BR"), 1),
     ]),
   },
 };
@@ -144,11 +143,11 @@ export const TheDragonWakes: Prefab = {
       "The Dragon Wakes",
       { salvoCount: 1, timeBetweenSalvos: 12 },
       [
-        bullet("Drone", "DroneA", Angles.Up, 0, { offset: Offsets.Up }),
-        bullet("Missile", "HomingMissile", Angles.DownLeft, 2, {
+        bullet("Drone", "DroneA", rel("B"), 0, { offset: Offsets.Up }),
+        bullet("Missile", "HomingMissile", rel("FR"), 2, {
           offset: Offsets.DownLeft,
         }),
-        bullet("Missile", "HomingMissile", Angles.DownRight, 2, {
+        bullet("Missile", "HomingMissile", rel("FL"), 2, {
           offset: Offsets.DownRight,
         }),
       ]
@@ -159,7 +158,7 @@ export const TheDragonWakes: Prefab = {
 export const Bellow: Prefab = {
   components: {
     turret: turret("Bellow", { salvoCount: 1, timeBetweenSalvos: 17 }, [
-      bullet("Bellow", "BellowMissile", Angles.DownLeft, 1),
+      bullet("Bellow", "BellowMissile", rel("FR"), 1),
       array("Primary"),
       array("Primary", { delay: 1 }),
       array("Primary", { delay: 2 }),
@@ -171,16 +170,16 @@ export const Bellow: Prefab = {
 export const DemandHomage: Prefab = {
   components: {
     turret: turret("Demand Homage", { salvoCount: 1, timeBetweenSalvos: 21 }, [
-      bullet("Pulsar", "DroneC", Angles.DownLeft, 0, {
+      bullet("Pulsar", "DroneC", rel("FR"), 0, {
         offset: Offsets.DownLeft,
       }),
-      bullet("Pulsar", "DroneC", Angles.UpLeft, 0, {
+      bullet("Pulsar", "DroneC", rel("BR"), 0, {
         offset: Offsets.UpLeft,
       }),
-      bullet("Pulsar", "DroneC", Angles.UpRight, 0, {
+      bullet("Pulsar", "DroneC", rel("BL"), 0, {
         offset: Offsets.UpRight,
       }),
-      bullet("Pulsar", "DroneC", Angles.DownRight, 0, {
+      bullet("Pulsar", "DroneC", rel("FL"), 0, {
         offset: Offsets.DownRight,
       }),
     ]),

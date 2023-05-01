@@ -1,5 +1,6 @@
 import { Ship, Turret } from "@app/components";
 import {
+  TurretAngle,
   TurretArrayFire,
   TurretBullet,
   TurretShot,
@@ -7,6 +8,7 @@ import {
 
 import { PrefabChild } from "@app/types/Prefab";
 import { PrefabName } from ".";
+import Angles from "@app/logic/angles";
 
 export const child = (
   name: PrefabName,
@@ -29,6 +31,7 @@ export const ship = (
   maxShield,
   shield: 0,
   shieldTimer: 0,
+  firingDirection: type === "Player" ? Angles.Up : Angles.Down,
 });
 
 export const turret = (
@@ -51,10 +54,20 @@ export const turret = (
   ammunition,
 });
 
+const RelativeDirs = ["F", "FR", "R", "BR", "B", "BL", "L", "FL"] as const;
+type RelativeDir = (typeof RelativeDirs)[number];
+
+export const rel = (name: RelativeDir): TurretAngle => ({
+  type: "relative",
+  rel: (RelativeDirs.indexOf(name) * Math.PI) / 4,
+});
+export const aim: TurretAngle = { type: "nearestEnemy" };
+export const rnd: TurretAngle = { type: "random" };
+
 export const bullet = (
   name: string,
   prefab: PrefabName,
-  angle: TurretBullet["angle"],
+  angle: TurretAngle,
   vel: number,
   { canDouble, delay, offset, beam }: Partial<TurretBullet> = {}
 ): TurretBullet => ({

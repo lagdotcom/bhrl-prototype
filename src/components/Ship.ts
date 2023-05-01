@@ -1,3 +1,4 @@
+import Angle from "@app/types/Angle";
 import ShipPower from "@app/types/ShipPower";
 
 type Ship = {
@@ -8,6 +9,7 @@ type Ship = {
   shield: number;
   maxShield: number;
   shieldTimer: number;
+  firingDirection: Angle;
   power?: ShipPower;
 };
 export default Ship;

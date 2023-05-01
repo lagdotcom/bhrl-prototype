@@ -1,7 +1,6 @@
 import { Colors, fromRgb } from "wglt";
-import { array, bullet, turret } from "./tools";
+import { array, bullet, rel, rnd, turret } from "./tools";
 
-import Angles from "@app/logic/angles";
 import Glyphs from "@app/logic/glyphs";
 import Layer from "@app/types/Layer";
 import Offsets from "@app/logic/offsets";
@@ -18,14 +17,14 @@ export const MultiballShot: Prefab = {
 export const Multiball: Prefab = {
   components: {
     turret: turret("Multiball", { salvoCount: 1, timeBetweenSalvos: 15 }, [
-      bullet("Multiball", "MultiballShot", Angles.DownLeft, 2),
-      bullet("Multiball", "MultiballShot", Angles.Left, 2),
-      bullet("Multiball", "MultiballShot", Angles.Right, 2),
-      bullet("Multiball", "MultiballShot", Angles.DownRight, 2),
-      bullet("Runabout", "DroneA", Angles.UpLeft, 0, {
+      bullet("Multiball", "MultiballShot", rel("FR"), 2),
+      bullet("Multiball", "MultiballShot", rel("R"), 2),
+      bullet("Multiball", "MultiballShot", rel("L"), 2),
+      bullet("Multiball", "MultiballShot", rel("FL"), 2),
+      bullet("Runabout", "DroneA", rel("BR"), 0, {
         offset: Offsets.UpLeft,
       }),
-      bullet("Runabout", "DroneA", Angles.UpRight, 0, {
+      bullet("Runabout", "DroneA", rel("BL"), 0, {
         offset: Offsets.UpRight,
       }),
     ]),
@@ -58,7 +57,7 @@ export const Laser: Prefab = {
 export const LaserBeam: Prefab = {
   components: {
     turret: turret("Laser Beam", { salvoCount: 10, timeBetweenSalvos: 30 }, [
-      bullet("Laser", "Laser", Angles.Down, 1, {
+      bullet("Laser", "Laser", rel("F"), 1, {
         offset: Offsets.Down,
         beam: {
           duration: 1,
@@ -84,12 +83,12 @@ export const Switchblades: Prefab = {
   components: {
     turret: turret("Switchblades", { salvoCount: 1, timeBetweenSalvos: 11 }, [
       ...enumerate(9).map((delay) =>
-        bullet("Switchblade", "SwitchbladeBullet", Angles.DownLeft, 1, {
+        bullet("Switchblade", "SwitchbladeBullet", rel("FR"), 1, {
           delay,
         })
       ),
       ...enumerate(9).map((delay) =>
-        bullet("Switchblade", "SwitchbladeBullet", Angles.DownRight, 1, {
+        bullet("Switchblade", "SwitchbladeBullet", rel("FL"), 1, {
           delay,
         })
       ),
@@ -109,23 +108,23 @@ export const TriangulateMissile: Prefab = {
 export const Triangulate: Prefab = {
   components: {
     turret: turret("Triangulate", { salvoCount: 1, timeBetweenSalvos: 17 }, [
-      bullet("Triangulate", "TriangulateMissile", Angles.DownLeft, 1),
-      bullet("Triangulate", "TriangulateMissile", Angles.Left, 1, {
+      bullet("Triangulate", "TriangulateMissile", rel("FR"), 1),
+      bullet("Triangulate", "TriangulateMissile", rel("R"), 1, {
         delay: 1,
       }),
-      bullet("Triangulate", "TriangulateMissile", Angles.UpLeft, 1, {
+      bullet("Triangulate", "TriangulateMissile", rel("BR"), 1, {
         delay: 2,
       }),
-      bullet("Triangulate", "TriangulateMissile", Angles.Up, 1, {
+      bullet("Triangulate", "TriangulateMissile", rel("B"), 1, {
         delay: 3,
       }),
-      bullet("Triangulate", "TriangulateMissile", Angles.UpRight, 1, {
+      bullet("Triangulate", "TriangulateMissile", rel("BL"), 1, {
         delay: 4,
       }),
-      bullet("Triangulate", "TriangulateMissile", Angles.Right, 1, {
+      bullet("Triangulate", "TriangulateMissile", rel("L"), 1, {
         delay: 5,
       }),
-      bullet("Triangulate", "TriangulateMissile", Angles.DownRight, 1, {
+      bullet("Triangulate", "TriangulateMissile", rel("FL"), 1, {
         delay: 6,
       }),
     ]),
@@ -149,7 +148,7 @@ export const Overload: Prefab = {
       "Overload",
       { salvoCount: 1, timeBetweenSalvos: 20 },
       enumerate(11).map((delay) =>
-        bullet("Overload", "OverloadBullet", "random", 2, { delay })
+        bullet("Overload", "OverloadBullet", rnd, 2, { delay })
       )
     ),
   },

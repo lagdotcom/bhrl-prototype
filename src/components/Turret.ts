@@ -1,13 +1,20 @@
+import Angle from "@app/types/Angle";
 import Appearance from "./Appearance";
 import Position from "./Position";
 import { PrefabName } from "@app/prefabs";
+
+export type TurretAngle =
+  | { type: "relative"; rel: Angle }
+  | { type: "lastMovement" }
+  | { type: "nearestEnemy" }
+  | { type: "random" };
 
 export type TurretBullet = {
   type: "bullet";
   canDouble?: boolean;
   name: string;
   prefab: PrefabName;
-  angle: number | "lastMovement" | "nearestEnemy" | "random";
+  angle: TurretAngle;
   vel: number;
   offset?: Position;
   beam?: { duration: number; appearance: Partial<Appearance>[] };

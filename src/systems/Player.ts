@@ -8,6 +8,7 @@ import {
 } from "@app/logic/entity";
 
 import Engine from "@app/Engine";
+import Angles from "@app/logic/angles";
 import { angleBetween } from "@app/tools/angle";
 import { clone } from "@app/tools/object";
 import { getPrefab } from "@app/prefabs";
@@ -35,7 +36,7 @@ export default function addPlayer(g: Engine) {
     for (const weapon of weapons) {
       if (!weapon.position || !weapon.turret) continue;
 
-      if (canFire(weapon.turret, pe)) {
+      if (canFire(weapon.turret)) {
         fire(
           g,
           weapon.turret,
@@ -79,13 +80,7 @@ export default function addPlayer(g: Engine) {
         // TODO replace with option
         if (be.ai) {
           be.ai.attacking = enemy;
-          for (const te of getEntityTree(g, be).filter((x) => x.turret)) {
-            // flip turrets
-            for (const bd of te.turret!.shots) {
-              if (bd.type === "bullet" && typeof bd.angle === "number")
-                bd.angle += Math.PI;
-            }
-          }
+          be.ship!.firingDirection = Angles.Up;
         }
 
         if (be.homing) be.homing.target = enemy;

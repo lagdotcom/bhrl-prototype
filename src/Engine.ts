@@ -29,6 +29,7 @@ export default class Engine implements EventHandler {
 
   map: Console;
   entities: EntityList;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   eventCallbacks!: Record<EventName, EventCallback<any>[]>;
   overlays: Map<string, Overlay>;
   player!: EntityWithComponents<["pilot", "player", "position", "ship"]>;

@@ -23,7 +23,7 @@ export const SwordBullet: Prefab = {
 export const Sword: Prefab = {
   components: {
     turret: turret("Sword", { salvoCount: 1, timeBetweenSalvos: 20 }, [
-      bullet("Stab", "SwordBullet", "lastMovement", 1, {
+      bullet("Stab", "SwordBullet", { type: "lastMovement" }, 1, {
         beam: {
           duration: 2,
           appearance: [

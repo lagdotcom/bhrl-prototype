@@ -1,6 +1,12 @@
-import { Appearance, Position, Ship, Turret } from "@app/components";
+import {
+  Appearance,
+  LastMovement,
+  Position,
+  Ship,
+  Turret,
+} from "@app/components";
 import { addPositions, pos } from "@app/tools/position";
-import { angleBetween, angleMove } from "@app/tools/angle";
+import { angleBetween, angleMove, angleWrap } from "@app/tools/angle";
 import { getEntityMidpoint, getEntityTree } from "@app/logic/entity";
 
 import Angles from "./angles";
@@ -9,12 +15,13 @@ import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import { EntityWithComponents } from "@app/Query";
 import { PrefabName } from "@app/prefabs";
-import { TurretShot } from "@app/components/Turret";
+import { TurretAngle, TurretShot } from "@app/components/Turret";
 import { clone } from "@app/tools/object";
 import distance from "@app/tools/distance";
 import { getStat } from "@app/logic/pilot";
 import { initialiseShip } from "@app/logic/enemy";
 import oneOf from "@app/tools/oneOf";
+import Angle from "@app/types/Angle";
 
 export function getState(turret: Turret) {
   if (turret.salvo <= 0) {
@@ -37,14 +44,7 @@ export function advanceTimer(turret: Turret) {
   }
 }
 
-export function canFire(turret: Turret, owner: Entity) {
-  if (
-    turret.shots.find(
-      (b) => b.type === "bullet" && b.angle === "lastMovement"
-    ) &&
-    !owner.lastMovement
-  )
-    return false;
+export function canFire(turret: Turret) {
   return turret.timer === 0;
 }
 
@@ -64,7 +64,7 @@ function initBullet(
   owner: Entity,
   turret: Turret,
   start: Position,
-  angle: number,
+  angle: Angle,
   vel: number,
   ignoreIds: number[],
   appearance?: Partial<Appearance>
@@ -91,6 +91,37 @@ function initBullet(
     Object.assign(bullet.appearance, appearance);
 
   return bullet;
+}
+
+function getTurretAngle(
+  start: Position,
+  target: Position,
+  cmd: TurretAngle,
+  ship: Ship,
+  last?: LastMovement
+): Angle {
+  switch (cmd.type) {
+    case "lastMovement":
+      return last?.angle ?? ship.firingDirection;
+
+    case "nearestEnemy":
+      return angleBetween(start, target);
+
+    case "random":
+      return oneOf([
+        Angles.Right,
+        Angles.DownRight,
+        Angles.Down,
+        Angles.DownLeft,
+        Angles.Left,
+        Angles.UpLeft,
+        Angles.Up,
+        Angles.UpRight,
+      ]);
+
+    case "relative":
+      return angleWrap(ship.firingDirection + cmd.rel);
+  }
 }
 
 export function fireBullet(
@@ -140,23 +171,14 @@ export function fireBullet(
 
   const { angle: angleCmd, beam, name, offset, prefab, vel } = shot;
 
-  const start = addPositions(position, offset ?? pos(0.5, 0.5));
-  const angle =
-    angleCmd === "nearestEnemy"
-      ? angleBetween(start, target)
-      : angleCmd === "lastMovement"
-      ? owner.lastMovement!.angle
-      : angleCmd === "random"
-      ? oneOf([
-          Angles.DownLeft,
-          Angles.Left,
-          Angles.UpLeft,
-          Angles.Up,
-          Angles.UpRight,
-          Angles.Right,
-          Angles.DownRight,
-        ])
-      : angleCmd;
+  const start = addPositions(position, offset ?? pos(0, 0));
+  const angle = getTurretAngle(
+    start,
+    target,
+    angleCmd,
+    owner.ship!,
+    owner.lastMovement
+  );
 
   if (beam && vel) {
     const [dx, dy] = angleMove({ angle, vel });

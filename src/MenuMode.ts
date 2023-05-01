@@ -4,21 +4,18 @@ import CampaignMode from "@app/CampaignMode";
 import Engine from "@app/Engine";
 import GameMode from "@app/types/GameMode";
 import Glyphs from "@app/logic/glyphs";
-import { Pilot } from "@app/components";
+import { Motion, Pilot, Position } from "@app/components";
 import PilotStat from "@app/types/PilotStat";
 import { StatColours } from "@app/logic/colours";
 import { angleMove } from "@app/tools/angle";
 import { intPosition } from "@app/tools/position";
 import oneOf from "@app/tools/oneOf";
 
-type Star = {
-  x: number;
-  y: number;
-  c: string;
-  fg: number;
-  angle: number;
-  vel: number;
-};
+type Star = Position &
+  Motion & {
+    c: string;
+    fg: number;
+  };
 
 export default class MenuMode implements GameMode {
   dirty!: boolean;
