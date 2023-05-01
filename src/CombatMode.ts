@@ -127,7 +127,7 @@ export default class CombatMode implements GameMode {
       term.drawCenteredString(
         term.width / 2,
         7,
-        "Hit Escape to try again",
+        "Hit Q to try again",
         Colors.LIGHT_RED,
         Colors.BLACK
       );
@@ -182,7 +182,7 @@ export default class CombatMode implements GameMode {
     const { player, term } = this.g;
 
     if (!player.alive) {
-      if (term.isKeyPressed(Key.VK_ESCAPE)) {
+      if (term.isKeyPressed(Key.VK_Q) || term.isKeyPressed(Key.VK_ESCAPE)) {
         this.g.setMode(new MenuMode(this.g));
         term.fillRect(
           0,
