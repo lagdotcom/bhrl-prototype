@@ -1,8 +1,8 @@
-import { Colors } from "wglt";
-import Drawable from "@app/types/Drawable";
-import Engine from "@app/Engine";
 import { Player } from "@app/components";
+import Engine from "@app/Engine";
 import { getPrefab } from "@app/prefabs";
+import Drawable from "@app/types/Drawable";
+import { Colors } from "wglt";
 
 export default class BombsInfo implements Drawable {
   width: number;
@@ -11,7 +11,7 @@ export default class BombsInfo implements Drawable {
 
   constructor(public g: Engine, public player: Player) {
     this.lines = player.bombs.map(
-      (prefabName) => getPrefab(prefabName).components!.turret!.name
+      (prefabName) => getPrefab(prefabName).components?.turret?.name ?? "?"
     );
 
     this.width = this.lines.reduce((a, b) => Math.max(a, b.length), 0);

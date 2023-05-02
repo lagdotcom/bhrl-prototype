@@ -1,8 +1,7 @@
 import { Pilot, Position } from "@app/components";
-
+import Entity from "@app/Entity";
 import AttackWave from "@app/types/AttackWave";
 import DamageSource from "@app/types/DamageSource";
-import Entity from "@app/Entity";
 import KillReason from "@app/types/KillReason";
 
 export const EventNames = [

@@ -5,10 +5,9 @@ import {
   TurretBullet,
   TurretShot,
 } from "@app/components/Turret";
-
-import { PrefabChild } from "@app/types/Prefab";
-import { PrefabName } from ".";
 import Angles from "@app/logic/angles";
+import { PrefabName } from "@app/prefabs";
+import { PrefabChild } from "@app/types/Prefab";
 
 export const child = (
   name: PrefabName,

@@ -1,14 +1,13 @@
-import { addPositions, pos } from "@app/tools/position";
-
-import Angles from "@app/logic/angles";
-import EnemyFlags from "@app/types/EnemyFlags";
 import Engine from "@app/Engine";
+import Angles from "@app/logic/angles";
 import { PowerToFlags } from "@app/logic/enemy";
+import { getEntityTree } from "@app/logic/entity";
 import { PrefabName } from "@app/prefabs";
 import chance from "@app/tools/chance";
-import { getEntityTree } from "@app/logic/entity";
 import oneOf from "@app/tools/oneOf";
+import { addPositions, pos } from "@app/tools/position";
 import shuffle from "@app/tools/shuffle";
+import EnemyFlags from "@app/types/EnemyFlags";
 
 export default function addDrops(g: Engine) {
   g.on("kill", function DropItems({ e, reason }) {
@@ -59,7 +58,10 @@ export default function addDrops(g: Engine) {
       ]);
 
       for (const prefab of itemPrefabs) {
-        const pos = addPositions(position, distribution.pop()!);
+        const offset = distribution.pop();
+        if (!offset) return;
+
+        const pos = addPositions(position, offset);
 
         // TODO cleverer motion pattern
         const item = g
@@ -69,8 +71,8 @@ export default function addDrops(g: Engine) {
 
         // TODO money amount etc.
 
-        if (prefab === "BombItem")
-          item.setItem({ type: "bomb", prefab: bombPrefab! });
+        if (prefab === "BombItem" && bombPrefab)
+          item.setItem({ type: "bomb", prefab: bombPrefab });
       }
     }
   });

@@ -1,16 +1,16 @@
-import BulletInfo from "@app/ui/BulletInfo";
-import { Colors } from "wglt";
-import Drawable from "@app/types/Drawable";
+import { Position } from "@app/components";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
+import { entityHasComponents, getEntityTree } from "@app/logic/entity";
+import Drawable from "@app/types/Drawable";
+import BulletInfo from "@app/ui/BulletInfo";
 import FieldInfo from "@app/ui/FieldInfo";
 import ItemInfo from "@app/ui/ItemInfo";
 import PilotInfo from "@app/ui/PilotInfo";
-import { Position } from "@app/components";
 import PowerUpInfo from "@app/ui/PowerUpInfo";
 import ShipInfo from "@app/ui/ShipInfo";
 import WeaponInfo from "@app/ui/WeaponInfo";
-import { getEntityTree } from "@app/logic/entity";
+import { Colors } from "wglt";
 
 type DrawInstruction = { x: number; y: number; object: Drawable };
 
@@ -39,8 +39,8 @@ export function drawExamineOverlay(
 
     const tree = getEntityTree(g, e);
 
-    for (const weapon of tree.filter((x) => x.turret))
-      add(new WeaponInfo(g, weapon.turret!));
+    for (const weapon of tree.filter(entityHasComponents(["turret"])))
+      add(new WeaponInfo(g, weapon.turret));
 
     if (e.item) add(new ItemInfo(g, e.item));
     else if (e.motion || e.projectile || e.homing || e.lifetime || e.explodes)

@@ -1,11 +1,10 @@
-import { Colors, fromRgb } from "wglt";
-import { array, bullet, rel, rnd, turret } from "./tools";
-
 import Glyphs from "@app/logic/glyphs";
-import Layer from "@app/types/Layer";
 import Offsets from "@app/logic/offsets";
-import Prefab from "@app/types/Prefab";
+import { array, bullet, rel, rnd, turret } from "@app/prefabs/tools";
 import enumerate from "@app/tools/enumerate";
+import Layer from "@app/types/Layer";
+import Prefab from "@app/types/Prefab";
+import { Colors, fromRgb } from "wglt";
 
 export const MultiballShot: Prefab = {
   components: {

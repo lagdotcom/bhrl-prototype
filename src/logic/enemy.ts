@@ -1,22 +1,21 @@
 import { Pilot, Ship } from "@app/components";
-import { getEntityLayout, getEntityTree, isSpaceFree } from "@app/logic/entity";
-
-import AttackWave from "@app/types/AttackWave";
-import EnemyFlags from "@app/types/EnemyFlags";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import FieldType from "@app/types/FieldType";
-import { PilotClasses } from "@app/types/PilotClass";
 import { PowerAppearancePatch } from "@app/logic/colours";
-import { PrefabName } from "@app/prefabs";
-import ShipPower from "@app/types/ShipPower";
-import chance from "@app/tools/chance";
-import { clone } from "@app/tools/object";
-import enumerate from "@app/tools/enumerate";
-import oneOf from "@app/tools/oneOf";
+import { getEntityLayout, getEntityTree, isSpaceFree } from "@app/logic/entity";
 import { putPilotInShip } from "@app/logic/pilot";
+import { PrefabName } from "@app/prefabs";
+import chance from "@app/tools/chance";
+import enumerate from "@app/tools/enumerate";
+import { clone } from "@app/tools/object";
+import oneOf from "@app/tools/oneOf";
 import shuffle from "@app/tools/shuffle";
 import without from "@app/tools/without";
+import AttackWave from "@app/types/AttackWave";
+import EnemyFlags from "@app/types/EnemyFlags";
+import FieldType from "@app/types/FieldType";
+import { PilotClasses } from "@app/types/PilotClass";
+import ShipPower from "@app/types/ShipPower";
 
 export const PowerToFlags: Record<ShipPower, EnemyFlags> = {
   Typical: EnemyFlags.None,

@@ -1,12 +1,11 @@
-import { getEntityMidpoint, getEntityTree } from "@app/logic/entity";
-
 import Engine from "@app/Engine";
-import Query from "@app/Query";
+import { getEntityMidpoint, getEntityTree } from "@app/logic/entity";
 import { fireBullet } from "@app/logic/turret";
+import Query from "@app/Query";
 import { pos } from "@app/tools/position";
 
 export default function addDelayedShots(g: Engine) {
-  const query = new Query(g.entities, ["delayedShot"]);
+  const query = new Query(g.entities, ["delayedShot", "ship"]);
   g.on("tick", function FireDelayedShots() {
     query.forEach(({ ai, delayedShot }, e) => {
       if (!e.alive) {

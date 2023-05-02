@@ -1,8 +1,7 @@
-import { Colors, fromRgb } from "wglt";
-
 import Glyphs from "@app/logic/glyphs";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
+import { Colors, fromRgb } from "wglt";
 
 export const Bullet: Prefab = {
   components: {

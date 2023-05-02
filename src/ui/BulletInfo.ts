@@ -1,9 +1,9 @@
-import { Colors } from "wglt";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import Glyphs from "@app/logic/glyphs";
-import InstructionBasedDrawable from "./InstructionBasedDrawable";
 import { angleWrap } from "@app/tools/angle";
+import InstructionBasedDrawable from "@app/ui/InstructionBasedDrawable";
+import { Colors } from "wglt";
 
 const circleEighth = Math.PI / 4;
 const directions = [

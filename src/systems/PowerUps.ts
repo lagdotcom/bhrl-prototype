@@ -1,8 +1,8 @@
-import { Colors } from "wglt";
 import Engine from "@app/Engine";
-import Query from "@app/Query";
 import { getEntityTree } from "@app/logic/entity";
+import Query from "@app/Query";
 import isDefined from "@app/tools/isDefined";
+import { Colors } from "wglt";
 
 export default function addPowerUps(g: Engine) {
   const query = new Query(g.entities, ["ship"]);

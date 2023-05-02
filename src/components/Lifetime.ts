@@ -1,4 +1,4 @@
-import Appearance from "./Appearance";
+import Appearance from "@app/components/Appearance";
 
 type Lifetime = {
   duration: number;

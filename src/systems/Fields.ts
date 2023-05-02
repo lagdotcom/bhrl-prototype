@@ -1,8 +1,8 @@
 import Engine from "@app/Engine";
-import Query from "@app/Query";
 import damage from "@app/logic/damage";
 import { getEntityLayout } from "@app/logic/entity";
 import { getFieldAppearance } from "@app/logic/field";
+import Query from "@app/Query";
 import { isSameCell } from "@app/tools/position";
 
 export default function addFields(g: Engine) {

@@ -1,6 +1,6 @@
-import DamageSource from "@app/types/DamageSource";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
+import DamageSource from "@app/types/DamageSource";
 
 export default function damage(
   g: Engine,

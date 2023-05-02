@@ -1,5 +1,5 @@
-import PilotClass from "@app/types/PilotClass";
 import { PrefabName } from "@app/prefabs";
+import PilotClass from "@app/types/PilotClass";
 
 type Pilot = {
   name: string;

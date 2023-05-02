@@ -1,5 +1,6 @@
-import { BlendMode, Cell, Console, Terminal } from "wglt";
+import { Position } from "@app/components";
 import Entity, { compareEntities } from "@app/Entity";
+import EntityList from "@app/EntityList";
 import {
   EventCallback,
   EventHandler,
@@ -7,20 +8,18 @@ import {
   EventName,
   EventNames,
 } from "@app/events";
-import instantiate, { PrefabName } from "@app/prefabs";
-import { intPosition, isSameCell } from "@app/tools/position";
-
-import EntityList from "@app/EntityList";
-import { EntityWithComponents } from "@app/Query";
-import GameMode from "@app/types/GameMode";
 import HashMap from "@app/HashMap";
-import KillReason from "@app/types/KillReason";
-import MenuMode from "@app/MenuMode";
-import { Position } from "@app/components";
 import bfs from "@app/logic/bfs";
-import { fromEntries } from "@app/tools/object";
 import { getEntityTree } from "@app/logic/entity";
+import MenuMode from "@app/MenuMode";
+import instantiate, { PrefabName } from "@app/prefabs";
+import { EntityWithComponents } from "@app/Query";
 import isDefined from "@app/tools/isDefined";
+import { fromEntries } from "@app/tools/object";
+import { intPosition, isSameCell } from "@app/tools/position";
+import GameMode from "@app/types/GameMode";
+import KillReason from "@app/types/KillReason";
+import { BlendMode, Cell, Console, Terminal } from "wglt";
 
 type Overlay = HashMap<Position, number>;
 

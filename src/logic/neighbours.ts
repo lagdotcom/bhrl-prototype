@@ -1,6 +1,5 @@
-import { addPositions, pos } from "@app/tools/position";
-
 import { Position } from "@app/components";
+import { addPositions, pos } from "@app/tools/position";
 
 export const neighbourOffsets: Position[] = [
   pos(-1, -1),

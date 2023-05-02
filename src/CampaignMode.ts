@@ -1,19 +1,18 @@
-import { Colors, Key } from "wglt";
-import { Pilot, Position } from "@app/components";
-import { addPositions, isSameCell, pos } from "@app/tools/position";
-
 import CombatMode from "@app/CombatMode";
+import { Pilot, Position } from "@app/components";
 import Engine from "@app/Engine";
-import { EntityWithComponents } from "@app/Query";
-import GameMode from "@app/types/GameMode";
 import Grid from "@app/Grid";
-import { PrefabName } from "@app/prefabs";
-import Sector from "@app/types/Sector";
-import StarPilots from "@app/pilots/star";
 import { initialiseShip } from "@app/logic/enemy";
-import oneOf from "@app/tools/oneOf";
-import playTheMusic from "./music";
+import { EntityWithComponents } from "@app/logic/entity";
 import { putPilotInShip } from "@app/logic/pilot";
+import playTheMusic from "@app/music";
+import StarPilots from "@app/pilots/star";
+import { PrefabName } from "@app/prefabs";
+import oneOf from "@app/tools/oneOf";
+import { addPositions, isSameCell, pos } from "@app/tools/position";
+import GameMode from "@app/types/GameMode";
+import Sector from "@app/types/Sector";
+import { Colors, Key } from "wglt";
 
 export default class CampaignMode implements GameMode {
   dirty: boolean;

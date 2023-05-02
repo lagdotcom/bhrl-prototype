@@ -1,9 +1,9 @@
-import { Colors } from "wglt";
-import Engine from "@app/Engine";
-import Glyphs from "@app/logic/glyphs";
-import InstructionBasedDrawable from "./InstructionBasedDrawable";
 import { Item } from "@app/components";
+import Engine from "@app/Engine";
 import { PowerAppearancePatch } from "@app/logic/colours";
+import Glyphs from "@app/logic/glyphs";
+import InstructionBasedDrawable from "@app/ui/InstructionBasedDrawable";
+import { Colors } from "wglt";
 
 export default class ItemInfo extends InstructionBasedDrawable {
   constructor(g: Engine, public item: Item) {

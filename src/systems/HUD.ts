@@ -1,11 +1,11 @@
-import BombsInfo from "@app/ui/BombsInfo";
-import { Colors } from "wglt";
 import Engine from "@app/Engine";
+import { entityHasComponents, getEntityTree } from "@app/logic/entity";
 import Glyphs from "@app/logic/glyphs";
+import BombsInfo from "@app/ui/BombsInfo";
 import PilotInfo from "@app/ui/PilotInfo";
 import ShipInfo from "@app/ui/ShipInfo";
 import WeaponInfo from "@app/ui/WeaponInfo";
-import { getEntityTree } from "@app/logic/entity";
+import { Colors } from "wglt";
 
 export const HUD_HEIGHT = 6;
 
@@ -60,11 +60,11 @@ export default function addHUD(g: Engine) {
 
     for (const tag of player.weaponArrays) {
       const sx = x;
-      const weapons = getEntityTree(g, pe).filter(
-        (e) => e.turret && e.tags.has(tag)
-      );
+      const weapons = getEntityTree(g, pe)
+        .filter((e) => e.tags.has(tag))
+        .filter(entityHasComponents(["turret"]));
       for (const weapon of weapons) {
-        const weaponInfo = new WeaponInfo(g, weapon.turret!);
+        const weaponInfo = new WeaponInfo(g, weapon.turret);
         weaponInfo.draw(x, y + 1);
         x += weaponInfo.width + 1;
       }

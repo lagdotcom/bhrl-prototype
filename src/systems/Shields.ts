@@ -1,6 +1,6 @@
 import Engine from "@app/Engine";
-import Query from "@app/Query";
 import { getShieldRechargeDelay } from "@app/logic/pilot";
+import Query from "@app/Query";
 
 export default function addShields(g: Engine) {
   const query = new Query(g.entities, ["ship"]);

@@ -1,6 +1,5 @@
-import { aim, array, bullet, rel, turret } from "@app/prefabs/tools";
-
 import Offsets from "@app/logic/offsets";
+import { aim, array, bullet, rel, turret } from "@app/prefabs/tools";
 import Prefab from "@app/types/Prefab";
 
 export const PeaShooter: Prefab = {

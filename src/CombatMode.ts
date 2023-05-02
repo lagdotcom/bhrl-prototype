@@ -1,20 +1,19 @@
-import { Colors, Key } from "wglt";
-import { getEntityLayout, getEntityTreeIDs } from "@app/logic/entity";
-import { intPosition, pos } from "@app/tools/position";
-
-import AttackWave from "@app/types/AttackWave";
 import CampaignMode from "@app/CampaignMode";
+import { Position } from "@app/components";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import GameMode from "@app/types/GameMode";
-import MenuMode from "./MenuMode";
-import { Position } from "@app/components";
+import { getWaves } from "@app/logic/enemy";
+import { getEntityLayout, getEntityTreeIDs } from "@app/logic/entity";
+import { drawExamineOverlay } from "@app/logic/examine";
+import { walkGrid } from "@app/logic/geometry";
+import MenuMode from "@app/MenuMode";
 import { addSystems } from "@app/systems";
 import { angleMove } from "@app/tools/angle";
-import { drawExamineOverlay } from "@app/logic/examine";
-import { getWaves } from "@app/logic/enemy";
 import int from "@app/tools/int";
-import { walkGrid } from "@app/logic/geometry";
+import { intPosition, pos } from "@app/tools/position";
+import AttackWave from "@app/types/AttackWave";
+import GameMode from "@app/types/GameMode";
+import { Colors, Key } from "wglt";
 
 export default class CombatMode implements GameMode {
   dirty: boolean;

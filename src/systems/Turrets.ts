@@ -1,7 +1,10 @@
-import { advanceTimer, canFire, fire } from "@app/logic/turret";
-import { getEntityMidpoint, getEntityTreeIDs } from "@app/logic/entity";
-
 import Engine from "@app/Engine";
+import {
+  getEntityMidpoint,
+  getEntityTreeIDs,
+  hasComponents,
+} from "@app/logic/entity";
+import { advanceTimer, canFire, fire } from "@app/logic/turret";
 import Query from "@app/Query";
 import distance from "@app/tools/distance";
 
@@ -12,7 +15,7 @@ export default function addTurrets(g: Engine) {
       advanceTimer(turret);
 
       const root = g.getRoot(e);
-      if (!root.ai) return;
+      if (!hasComponents(root, ["ai", "ship"])) return;
 
       const enemy = root.ai.attacking;
       if (!enemy?.alive) return;

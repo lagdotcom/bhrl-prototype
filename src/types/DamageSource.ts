@@ -1,5 +1,4 @@
 import { Ship, Turret } from "@app/components";
-
 import Entity from "@app/Entity";
 
 type DamageSource = {

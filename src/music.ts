@@ -1,4 +1,4 @@
-import musicUrl from "./claw yr way back.mp3";
+import musicUrl from "@app/claw yr way back.mp3";
 
 let musicPromise: Promise<HTMLAudioElement> | undefined;
 

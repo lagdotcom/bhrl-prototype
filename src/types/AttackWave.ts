@@ -1,5 +1,5 @@
-import { PrefabName } from "@app/prefabs";
 import { Ship } from "@app/components";
+import { PrefabName } from "@app/prefabs";
 
 type AttackWave = {
   name: string;

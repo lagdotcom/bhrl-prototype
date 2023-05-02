@@ -1,9 +1,9 @@
+import { Pilot } from "@app/components";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import { Pilot } from "@app/components";
-import PilotStat from "@app/types/PilotStat";
 import { getEntityMidpoint } from "@app/logic/entity";
 import { intPosition } from "@app/tools/position";
+import PilotStat from "@app/types/PilotStat";
 
 export function putPilotInShip(g: Engine, e: Entity, pilot: Pilot) {
   const { ship } = e;

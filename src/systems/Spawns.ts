@@ -1,6 +1,5 @@
-import { findSpawnPosition, getShipPower, makeEnemy } from "@app/logic/enemy";
-
 import Engine from "@app/Engine";
+import { findSpawnPosition, getShipPower, makeEnemy } from "@app/logic/enemy";
 import { PrefabName } from "@app/prefabs";
 import oneOf from "@app/tools/oneOf";
 

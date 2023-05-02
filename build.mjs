@@ -1,5 +1,6 @@
-import CDNModule from "./CDNModule.mjs";
 import esbuild from "esbuild";
+
+import CDNModule from "./CDNModule.mjs";
 
 const result = await esbuild.build({
   entryPoints: ["src/index.ts"],

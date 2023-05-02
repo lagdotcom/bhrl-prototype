@@ -1,8 +1,8 @@
-import { Colors } from "wglt";
-import Drawable from "@app/types/Drawable";
-import Engine from "@app/Engine";
 import { Turret } from "@app/components";
+import Engine from "@app/Engine";
 import { getState } from "@app/logic/turret";
+import Drawable from "@app/types/Drawable";
+import { Colors } from "wglt";
 
 const StateColours = {
   Spent: Colors.DARK_GRAY,

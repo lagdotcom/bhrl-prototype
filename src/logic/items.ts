@@ -1,13 +1,12 @@
-import { getJunkBombChance, getMaxBombCount } from "./pilot";
-
+import { Item } from "@app/components";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import { Item } from "@app/components";
-import { advanceTimer } from "./turret";
-import chance from "@app/tools/chance";
-import { getEntityTree } from "./entity";
-import oneOf from "@app/tools/oneOf";
+import { getEntityTree } from "@app/logic/entity";
+import { getJunkBombChance, getMaxBombCount } from "@app/logic/pilot";
+import { advanceTimer } from "@app/logic/turret";
 import { smartBombs } from "@app/prefabs";
+import chance from "@app/tools/chance";
+import oneOf from "@app/tools/oneOf";
 
 export function giveItem(g: Engine, e: Entity, item: Item): void {
   if (!e.ship || !e.player) return;

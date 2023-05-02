@@ -1,6 +1,6 @@
-import { Colors } from "wglt";
-import Drawable from "@app/types/Drawable";
 import Engine from "@app/Engine";
+import Drawable from "@app/types/Drawable";
+import { Colors } from "wglt";
 
 export type LineInstruction = {
   x: number;

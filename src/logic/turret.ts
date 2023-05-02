@@ -5,23 +5,26 @@ import {
   Ship,
   Turret,
 } from "@app/components";
-import { addPositions, pos } from "@app/tools/position";
-import { angleBetween, angleMove, angleWrap } from "@app/tools/angle";
-import { getEntityMidpoint, getEntityTree } from "@app/logic/entity";
-
-import Angles from "./angles";
-import { Colors } from "wglt";
+import { TurretAngle, TurretShot } from "@app/components/Turret";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import { EntityWithComponents } from "@app/Query";
-import { PrefabName } from "@app/prefabs";
-import { TurretAngle, TurretShot } from "@app/components/Turret";
-import { clone } from "@app/tools/object";
-import distance from "@app/tools/distance";
-import { getStat } from "@app/logic/pilot";
+import Angles from "@app/logic/angles";
 import { initialiseShip } from "@app/logic/enemy";
+import {
+  entityHasComponents,
+  EntityWithComponents,
+  getEntityMidpoint,
+  getEntityTree,
+} from "@app/logic/entity";
+import { getStat } from "@app/logic/pilot";
+import { PrefabName } from "@app/prefabs";
+import { angleBetween, angleMove, angleWrap } from "@app/tools/angle";
+import distance from "@app/tools/distance";
+import { clone } from "@app/tools/object";
 import oneOf from "@app/tools/oneOf";
+import { addPositions, pos } from "@app/tools/position";
 import Angle from "@app/types/Angle";
+import { Colors } from "wglt";
 
 export function getState(turret: Turret) {
   if (turret.salvo <= 0) {
@@ -130,7 +133,7 @@ export function fireBullet(
   turret: Turret,
   position: Position,
   target: Position,
-  owner: Entity,
+  owner: EntityWithComponents<["ship"]>,
   ignoreIds: number[]
 ) {
   if (owner.doubleShot && shot.canDouble) {
@@ -150,21 +153,19 @@ export function fireBullet(
 
   if (shot.type === "array") {
     const bullets: Entity[] = [];
-    for (const tagged of getEntityTree(g, owner).filter((e) =>
-      e.tags.has(shot.tag)
-    )) {
-      if (tagged.position && tagged.turret)
-        bullets.push(
-          ...fire(
-            g,
-            tagged.turret,
-            addPositions(tagged.position, shot.offset ?? pos(0, 0)),
-            target,
-            owner,
-            ignoreIds
-          )
-        );
-    }
+    for (const tagged of getEntityTree(g, owner)
+      .filter((e) => e.tags.has(shot.tag))
+      .filter(entityHasComponents(["position", "turret"])))
+      bullets.push(
+        ...fire(
+          g,
+          tagged.turret,
+          addPositions(tagged.position, shot.offset ?? pos(0, 0)),
+          target,
+          owner,
+          ignoreIds
+        )
+      );
 
     return bullets;
   }
@@ -176,7 +177,7 @@ export function fireBullet(
     start,
     target,
     angleCmd,
-    owner.ship!,
+    owner.ship,
     owner.lastMovement
   );
 
@@ -231,7 +232,7 @@ export function fire(
   turret: Turret,
   position: Position,
   target: Position,
-  owner: Entity,
+  owner: EntityWithComponents<["ship"]>,
   ignoreIds: number[]
 ) {
   const { timeBetweenSalvos, timeBetweenShots } = turret;

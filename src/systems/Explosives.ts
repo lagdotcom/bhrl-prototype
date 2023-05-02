@@ -1,7 +1,7 @@
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import { generateField } from "@app/logic/field";
 import { getEntityMidpoint } from "@app/logic/entity";
+import { generateField } from "@app/logic/field";
 
 export default function addExplosives(g: Engine) {
   g.on("kill", function CreateExplosion({ e, reason }) {

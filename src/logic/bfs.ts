@@ -1,5 +1,5 @@
-import HashMap from "@app/HashMap";
 import { Position } from "@app/components";
+import HashMap from "@app/HashMap";
 import neighbours from "@app/logic/neighbours";
 
 export default function bfs(
@@ -15,18 +15,18 @@ export default function bfs(
     costs.set(location, 0);
   }
 
-  while (frontier.length) {
-    const current = frontier.shift()!;
-
+  let current = frontier.shift();
+  while (current) {
     const neighbourCost = costs.getOrDie(current) + 1;
-    if (neighbourCost > maximum) continue;
-
-    for (const neighbour of neighbours(current)) {
-      if (!costs.has(neighbour) && isPassable(neighbour)) {
-        costs.set(neighbour, neighbourCost);
-        frontier.push(neighbour);
+    if (neighbourCost <= maximum)
+      for (const neighbour of neighbours(current)) {
+        if (!costs.has(neighbour) && isPassable(neighbour)) {
+          costs.set(neighbour, neighbourCost);
+          frontier.push(neighbour);
+        }
       }
-    }
+
+    current = frontier.shift();
   }
 
   return costs;

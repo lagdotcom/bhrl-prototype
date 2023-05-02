@@ -1,6 +1,6 @@
+import lerp from "@app/tools/lerp";
 import RGBA from "@app/types/RGBA";
 import { fromRgb } from "wglt";
-import lerp from "@app/tools/lerp";
 
 type GradientPoint = [breakpoint: number, colour: RGBA];
 

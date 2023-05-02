@@ -1,17 +1,17 @@
-import { addPositions, pos } from "@app/tools/position";
-import { canFire, fire, getNearestEnemy } from "@app/logic/turret";
+import Engine from "@app/Engine";
+import Angles from "@app/logic/angles";
 import {
   getEntityBlockers,
   getEntityMidpoint,
   getEntityTree,
   getEntityTreeIDs,
+  hasComponents,
 } from "@app/logic/entity";
-
-import Engine from "@app/Engine";
-import Angles from "@app/logic/angles";
+import { canFire, fire, getNearestEnemy } from "@app/logic/turret";
+import { getPrefab } from "@app/prefabs";
 import { angleBetween } from "@app/tools/angle";
 import { clone } from "@app/tools/object";
-import { getPrefab } from "@app/prefabs";
+import { addPositions, pos } from "@app/tools/position";
 
 export default function addPlayer(g: Engine) {
   g.on("playerMove", function MovePlayer({ move }) {
@@ -78,9 +78,9 @@ export default function addPlayer(g: Engine) {
       );
       for (const be of created) {
         // TODO replace with option
-        if (be.ai) {
+        if (hasComponents(be, ["ai", "ship"])) {
           be.ai.attacking = enemy;
-          be.ship!.firingDirection = Angles.Up;
+          be.ship.firingDirection = Angles.Up;
         }
 
         if (be.homing) be.homing.target = enemy;

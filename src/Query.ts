@@ -1,16 +1,11 @@
-import { ComponentMap, EntityAttribute } from "@app/components";
-
+import { EntityAttribute } from "@app/components";
 import Entity from "@app/Entity";
 import EntityList from "@app/EntityList";
-
-export type HasComponents<T extends EntityAttribute[]> = Pick<
-  ComponentMap,
-  T[number]
-> &
-  Partial<ComponentMap>;
-
-export type EntityWithComponents<T extends EntityAttribute[]> = Entity &
-  HasComponents<T>;
+import {
+  entityHasComponents,
+  EntityWithComponents,
+  HasComponents,
+} from "@app/logic/entity";
 
 export type QueryCallback<T extends EntityAttribute[]> = (
   components: HasComponents<T>,
@@ -18,16 +13,10 @@ export type QueryCallback<T extends EntityAttribute[]> = (
 ) => void;
 
 export default class Query<T extends EntityAttribute[]> {
-  constructor(private list: EntityList, private filter: T) {}
+  matches: (e: Entity) => boolean;
 
-  matches(e: Entity) {
-    if (!e.alive) return false;
-
-    for (const key of this.filter) {
-      if (!e[key]) return false;
-    }
-
-    return true;
+  constructor(private list: EntityList, filter: T) {
+    this.matches = entityHasComponents(filter);
   }
 
   forEach(cb: QueryCallback<T>) {

@@ -1,15 +1,14 @@
-import { Colors, Key } from "wglt";
-
 import CampaignMode from "@app/CampaignMode";
-import Engine from "@app/Engine";
-import GameMode from "@app/types/GameMode";
-import Glyphs from "@app/logic/glyphs";
 import { Motion, Pilot, Position } from "@app/components";
-import PilotStat from "@app/types/PilotStat";
+import Engine from "@app/Engine";
 import { StatColours } from "@app/logic/colours";
+import Glyphs from "@app/logic/glyphs";
 import { angleMove } from "@app/tools/angle";
-import { intPosition } from "@app/tools/position";
 import oneOf from "@app/tools/oneOf";
+import { intPosition } from "@app/tools/position";
+import GameMode from "@app/types/GameMode";
+import PilotStat from "@app/types/PilotStat";
+import { Colors, Key } from "wglt";
 
 type Star = Position &
   Motion & {

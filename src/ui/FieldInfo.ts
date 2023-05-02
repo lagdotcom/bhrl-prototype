@@ -1,7 +1,7 @@
-import { Colors } from "wglt";
-import Engine from "@app/Engine";
 import { Field } from "@app/components";
-import InstructionBasedDrawable from "./InstructionBasedDrawable";
+import Engine from "@app/Engine";
+import InstructionBasedDrawable from "@app/ui/InstructionBasedDrawable";
+import { Colors } from "wglt";
 
 export default class FieldInfo extends InstructionBasedDrawable {
   constructor(g: Engine, public field: Field) {

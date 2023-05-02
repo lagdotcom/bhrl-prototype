@@ -1,10 +1,9 @@
 import { Appearance, Field, Position } from "@app/components";
-
-import { BlendMode } from "wglt";
-import FieldType from "@app/types/FieldType";
 import GradientRun from "@app/GradientRun";
-import Layer from "@app/types/Layer";
 import distance from "@app/tools/distance";
+import FieldType from "@app/types/FieldType";
+import Layer from "@app/types/Layer";
+import { BlendMode } from "wglt";
 
 export type FieldCell = { x: number; y: number; intensity: number };
 

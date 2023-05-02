@@ -1,9 +1,8 @@
-import { bullet, turret } from "./tools";
-
-import { Colors } from "wglt";
 import Glyphs from "@app/logic/glyphs";
+import { bullet, turret } from "@app/prefabs/tools";
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
+import { Colors } from "wglt";
 
 export const SwordBullet: Prefab = {
   components: {

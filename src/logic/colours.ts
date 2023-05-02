@@ -1,6 +1,6 @@
 import { Appearance } from "@app/components";
-import { Colors } from "wglt";
 import ShipPower from "@app/types/ShipPower";
+import { Colors } from "wglt";
 
 export const StatColours = [
   0,

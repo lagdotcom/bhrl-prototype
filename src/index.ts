@@ -1,7 +1,6 @@
-import { DEFAULT_FONT, Terminal } from "wglt";
-
 import Engine from "@app/Engine";
 import { HUD_HEIGHT } from "@app/systems/HUD";
+import { DEFAULT_FONT, Terminal } from "wglt";
 
 function loadEngine(parent: HTMLElement) {
   const cols = 60;
@@ -30,6 +29,7 @@ function loadEngine(parent: HTMLElement) {
 
   const term = new Terminal(canvas, cols, rows, { font });
   const g = new Engine(term, cols, rows - HUD_HEIGHT);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).g = g;
 }
 

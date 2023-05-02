@@ -1,20 +1,20 @@
 import Engine from "@app/Engine";
-import addAI from "./AI";
-import addDelayedShots from "./DelayedShots";
-import addDisplay from "./Display";
-import addDrops from "./Drops";
-import addExplosives from "./Explosives";
-import addFields from "./Fields";
-import addHUD from "./HUD";
-import addHoming from "./Homing";
-import addLifetime from "./Lifetime";
-import addMotion from "./Motion";
-import addPlayer from "./Player";
-import addPowerUps from "./PowerUps";
-import addShields from "./Shields";
-import addSpawns from "./Spawns";
-import addTrails from "./Trails";
-import addTurrets from "./Turrets";
+import addAI from "@app/systems/AI";
+import addDelayedShots from "@app/systems/DelayedShots";
+import addDisplay from "@app/systems/Display";
+import addDrops from "@app/systems/Drops";
+import addExplosives from "@app/systems/Explosives";
+import addFields from "@app/systems/Fields";
+import addHoming from "@app/systems/Homing";
+import addHUD from "@app/systems/HUD";
+import addLifetime from "@app/systems/Lifetime";
+import addMotion from "@app/systems/Motion";
+import addPlayer from "@app/systems/Player";
+import addPowerUps from "@app/systems/PowerUps";
+import addShields from "@app/systems/Shields";
+import addSpawns from "@app/systems/Spawns";
+import addTrails from "@app/systems/Trails";
+import addTurrets from "@app/systems/Turrets";
 
 export function addSystems(g: Engine) {
   addLifetime(g);

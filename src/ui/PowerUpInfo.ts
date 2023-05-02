@@ -1,7 +1,7 @@
-import { Colors } from "wglt";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import InstructionBasedDrawable from "./InstructionBasedDrawable";
+import InstructionBasedDrawable from "@app/ui/InstructionBasedDrawable";
+import { Colors } from "wglt";
 
 export default class PowerUpInfo extends InstructionBasedDrawable {
   constructor(g: Engine, public e: Entity) {

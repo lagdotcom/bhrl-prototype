@@ -1,14 +1,13 @@
-import * as bullet from "./bullet";
-import * as effect from "./effect";
-import * as gun from "./gun";
-import * as items from "./items";
-import * as player from "./player";
-import * as ships from "./ships";
-import * as starSpecial from "./starSpecial";
-import * as sword from "./sword";
-
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
+import * as bullet from "@app/prefabs/bullet";
+import * as effect from "@app/prefabs/effect";
+import * as gun from "@app/prefabs/gun";
+import * as items from "@app/prefabs/items";
+import * as player from "@app/prefabs/player";
+import * as ships from "@app/prefabs/ships";
+import * as starSpecial from "@app/prefabs/starSpecial";
+import * as sword from "@app/prefabs/sword";
 
 const AllPrefabs = {
   ...bullet,

@@ -1,5 +1,5 @@
-import DamageSource from "@app/types/DamageSource";
 import Entity from "@app/Entity";
+import DamageSource from "@app/types/DamageSource";
 
 type KillReason =
   | { type: "exitedMap" | "expired" | "hitWall" }

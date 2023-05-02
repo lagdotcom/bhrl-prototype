@@ -1,7 +1,7 @@
-import Angle from "@app/types/Angle";
-import Appearance from "./Appearance";
-import Position from "./Position";
+import Appearance from "@app/components/Appearance";
+import Position from "@app/components/Position";
 import { PrefabName } from "@app/prefabs";
+import Angle from "@app/types/Angle";
 
 export type TurretAngle =
   | { type: "relative"; rel: Angle }

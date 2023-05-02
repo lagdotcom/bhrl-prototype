@@ -1,8 +1,7 @@
-import { angleBetween, angleDiff } from "@app/tools/angle";
-
 import Engine from "@app/Engine";
-import Query from "@app/Query";
 import { getEntityMidpoint } from "@app/logic/entity";
+import Query from "@app/Query";
+import { angleBetween, angleDiff } from "@app/tools/angle";
 
 export default function addHoming(g: Engine) {
   const query = new Query(g.entities, ["homing", "motion", "position"]);

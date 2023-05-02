@@ -1,12 +1,11 @@
-import { intPosition, pos } from "@app/tools/position";
-
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
+import damage from "@app/logic/damage";
+import { walkGrid } from "@app/logic/geometry";
+import { giveItem } from "@app/logic/items";
 import Query from "@app/Query";
 import { angleMove } from "@app/tools/angle";
-import damage from "@app/logic/damage";
-import { giveItem } from "@app/logic/items";
-import { walkGrid } from "@app/logic/geometry";
+import { intPosition, pos } from "@app/tools/position";
 
 export default function addMotion(g: Engine) {
   const query = new Query(g.entities, ["motion", "position"]);

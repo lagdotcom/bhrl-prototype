@@ -22,12 +22,11 @@ import {
   Trail,
   Turret,
 } from "@app/components";
-import { clone, keys } from "@app/tools/object";
-
 import Engine from "@app/Engine";
+import { PrefabName } from "@app/prefabs";
+import { clone, keys } from "@app/tools/object";
 import KillReason from "@app/types/KillReason";
 import Prefab from "@app/types/Prefab";
-import { PrefabName } from "@app/prefabs";
 
 export default class Entity implements Partial<ComponentMap> {
   alive: boolean;
@@ -75,7 +74,7 @@ export default class Entity implements Partial<ComponentMap> {
         const child = this.g.spawn(name).setAttachment({ parent: this, x, y });
         if (overlay)
           for (const key of keys(overlay))
-            Object.assign((child as any)[key], clone(overlay[key]));
+            Object.assign((child as never)[key], clone(overlay[key]));
         if (tags) for (const tag of tags) child.tags.add(tag);
       }
 

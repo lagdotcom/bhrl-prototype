@@ -1,8 +1,8 @@
-import { addPositions, pos } from "@app/tools/position";
-
+import { ComponentMap, EntityAttribute, Position } from "@app/components";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import { Position } from "@app/components";
+import { addPositions, pos } from "@app/tools/position";
+import { HasFields } from "@app/tools/types";
 
 type LayoutEntry<T = Entity> = {
   absolute: Position;
@@ -116,4 +116,29 @@ export function isSpaceFree(
     }
 
   return true;
+}
+
+export type HasComponents<T extends EntityAttribute[]> = HasFields<
+  ComponentMap,
+  T
+>;
+
+export type EntityWithComponents<T extends EntityAttribute[]> = Entity &
+  HasComponents<T>;
+
+export function hasComponents<T extends EntityAttribute[]>(
+  e: Entity,
+  filter: T
+): e is EntityWithComponents<T> {
+  if (!e.alive) return false;
+
+  for (const key of filter) {
+    if (!e[key]) return false;
+  }
+
+  return true;
+}
+
+export function entityHasComponents<T extends EntityAttribute[]>(filter: T) {
+  return (e: Entity): e is EntityWithComponents<T> => hasComponents(e, filter);
 }

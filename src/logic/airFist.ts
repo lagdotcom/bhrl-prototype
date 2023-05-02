@@ -1,8 +1,8 @@
-import Engine from "@app/Engine";
 import { Position } from "@app/components";
+import Engine from "@app/Engine";
+import { getCirclePoints } from "@app/logic/geometry";
 import { angleBetween } from "@app/tools/angle";
 import distance from "@app/tools/distance";
-import { getCirclePoints } from "@app/logic/geometry";
 
 export function fireAirFist(g: Engine, centre: Position, power: number) {
   for (const e of g.entities.get()) {

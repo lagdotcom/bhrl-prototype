@@ -1,9 +1,9 @@
-import { Colors } from "wglt";
-import Drawable from "@app/types/Drawable";
-import Engine from "@app/Engine";
 import { Pilot } from "@app/components";
-import PilotStat from "@app/types/PilotStat";
+import Engine from "@app/Engine";
 import { StatColours } from "@app/logic/colours";
+import Drawable from "@app/types/Drawable";
+import PilotStat from "@app/types/PilotStat";
+import { Colors } from "wglt";
 
 export default class PilotInfo implements Drawable {
   width: number;

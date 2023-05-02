@@ -1,8 +1,8 @@
-import { Colors } from "wglt";
-import Drawable from "@app/types/Drawable";
-import Engine from "@app/Engine";
 import { Ship } from "@app/components";
+import Engine from "@app/Engine";
 import { drawBar } from "@app/logic/graphics";
+import Drawable from "@app/types/Drawable";
+import { Colors } from "wglt";
 
 export default class ShipInfo implements Drawable {
   width: number;

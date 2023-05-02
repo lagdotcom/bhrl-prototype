@@ -1,6 +1,5 @@
-import { stdin, stdout } from "process";
-
 import esbuild from "esbuild";
+import { stdin, stdout } from "process";
 
 const ctx = await esbuild.context({
   entryPoints: ["src/index.ts"],

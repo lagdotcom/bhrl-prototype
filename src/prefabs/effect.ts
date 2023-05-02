@@ -1,7 +1,6 @@
-import { BlendMode, fromRgb } from "wglt";
-
 import Layer from "@app/types/Layer";
 import Prefab from "@app/types/Prefab";
+import { BlendMode, fromRgb } from "wglt";
 
 export const AirFistRange: Prefab = {
   components: {
