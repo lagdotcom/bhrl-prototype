@@ -4,6 +4,7 @@ import Entity from "@app/Entity";
 import { getEntityMidpoint } from "@app/logic/entity";
 import { intPosition } from "@app/tools/position";
 import PilotStat from "@app/types/PilotStat";
+import ScaledValue from "@app/types/ScaledValue";
 
 export function putPilotInShip(g: Engine, e: Entity, pilot: Pilot) {
   const { ship } = e;
@@ -41,4 +42,9 @@ export function getMaxBombCount(e: Entity) {
 
 export function getJunkBombChance(e: Entity) {
   return (getStat(e, "mind") - 1) * 5;
+}
+
+export function getScaledValue(sv: ScaledValue, e: Entity) {
+  if (typeof sv === "number") return sv;
+  return Math.floor(sv.base + getStat(e, sv.stat) * sv.multiplier);
 }

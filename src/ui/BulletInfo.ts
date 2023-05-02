@@ -30,7 +30,7 @@ export default class BulletInfo extends InstructionBasedDrawable {
     if (e.projectile) {
       this.addLine(`${e.projectile.damage} damage`, Colors.LIGHT_RED);
     }
-    if (e.motion)
+    if (e.motion?.vel)
       this.addLine(
         `${getDirection(e.motion.angle)}, vel ${e.motion.vel}`,
         Colors.LIGHT_GRAY

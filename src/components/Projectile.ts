@@ -1,8 +1,8 @@
-import PilotStat from "@app/types/PilotStat";
+import ScaledValue from "@app/types/ScaledValue";
 
 type Projectile = {
   damage: number;
   special?: "increasedDropChance";
-  scaling?: { stat: PilotStat; multiplier: number };
+  scaling?: ScaledValue;
 };
 export default Projectile;

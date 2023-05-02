@@ -7,7 +7,9 @@ import {
 } from "@app/components/Turret";
 import Angles from "@app/logic/angles";
 import { PrefabName } from "@app/prefabs";
+import PilotStat from "@app/types/PilotStat";
 import { PrefabChild } from "@app/types/Prefab";
+import ScaledValue from "@app/types/ScaledValue";
 
 export const child = (
   name: PrefabName,
@@ -62,6 +64,17 @@ export const rel = (name: RelativeDir): TurretAngle => ({
 });
 export const aim: TurretAngle = { type: "nearestEnemy" };
 export const rnd: TurretAngle = { type: "random" };
+
+export const pilotScale = (
+  base: number,
+  stat: PilotStat,
+  multiplier = 1
+): ScaledValue => ({
+  type: "pilot",
+  stat,
+  base,
+  multiplier,
+});
 
 export const bullet = (
   name: string,

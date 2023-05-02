@@ -16,10 +16,11 @@ import {
   getEntityMidpoint,
   getEntityTree,
 } from "@app/logic/entity";
-import { getStat } from "@app/logic/pilot";
+import { getScaledValue } from "@app/logic/pilot";
 import { PrefabName } from "@app/prefabs";
 import { angleBetween, angleMove, angleWrap } from "@app/tools/angle";
 import distance from "@app/tools/distance";
+import enumerate from "@app/tools/enumerate";
 import { clone } from "@app/tools/object";
 import oneOf from "@app/tools/oneOf";
 import { addPositions, pos } from "@app/tools/position";
@@ -85,10 +86,7 @@ function initBullet(
   if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
 
   if (bullet.projectile?.scaling)
-    bullet.projectile.damage += Math.floor(
-      getStat(owner, bullet.projectile.scaling.stat) *
-        bullet.projectile.scaling.multiplier
-    );
+    bullet.projectile.damage = getScaledValue(bullet.projectile.scaling, owner);
 
   if (bullet.appearance && appearance)
     Object.assign(bullet.appearance, appearance);
@@ -186,7 +184,11 @@ export function fireBullet(
     const step = pos(dx, dy);
     let position = addPositions(start, step);
 
-    return beam.appearance.map((patch) => {
+    const length = getScaledValue(beam.length, owner);
+    const getPatch = (n: number) =>
+      beam.appearance[Math.max(0, beam.appearance.length - length + n)];
+
+    return enumerate(length, 0).map((n) => {
       const bullet = initBullet(
         g,
         name,
@@ -201,6 +203,8 @@ export function fireBullet(
       )
         .setMotion({ angle, vel: 0 })
         .setLifetime({ duration: beam.duration });
+
+      const patch = getPatch(n);
       if (bullet.appearance && patch) Object.assign(bullet.appearance, patch);
       if (owner.ship) bullet.setOrigin({ owner, ship: owner.ship, turret });
 

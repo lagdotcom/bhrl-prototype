@@ -2,6 +2,7 @@ import Appearance from "@app/components/Appearance";
 import Position from "@app/components/Position";
 import { PrefabName } from "@app/prefabs";
 import Angle from "@app/types/Angle";
+import ScaledValue from "@app/types/ScaledValue";
 
 export type TurretAngle =
   | { type: "relative"; rel: Angle }
@@ -17,7 +18,11 @@ export type TurretBullet = {
   angle: TurretAngle;
   vel: number;
   offset?: Position;
-  beam?: { duration: number; appearance: Partial<Appearance>[] };
+  beam?: {
+    duration: number;
+    length: ScaledValue;
+    appearance: Partial<Appearance>[];
+  };
   delay?: number;
   appearance?: Partial<Appearance>;
 };

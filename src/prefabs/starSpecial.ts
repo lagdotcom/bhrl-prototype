@@ -58,10 +58,7 @@ export const LaserBeam: Prefab = {
     turret: turret("Laser Beam", { salvoCount: 10, timeBetweenSalvos: 30 }, [
       bullet("Laser", "Laser", rel("F"), 1, {
         offset: Offsets.Down,
-        beam: {
-          duration: 1,
-          appearance: new Array(60),
-        },
+        beam: { duration: 1, length: 60, appearance: [] },
       }),
     ]),
   },

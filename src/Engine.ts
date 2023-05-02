@@ -10,10 +10,9 @@ import {
 } from "@app/events";
 import HashMap from "@app/HashMap";
 import bfs from "@app/logic/bfs";
-import { getEntityTree } from "@app/logic/entity";
+import { EntityWithComponents, getEntityTree } from "@app/logic/entity";
 import MenuMode from "@app/MenuMode";
 import instantiate, { PrefabName } from "@app/prefabs";
-import { EntityWithComponents } from "@app/Query";
 import isDefined from "@app/tools/isDefined";
 import { fromEntries } from "@app/tools/object";
 import { intPosition, isSameCell } from "@app/tools/position";
