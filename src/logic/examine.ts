@@ -3,7 +3,7 @@ import Engine from "@app/Engine";
 import Entity from "@app/Entity";
 import Glyphs from "@app/logic/glyphs";
 import EntityInfo from "@app/ui/EntityInfo";
-import { Colors, fixBoxCells } from "wglt";
+import { Colors } from "wglt";
 
 export function drawExamineOverlay(
   g: Engine,

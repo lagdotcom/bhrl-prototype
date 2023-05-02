@@ -140,7 +140,7 @@ export default class Engine implements EventHandler {
     const wall = this.map.isBlocked(square.x, square.y);
     const entities = this.entities
       .get()
-      .filter((e) => e.position && isSameCell(square, e.position));
+      .filter((e) => e.alive && e.position && isSameCell(square, e.position));
     const solid = entities
       .filter((e) => !ignoreSolid.includes(e.id))
       .find((e) => e.solid);

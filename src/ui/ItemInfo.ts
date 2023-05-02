@@ -12,6 +12,7 @@ export default class ItemInfo extends InstructionBasedDrawable {
     switch (item.type) {
       case "bomb":
         this.addLine("Smart Bomb");
+        this.addLine(item.prefab, Colors.LIGHT_GRAY);
         break;
 
       case "double":
