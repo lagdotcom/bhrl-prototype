@@ -39,11 +39,13 @@ const Glyphs = {
   Fill2: "\xb1",
   Fill3: "\xb2",
   BoxVerticalSingle: "\xb3",
+  BoxLeftSingleVerticalDouble: "\xb6",
   BoxLeftSingleUpDouble: "\xbd",
 
   BoxUpSingleHorizontalSingle: "\xc1",
   BoxDownSingleHorizontalSingle: "\xc2",
   BoxHorizontalSingle: "\xc4",
+  BoxRightSingleVerticalDouble: "\xc7",
 
   BoxUpDoubleHorizontalSingle: "\xd0",
   BoxDownSingleHorizontalDouble: "\xd1",

@@ -1,18 +1,9 @@
 import { Position } from "@app/components";
 import Engine from "@app/Engine";
 import Entity from "@app/Entity";
-import { entityHasComponents, getEntityTree } from "@app/logic/entity";
-import Drawable from "@app/types/Drawable";
-import BulletInfo from "@app/ui/BulletInfo";
-import FieldInfo from "@app/ui/FieldInfo";
-import ItemInfo from "@app/ui/ItemInfo";
-import PilotInfo from "@app/ui/PilotInfo";
-import PowerUpInfo from "@app/ui/PowerUpInfo";
-import ShipInfo from "@app/ui/ShipInfo";
-import WeaponInfo from "@app/ui/WeaponInfo";
-import { Colors } from "wglt";
-
-type DrawInstruction = { x: number; y: number; object: Drawable };
+import Glyphs from "@app/logic/glyphs";
+import EntityInfo from "@app/ui/EntityInfo";
+import { Colors, fixBoxCells } from "wglt";
 
 export function drawExamineOverlay(
   g: Engine,
@@ -21,42 +12,37 @@ export function drawExamineOverlay(
 ) {
   if (!entities.length) return;
 
-  const instructions: DrawInstruction[] = [];
-
-  const x = 1;
-  let y = 1;
-
-  const add = (object: Drawable) => {
-    instructions.push({ x, y, object });
-    y += object.height + 1;
-  };
+  const info: EntityInfo[] = [];
 
   for (const e of entities) {
-    if (e.ship) add(new ShipInfo(g, e.ship));
-    if (e.pilot) add(new PilotInfo(g, e.pilot, true));
-
-    if (e.doubleShot) add(new PowerUpInfo(g, e));
-
-    const tree = getEntityTree(g, e);
-
-    for (const weapon of tree.filter(entityHasComponents(["turret"])))
-      add(new WeaponInfo(g, weapon.turret));
-
-    if (e.item) add(new ItemInfo(g, e.item));
-    else if (e.motion || e.projectile || e.homing || e.lifetime || e.explodes)
-      add(new BulletInfo(g, e));
-
-    if (e.field) add(new FieldInfo(g, e.field));
+    const ei = new EntityInfo(g, e);
+    if (ei.height) info.push(ei);
   }
 
-  if (!instructions.length) return;
+  if (!info.length) return;
 
-  const width = Math.max(...instructions.map((i) => i.object.width)) + 2;
+  const width = Math.max(...info.map((i) => i.width)) + 2;
+  const height = info.reduce((p, v) => p + v.height, 1 + info.length);
 
   const sx = Math.min(pos.x + 2, g.term.width - width);
-  const sy = Math.min(pos.y, g.term.height - y);
+  const sy = Math.min(pos.y, g.term.height - height);
 
-  g.term.fillRect(sx, sy, width, y, " ", Colors.WHITE, Colors.BLACK);
-  g.term.drawSingleBox(sx, sy, width, y);
-  for (const inst of instructions) inst.object.draw(sx + inst.x, sy + inst.y);
+  g.term.fillRect(sx, sy, width, height, " ", Colors.WHITE, Colors.BLACK);
+  g.term.drawDoubleBox(sx, sy, width, height);
+  let y = sy + 1;
+
+  for (const ei of info) {
+    if (y > sy + 1) {
+      g.term.drawChar(sx, y - 1, Glyphs.BoxRightSingleVerticalDouble);
+      g.term.drawHLine(sx + 1, y - 1, width - 1, Glyphs.BoxHorizontalSingle);
+      g.term.drawChar(
+        sx + width - 1,
+        y - 1,
+        Glyphs.BoxLeftSingleVerticalDouble
+      );
+    }
+
+    ei.draw(sx + 1, y);
+    y += ei.height + 1;
+  }
 }

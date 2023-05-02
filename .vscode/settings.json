@@ -2,5 +2,13 @@
   "search.exclude": {
     "docs": true
   },
-  "cSpell.words": ["centered", "lerp", "nanoclone", "wglt"]
+  "cSpell.words": [
+    "centered",
+    "lerp",
+    "multiball",
+    "nanoclone",
+    "switchblade",
+    "switchblades",
+    "wglt"
+  ]
 }
